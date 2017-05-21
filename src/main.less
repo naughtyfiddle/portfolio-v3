@@ -1,0 +1,44 @@
+@color-gray-primary: rgb(192, 192, 192);
+@color-gray-light: rgb(234, 234, 234);
+@color-gray-inset: rgb(142, 142, 141);
+@color-black: rgb(0, 0, 0);
+@color-white: rgb(255, 255, 255);
+@color-teal: rgb(0, 128, 129);
+@color-blue-primary: rgb(1, 0, 129);
+@taskbar-height: 35px;
+
+@font-face {
+	font-family: wendy;
+	src: url(static/fonts/wendy.ttf);
+}
+
+.outset {
+	border: 2px outset;
+	border-top-color: @color-white;
+	border-left-color: @color-white;
+	border-right-color: @color-black;
+	border-bottom-color: @color-black;
+}
+
+.inset {
+	border: 2px inset;
+	border-top-color: @color-gray-inset;
+	border-left-color: @color-gray-inset;
+	border-right-color: @color-white;
+	border-bottom-color: @color-white;
+}
+
+body {
+	@import './containers/desktop/desktop.less';
+	@import './containers/taskbar/taskbar.less';
+	@import './components/desktop-icon.less';
+	@import './components/window.less';
+
+	font-family: wendy;
+
+	.center-vertical {
+		position: relative;
+		top: 50%;
+		transform: translateY(-50%);
+	}
+}

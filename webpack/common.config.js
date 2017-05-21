@@ -4,7 +4,7 @@ module.exports = function(options) {
 	return {
 		stats: 'verbose',
 		entry: [
-			path.resolve(__dirname, '../src/index.js'),
+			path.resolve(__dirname, '../src/index.jsx'),
 			// Adds babel es6 Promise API polyfill for cross browser support
 			'core-js/fn/promise'
 		],

@@ -1,0 +1,37 @@
+.taskbar {
+	@import './partials/clock.less';
+	@import './partials/start-button.less';
+
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: @taskbar-height;
+	padding: 3px;
+	background-color: @color-gray-primary;
+	border-top: 2px solid @color-white;
+	box-sizing: border-box;
+
+	.taskbar-app {
+		.outset;
+		box-sizing: border-box;
+		width: 200px;
+		height: 100%;
+		margin-left: 3px;
+		font-family: wendy;
+		font-size: 1rem;
+		vertical-align: bottom;
+		text-align: left;
+
+		&.focused {
+			.inset;
+			background-color: @color-gray-light;
+		}
+
+		img {
+			height: 1rem;
+			vertical-align: middle;
+			margin-right: 5px;
+		}
+	}
+}
