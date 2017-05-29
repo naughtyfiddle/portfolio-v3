@@ -68,12 +68,15 @@ export default class Window extends React.Component {
 
 		return !this.props.app.isMinimized ? (
 			<div
-				className={classnames('window', {maximized: this.props.app.isMaximized})}
+				className={classnames('window', {
+					maximized: this.props.app.isMaximized,
+					focused: this.props.app.isFocused
+				})}
 				style={position}
 				onClick={() => this.props.focusApp(this.props.app)}
 			>
 				<div
-					className={classnames('window-title', {focused: this.props.app.isFocused})}
+					className="window-title"
 					onMouseDown={() => this.setState({isDragged: true})}
 				>
 					<img src={this.props.app.iconSrc} className="window-title-icon"/>

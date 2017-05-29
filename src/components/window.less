@@ -9,16 +9,20 @@
 		height: 100%;
 	}
 
+	&.focused {
+		z-index: 500;
+
+		.window-title {
+			background-color: @color-blue-primary;
+			color: @color-white;
+		}
+	}
+
 	.window-title {
 		padding: 3px;
 		margin: 2px;
 		background-color: @color-gray-inset;
 		color: @color-gray-primary;
-
-		&.focused {
-			background-color: @color-blue-primary;
-			color: @color-white;
-		}
 
 		.window-title-icon {
 			height: 1rem;

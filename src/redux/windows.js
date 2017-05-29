@@ -11,6 +11,30 @@ const NEW_APP = {
 	isMinimized: false
 };
 
+function _updateApp(runningApps, appName, properties) {
+	const newApps = [];
+	for (const app of runningApps) {
+		const newApp = {...app};
+		if (app.name === appName) {
+			for (const prop in properties) {
+				newApp[prop] = properties[prop];
+			}
+		}
+		newApps.push(newApp);
+	}
+	return newApps;
+}
+
+function _focusApp(runningApps, appName) {
+	return runningApps.map((app) => {
+		return {
+			...app,
+			isFocused: app.name === appName,
+			isMinimized: app.name === appName ? false : app.isMinimized
+		};
+	});
+}
+
 export default function reducer(state = {runningApps: []}, {type, payload}) {
 	switch (type) {
 		case BLUR_APPS: {
@@ -20,14 +44,7 @@ export default function reducer(state = {runningApps: []}, {type, payload}) {
 			return {runningApps: newApps};
 		}
 		case FOCUS_APP: {
-			const newApps = state.runningApps.map((app) => {
-				return {
-					...app,
-					isFocused: app.name === payload.name,
-					isMinimized: app.name === payload.name ? false : app.isMinimized
-				};
-			});
-			return {runningApps: newApps};
+			return {runningApps: _focusApp(state.runningApps, payload.name)};
 		}
 		case KILL_APP: {
 			const newApps = state.runningApps.reduce((acc, app) => {
@@ -40,40 +57,29 @@ export default function reducer(state = {runningApps: []}, {type, payload}) {
 		}
 		case LAUNCH_APP: {
 			if (!state.runningApps.some((app) => app.name === payload.name)) {
-				const newApps = [...state.runningApps];
+				const newApps = state.runningApps.map((app) => {
+					return {...app, isFocused: false};
+				});
 				newApps.push({...NEW_APP, ...payload});
 				return {runningApps: newApps};
 			} else {
-				return state;
+				return {runningApps: _focusApp(state.runningApps, payload.name)};
 			}
 		}
 		case MAXIMIZE_APP: {
-			const newApps = state.runningApps.map((app) => {
-				return {
-					...app,
-					isMaximized: app.name === payload.name ? true : app.isMaximized
-				};
-			});
-			return {runningApps: newApps};
+			return {
+				runningApps: _updateApp(state.runningApps, payload.name, {isMaximized: true})
+			};
 		}
 		case MINIMIZE_APP: {
-			const newApps = state.runningApps.map((app) => {
-				return {
-					...app,
-					isMinimized: app.name === payload.name,
-					isFocused: false
-				};
-			});
-			return {runningApps: newApps};
+			return {
+				runningApps: _updateApp(state.runningApps, payload.name, {isMinimized: true, isFocused: false})
+			};
 		}
 		case UNMAXIMIZE_APP: {
-			const newApps = state.runningApps.map((app) => {
-				return {
-					...app,
-					isMaximized: app.name === payload.name ? false : app.isMaximized
-				};
-			});
-			return {runningApps: newApps};
+			return {
+				runningApps: _updateApp(state.runningApps, payload.name, {isMaximized: false})
+			};
 		}
 		default:
 			return state;

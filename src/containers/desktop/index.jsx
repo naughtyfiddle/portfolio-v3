@@ -21,6 +21,11 @@ function Desktop(props) {
 		iconSrc: 'static/img/my-computer.png'
 	};
 
+	const internetApp = {
+		name: 'Internet',
+		iconSrc: 'static/img/my-computer.png'
+	};
+
 	const windows = props.runningApps.map((app) => {
 		return (
 			<Window
@@ -42,6 +47,10 @@ function Desktop(props) {
 			<Wallpaper onClick={props.blurApps}/>
 			<DesktopIcon
 				app={aboutMeApp}
+				launchApp={props.launchApp}
+			/>
+			<DesktopIcon
+				app={internetApp}
 				launchApp={props.launchApp}
 			/>
 			{windows}
