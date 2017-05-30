@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import Wallpaper from './partials/wallpaper';
+import Apps from './apps';
 import Taskbar from '../taskbar';
 import DesktopIcon from '../../components/desktop-icon';
 import Window from '../../components/window';
@@ -16,15 +17,15 @@ import {
 } from '../../redux/windows';
 
 function Desktop(props) {
-	const aboutMeApp = {
-		name: 'About Me',
-		iconSrc: 'static/img/my-computer.png'
-	};
-
-	const internetApp = {
-		name: 'Internet',
-		iconSrc: 'static/img/my-computer.png'
-	};
+	const icons = Apps.map((app) => {
+		return (
+			<DesktopIcon
+				app={app}
+				launchApp={props.launchApp}
+				key={app.name}
+			/>
+		);
+	});
 
 	const windows = props.runningApps.map((app) => {
 		return (
@@ -37,7 +38,7 @@ function Desktop(props) {
 				focusApp={props.focusApp}
 				key={app.name}
 			>
-				<div className="dummy"/>
+				<app.content/>
 			</Window>
 		);
 	});
@@ -45,14 +46,7 @@ function Desktop(props) {
 	return (
 		<div className="desktop">
 			<Wallpaper onClick={props.blurApps}/>
-			<DesktopIcon
-				app={aboutMeApp}
-				launchApp={props.launchApp}
-			/>
-			<DesktopIcon
-				app={internetApp}
-				launchApp={props.launchApp}
-			/>
+			{icons}
 			{windows}
 			<Taskbar/>
 		</div>

@@ -73,7 +73,7 @@ export default class Window extends React.Component {
 					focused: this.props.app.isFocused
 				})}
 				style={position}
-				onClick={() => this.props.focusApp(this.props.app)}
+				onMouseDown={() => this.props.focusApp(this.props.app)}
 			>
 				<div
 					className="window-title"
