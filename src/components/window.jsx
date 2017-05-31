@@ -102,7 +102,9 @@ export default class Window extends React.Component {
 						</button>
 					</div>
 				</div>
-				{this.props.children}
+				<div className="window-content">
+					{this.props.children}
+				</div>
 			</div>
 		) : null;
 	}

@@ -1,5 +1,25 @@
 .about-me-app {
 	width: 500px;
-	padding: 3px;
-	background-color: @color-white;
+	padding: 5px 20px 20px 20px;
+	font-family: perfect-dos;
+
+	h3 {
+		margin: 0;
+		font-family: pixel-arial;
+		font-size: 2rem;
+
+		.about-me-light {
+			color: @color-white;
+		}
+	}
+
+	.about-me-content {
+		.inset;
+		padding: 3px;
+		background:
+			radial-gradient(@color-gray-primary 15%, transparent 16%),
+			@color-white;
+		background-size: 3px 3px;
+		font-size: 0.85rem;
+	}
 }

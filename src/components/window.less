@@ -1,9 +1,11 @@
 .window {
 	.outset;
+	display: flex;
+	flex-direction: column;
 	position: absolute;
 	background-color: @color-gray-primary;
 	box-sizing: border-box;
-	padding: 2px;
+	max-height: 100%;
 
 	&.maximized {
 		width: 100%;
@@ -20,9 +22,11 @@
 	}
 
 	.window-title {
+		margin: 2px;
 		padding: 3px;
 		background-color: @color-gray-inset;
 		color: @color-gray-primary;
+		user-select: none;
 
 		.window-title-icon {
 			height: 1rem;
@@ -42,6 +46,10 @@
 				border-width: 1px;
 				background-color: @color-gray-primary;
 
+				&:hover {
+					cursor: pointer;
+				}
+
 				&:last-child {
 					margin-left: 2px;
 				}
@@ -51,5 +59,11 @@
 				}
 			}
 		}
+	}
+
+	.window-content {
+		flex: 1;
+		overflow: auto;
+		margin: 0 2px 2px 2px;
 	}
 }

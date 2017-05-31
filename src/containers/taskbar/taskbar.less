@@ -11,6 +11,8 @@
 	background-color: @color-gray-primary;
 	border-top: 2px solid @color-white;
 	box-sizing: border-box;
+	z-index: 10000;
+	user-select: none;
 
 	.taskbar-app {
 		.outset;
@@ -22,6 +24,10 @@
 		font-size: 1rem;
 		vertical-align: bottom;
 		text-align: left;
+
+		&:hover:not(.focused) {
+			cursor: pointer;
+		}
 
 		&.focused {
 			.inset;
