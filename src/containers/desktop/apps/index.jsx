@@ -1,4 +1,5 @@
 import AboutMeApp from './about-me';
+import WormApp from './worm';
 
 const AboutMe = {
 	name: 'About Me',
@@ -6,6 +7,13 @@ const AboutMe = {
 	iconSrc: 'static/img/my-computer.png'
 };
 
+const Worm = {
+	name: 'Worm',
+	content: WormApp,
+	iconSrc: 'static/img/my-computer.png'
+};
+
 export default [
-	AboutMe
+	AboutMe,
+	Worm
 ];
