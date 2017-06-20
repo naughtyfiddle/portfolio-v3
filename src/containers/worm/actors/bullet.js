@@ -2,11 +2,12 @@ import Actor from './actor';
 import EventBus from '../lib/event-bus';
 import Rect from '../lib/rect';
 import Config from '../config';
-import {sizeToCanvas} from '../lib/utils';
+import {getCanvasUnit} from '../lib/utils';
 
 export default function Bullet(canvas, pos, dir, color) {
 	const ctx = canvas.getContext('2d');
-	const size = sizeToCanvas(canvas, Config.bullet.size);
+	const unit = getCanvasUnit(canvas);
+	const size = unit * Config.bullet.size;
 
 	return Object.assign(Actor(), {
 		pos, size, dir, color,
@@ -14,7 +15,7 @@ export default function Bullet(canvas, pos, dir, color) {
 		shouldRemove: false,
 
 		update() {
-			this.pos = this.pos.add(this.dir.multiply(sizeToCanvas(canvas, Config.bullet.speed)));
+			this.pos = this.pos.add(this.dir.multiply(unit * Config.bullet.speed));
 			this.bounds.moveTo(this.pos.x, this.pos.y);
 
 			if (this.bounds.isOffscreen(canvas)) {

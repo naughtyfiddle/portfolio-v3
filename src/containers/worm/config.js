@@ -21,7 +21,7 @@ export default {
 		src: 'static/img/worm/cake.png'
 	},
 	portal: {
-		width: 2,
+		radius: 2, // number of units from the center to either edge
 		depth: 1,
 		color1: '#b1c1c4',
 		color2: '#e1caa8'

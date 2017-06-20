@@ -1,14 +1,21 @@
 import Actor from './actor';
 import Rect from '../lib/rect';
 import EventBus from '../lib/event-bus';
-import {sizeToCanvas} from '../lib/utils';
+import {getCanvasUnit} from '../lib/utils';
 import Config from '../config';
+import Direction from '../lib/direction';
 
 export default function Portal(canvas, pos, dir, color) {
 	const ctx = canvas.getContext('2d');
+	const unit = getCanvasUnit(canvas);
 
-	const getWidth = (dir) => Math.abs(dir.y) * sizeToCanvas(canvas, Config.portal.width) + sizeToCanvas(canvas, Config.portal.depth);
-	const getHeight = (dir) => Math.abs(dir.x) * sizeToCanvas(canvas, Config.portal.width) + sizeToCanvas(canvas, Config.portal.depth);
+	const getWidth = (dir) => {
+		return Math.abs(dir.y) * 2 * Config.portal.radius * unit + unit;
+	};
+
+	const getHeight = (dir) => {
+		return Math.abs(dir.x) * 2 * Config.portal.radius * unit + unit;
+	};
 
 	const portal = Object.assign(Actor(), {
 		pos, dir,
@@ -23,20 +30,26 @@ export default function Portal(canvas, pos, dir, color) {
 			if (bullet.color === color) {
 				this.dir = bullet.dir.multiply(-1);
 
-				if (bullet.pos.x < 0) {
-					this.pos.x = 0;
-				} else if (bullet.pos.x >= canvas.clientWidth) {
-					this.pos.x = canvas.clientWidth - this.w;
+				// center portal over bullet impact
+				if (this.dir.equals(Direction.UP) || this.dir.equals(Direction.DOWN)) {
+					this.pos.x = bullet.pos.x - unit * Config.portal.radius;
+					this.pos.y = bullet.pos.y;
 				} else {
+					this.pos.y = bullet.pos.y - unit * Config.portal.radius;
 					this.pos.x = bullet.pos.x;
 				}
 
-				if (bullet.pos.y < 0) {
+				// keep portal onscreen
+				if (this.pos.x < 0) {
+					this.pos.x = 0;
+				} else if (this.pos.x > canvas.clientWidth - this.w) {
+					this.pos.x = canvas.clientWidth - this.w;
+				}
+
+				if (this.pos.y < 0) {
 					this.pos.y = 0;
-				} else if (bullet.pos.y >= canvas.clientHeight) {
+				} else if (this.pos.y > canvas.clientHeight - this.h) {
 					this.pos.y = canvas.clientHeight - this.h;
-				} else {
-					this.pos.y = bullet.pos.y;
 				}
 
 				this.bounds.moveTo(this.pos.x, this.pos.y, this.w, this.h);

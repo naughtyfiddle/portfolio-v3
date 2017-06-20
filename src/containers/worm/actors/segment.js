@@ -1,11 +1,11 @@
 import Actor from './actor';
 import Config from '../config';
 import Rect from '../lib/rect';
-import {sizeToCanvas} from '../lib/utils';
+import {getCanvasUnit} from '../lib/utils';
 
 export default function Segment(canvas, pos) {
 	const ctx = canvas.getContext('2d');
-	const size = sizeToCanvas(canvas, Config.worm.size);
+	const size = getCanvasUnit(canvas) * Config.worm.size;
 
 	return Object.assign(Actor(), {
 		pos, size,

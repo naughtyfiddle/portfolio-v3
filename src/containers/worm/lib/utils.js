@@ -1,5 +1,5 @@
 import Config from '../config';
 
-export function sizeToCanvas(canvas, size) {
-	return (canvas.clientWidth / Config.scene.resolution) * size;
+export function getCanvasUnit(canvas) {
+	return canvas.clientWidth / Config.scene.resolution;
 }

@@ -2,11 +2,12 @@ import Actor from './actor';
 import Segment from './segment';
 import EventBus from '../lib/event-bus';
 import Vector from '../lib/vector';
-import {sizeToCanvas} from '../lib/utils';
+import {getCanvasUnit} from '../lib/utils';
 import Config from '../config';
 
 export default function Worm(canvas) {
-	const screenMiddle = sizeToCanvas(canvas, Config.scene.resolution / 2);
+	const unit = getCanvasUnit(canvas);
+	const screenMiddle = unit * Config.scene.resolution / 2;
 	const tail = [Segment(canvas, Vector(screenMiddle, screenMiddle))];
 
 	const worm = Object.assign(Actor(), {
@@ -35,9 +36,9 @@ export default function Worm(canvas) {
 			return this.tail.every((seg) => !seg.isDetached);
 		},
 
-		teleport(dest) {
-			this.dir = dest.dir;
-			this.head.pos = dest.pos.add(dest.dir.multiply(10));
+		teleport(to) {
+			this.dir = to.dir;
+			this.head.pos = to.pos.add(to.dir.multiply(unit * Config.portal.depth));
 			this.tail.forEach((seg, i) => { seg.isDetached = i !== tail.length - 1; });
 		},
 
@@ -48,7 +49,7 @@ export default function Worm(canvas) {
 		},
 
 		addSegment() {
-			const newSegmentPos = this.head.pos.add(this.dir.multiply(sizeToCanvas(canvas, Config.worm.size)));
+			const newSegmentPos = this.head.pos.add(this.dir.multiply(unit * Config.worm.size));
 			const newSegment = Segment(canvas, newSegmentPos);
 			this.tail.push(newSegment);
 			this.head = newSegment;

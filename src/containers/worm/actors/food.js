@@ -3,12 +3,12 @@ import Config from '../config';
 import EventBus from '../lib/event-bus';
 import Rect from '../lib/rect';
 import Vector from '../lib/vector';
-import {sizeToCanvas} from '../lib/utils';
+import {getCanvasUnit} from '../lib/utils';
 
 export default function Food(canvas) {
 	const ctx = canvas.getContext('2d');
 
-	const size = sizeToCanvas(canvas, Config.food.size);
+	const size = getCanvasUnit(canvas) * Config.food.size;
 	const sprite = new Image();
 	sprite.src = Config.food.src;
 
