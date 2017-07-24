@@ -7,7 +7,7 @@ import EventBus from './lib/event-bus';
 import Vector from './lib/vector';
 import Direction from './lib/direction';
 
-function NewGameState(canvas) {
+function createNewGameState(canvas) {
 	return {
 		actors: {
 			worm: Worm(canvas),
@@ -18,6 +18,7 @@ function NewGameState(canvas) {
 		},
 		score: 0,
 		shouldTween: false,
+		lastUpdateTs: 0,
 		isEnded: false
 	};
 }
@@ -30,9 +31,9 @@ function doCollisions(state) {
 	}
 
 	if (worm.isColliding(portal1)) {
-		worm.teleport(portal2);
+		worm.teleport(portal1, portal2);
 	} else if (worm.isColliding(portal2)) {
-		worm.teleport(portal1);
+		worm.teleport(portal2, portal1);
 	}
 
 	// remove offscreen bullets
@@ -45,25 +46,13 @@ function doCollisions(state) {
 }
 
 function update(state) {
-	if (!state.shouldTween) {
-		for (const actorKey in state.actors) {
-			const actor = state.actors[actorKey];
-			if (Array.isArray(actor)) {
-				actor.forEach((e) => e.update());
-			} else {
-				actor.update();
-			}
+	for (const actorKey in state.actors) {
+		const actor = state.actors[actorKey];
+		if (Array.isArray(actor)) {
+			actor.forEach((e) => e.update());
+		} else {
+			actor.update();
 		}
-		/*
-		const teleported = worm.doTeleporting();
-
-		// if head went through a portal, set segment flags on other side of the portal
-		if (teleported) {
-			for (let i = 0; i < worm.tail.length - 1; i++) {
-				worm.tail[i].throughPortal = true;
-			}
-		}
-		*/
 	}
 	state.shouldTween = !state.shouldTween;
 }
@@ -82,14 +71,24 @@ function render(canvas, state) {
 			actor.draw();
 		}
 	}
+
+	// draw score
+	ctx.fillStyle = Config.score.color;
+	ctx.font = Config.score.font;
+	ctx.textBaseline = 'hanging';
+	ctx.fillText(state.score, 0, 0);
 }
 
-function doGameLoop(canvas, state) {
-	update(state);
-	doCollisions(state);
-	render(canvas, state);
+function doGameLoop(canvas, state, frameTs = 0) {
+	if (frameTs - state.lastUpdateTs >= Config.scene.updateStep) {
+		update(state);
+		doCollisions(state);
+		render(canvas, state);
+		state.lastUpdateTs = frameTs;
+	}
+
 	if (!state.isEnded) {
-		window.requestAnimationFrame(() => doGameLoop(canvas, state));
+		window.requestAnimationFrame((frameTs) => doGameLoop(canvas, state, frameTs));
 	}
 }
 
@@ -117,14 +116,14 @@ export default function Game(canvas) {
 				worm.setDir(Direction.DOWN);
 				break;
 			case Config.controls.fire1:
-				if (worm.canShoot()) {
+				if (worm.canShoot) {
 					bullets.push(
 						Bullet(canvas, worm.head.pos, worm.dir, Config.portal.color1)
 					);
 				}
 				break;
 			case Config.controls.fire2:
-				if (worm.canShoot()) {
+				if (worm.canShoot) {
 					bullets.push(
 						Bullet(canvas, worm.head.pos, worm.dir, Config.portal.color2)
 					);
@@ -140,7 +139,7 @@ export default function Game(canvas) {
 
 		start() {
 			window.addEventListener('keydown', handlePlayerInput.bind(this));
-			this.state = NewGameState(canvas);
+			this.state = createNewGameState(canvas);
 			EventBus.on('food_eaten', () => { this.state.score += 10; });
 			doGameLoop(canvas, this.state);
 		},

@@ -10,7 +10,12 @@ export default {
 	},
 	scene: {
 		color: 'white',
-		resolution: 50
+		resolution: 50,
+		updateStep: 33 // ~30 fps
+	},
+	score: {
+		color: 'black',
+		font: '20px wendy'
 	},
 	bullet: {
 		size: 1,

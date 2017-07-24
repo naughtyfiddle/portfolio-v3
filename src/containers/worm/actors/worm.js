@@ -4,6 +4,7 @@ import EventBus from '../lib/event-bus';
 import Vector from '../lib/vector';
 import {getCanvasUnit} from '../lib/utils';
 import Config from '../config';
+import {direction} from '../constants';
 
 export default function Worm(canvas) {
 	const unit = getCanvasUnit(canvas);
@@ -15,7 +16,11 @@ export default function Worm(canvas) {
 		tail,
 		head: tail[0],
 
-		isDead() {
+		get canShoot() {
+			return this.tail.every((seg) => !seg.isDetached);
+		},
+
+		get isDead() {
 			if (this.head.bounds.isOffscreen(canvas)) {
 				return true;
 			}
@@ -32,14 +37,24 @@ export default function Worm(canvas) {
 			return this.head.bounds.overlaps(other.bounds);
 		},
 
-		canShoot() {
-			return this.tail.every((seg) => !seg.isDetached);
-		},
+		teleport(entrance, exit) {
+			this.dir = exit.dir;
 
-		teleport(to) {
-			this.dir = to.dir;
-			this.head.pos = to.pos.add(to.dir.multiply(unit * Config.portal.depth));
-			this.tail.forEach((seg, i) => { seg.isDetached = i !== tail.length - 1; });
+			let offset;
+
+			if (entrance.dir.equals(direction.LEFT) || entrance.dir.equals(direction.RIGHT)) {
+				offset = this.head.pos.y - entrance.pos.y;
+			} else {
+				offset = this.head.pos.x - entrance.pos.x;
+			}
+
+			this.head.pos = exit.pos
+				.add(exit.dir.multiply(unit * Config.portal.depth))
+				.add(exit.dir.getPositivePerpendicular().multiply(offset));
+
+			this.tail.forEach((seg, i) => {
+				seg.isDetached = seg !== this.head;
+			});
 		},
 
 		setDir(dir) {
@@ -58,7 +73,7 @@ export default function Worm(canvas) {
 		update() {
 			this.addSegment();
 			this.tail.shift();
-			if (this.isDead()) {
+			if (this.isDead) {
 				EventBus.emit('worm_dead');
 			}
 		},
