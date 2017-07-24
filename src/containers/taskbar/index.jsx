@@ -4,7 +4,7 @@ import classnames from 'classnames';
 
 import Clock from './partials/clock';
 import StartButton from './partials/start-button';
-import {focusApp} from '../../redux/windows';
+import {focusApp, launchApp} from '../../redux/windows';
 
 function Taskbar(props) {
 	const apps = props.runningApps.map((app) => {
@@ -22,7 +22,7 @@ function Taskbar(props) {
 
 	return (
 		<div className="taskbar">
-			<StartButton />
+			<StartButton launchApp={props.launchApp}/>
 			{apps}
 			<Clock />
 		</div>
@@ -39,6 +39,9 @@ function mapDispatchToProps(dispatch) {
 	return {
 		focusApp(app) {
 			return dispatch(focusApp(app));
+		},
+		launchApp(app) {
+			return dispatch(launchApp(app));
 		}
 	};
 }
