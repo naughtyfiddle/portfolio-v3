@@ -37,7 +37,7 @@ export default class StartMenu extends React.Component {
 					onClick={() => this.launchApp(app)}
 					key={app.name}
 				>
-					<img src={app.iconSrc}/>
+					<img src={app.iconSrc} alt=""/>
 					<div className="start-menu-item-name">
 						{app.name}
 					</div>

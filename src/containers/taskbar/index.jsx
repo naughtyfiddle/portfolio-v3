@@ -14,7 +14,7 @@ function Taskbar(props) {
 				onClick={() => props.focusApp(app)}
 				key={app.name}
 			>
-				<img src={app.iconSrc}/>
+				<img src={app.iconSrc} alt=""/>
 				{app.name}
 			</button>
 		);

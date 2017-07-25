@@ -54,7 +54,7 @@ export default class Window extends React.Component {
 	handleMouseMove(e) {
 		if (this.state.isDragged) {
 			this.setState({
-				top: this.state.top + e.movementY,
+				top: Math.max(this.state.top + e.movementY, 0),
 				left: this.state.left + e.movementX
 			});
 		}
@@ -79,26 +79,26 @@ export default class Window extends React.Component {
 					className="window-title"
 					onMouseDown={() => this.setState({isDragged: true})}
 				>
-					<img src={this.props.app.iconSrc} className="window-title-icon"/>
+					<img src={this.props.app.iconSrc} className="window-title-icon" alt=""/>
 					{this.props.app.name}
 					<div className="window-title-buttons">
 						<button
 							className="window-title-button"
 							onClick={this.handleMinimize}
 						>
-							<img src="static/img/minimize.png"/>
+							<img src="static/img/minimize.png" alt="minimize window"/>
 						</button>
 						<button
 							className="window-title-button"
 							onClick={this.handleMaximize}
 						>
-							<img src="static/img/maximize.png"/>
+							<img src="static/img/maximize.png" alt="maximize window"/>
 						</button>
 						<button
 							className="window-title-button"
 							onClick={this.handleClose}
 						>
-							<img src="static/img/close.png"/>
+							<img src="static/img/close.png" alt="close window"/>
 						</button>
 					</div>
 				</div>

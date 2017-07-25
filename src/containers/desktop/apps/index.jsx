@@ -10,7 +10,7 @@ const AboutMe = {
 const Worm = {
 	name: 'Worm',
 	content: WormApp,
-	iconSrc: 'static/img/my-computer.png'
+	iconSrc: 'static/img/joystick.png'
 };
 
 export default [

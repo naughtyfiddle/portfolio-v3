@@ -23,7 +23,7 @@ export default class StartButton extends React.Component {
 					className={`start-button${this.state.open ? ' active' : ''}`}
 					onMouseDown={() => this.setState({open: !this.state.open})}
 				>
-					<img src="./static/img/start.png"/>
+					<img src="./static/img/start.png" alt=""/>
 					Start
 				</button>
 				{startMenu}
