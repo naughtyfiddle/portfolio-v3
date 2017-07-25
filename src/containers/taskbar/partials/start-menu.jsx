@@ -7,6 +7,7 @@ export default class StartMenu extends React.Component {
 	constructor(props) {
 		super(props);
 		this.rootClose = this.rootClose.bind(this);
+		this.launchApp = this.launchApp.bind(this);
 	}
 
 	componentDidMount() {
@@ -18,9 +19,14 @@ export default class StartMenu extends React.Component {
 	}
 
 	rootClose(e) {
-		if (this.menu !== e.target || !this.menu.contains(e.target)) {
+		if (this.menu !== e.target && !this.menu.contains(e.target)) {
 			this.props.close();
 		}
+	}
+
+	launchApp(app) {
+		this.props.launchApp(app);
+		this.props.close();
 	}
 
 	render() {
@@ -28,7 +34,7 @@ export default class StartMenu extends React.Component {
 			return (
 				<div
 					className="start-menu-item"
-					onClick={() => this.props.launchApp(app)}
+					onClick={() => this.launchApp(app)}
 					key={app.name}
 				>
 					<img src={app.iconSrc}/>
@@ -46,7 +52,7 @@ export default class StartMenu extends React.Component {
 			>
 				<div className="start-menu-logo">
 					<div className="vertical-text">
-						Windows 95
+						pizza-pizza
 					</div>
 				</div>
 				<div className="start-menu-items">

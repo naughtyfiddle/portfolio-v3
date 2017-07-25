@@ -1,22 +1,31 @@
-.start-button {
-	.outset();
+.start-button-wrapper {
 	position: relative;
 	display: inline-block;
 	height: 100%;
-	padding: 3px;
 	box-sizing: border-box;
 
-	&.active, &:active {
-		.inset();
-	}
-
-	img {
+	button.start-button {
+		.outset();
 		height: 100%;
-		margin-right: 3px;
-	}
+		padding: 3px;
+		box-sizing: border-box;
+		font-family: pixel-arial;
+		font-size: 0.6rem;
+		cursor: pointer;
 
-	.center-vertical {
-		vertical-align: top;
-		display: inline-block;
+		&.active, &:active {
+			.inset();
+		}
+
+		img {
+			height: 100%;
+			margin-right: 3px;
+			vertical-align: middle;
+		}
+
+		.center-vertical {
+			vertical-align: top;
+			display: inline-block;
+		}
 	}
 }
