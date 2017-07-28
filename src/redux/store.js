@@ -1,8 +1,10 @@
 import {applyMiddleware, combineReducers, createStore} from 'redux';
 import {createLogger} from 'redux-logger';
+import webBrowser from './web-browser';
 import windows from './windows';
 
 const reducer = combineReducers({
+	webBrowser,
 	windows
 });
 

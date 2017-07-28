@@ -1,0 +1,25 @@
+.web-browser {
+
+	.url-bar-wrapper  {
+		display: flex;
+
+		button.back, button.forward {
+			.outset();
+			cursor: pointer;
+
+			&:active {
+				.inset();
+			}
+		}
+
+		.url-bar {
+			flex: 1;
+		}
+	}
+
+	iframe {
+		width: 600px;
+		height: 400px;
+		box-sizing: border-box;
+	}
+}
