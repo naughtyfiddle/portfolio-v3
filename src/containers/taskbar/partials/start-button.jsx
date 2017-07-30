@@ -21,7 +21,7 @@ export default class StartButton extends React.Component {
 			<div className="start-button-wrapper">
 				<button
 					className={`start-button${this.state.open ? ' active' : ''}`}
-					onMouseDown={() => this.setState({open: !this.state.open})}
+					onClick={() => this.setState({open: !this.state.open})}
 				>
 					<img src="./static/img/start.png" alt=""/>
 					Start

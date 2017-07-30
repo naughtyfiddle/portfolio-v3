@@ -1,18 +1,47 @@
 .start-menu {
+	@keyframes slidein {
+		to {
+			height: 400px;
+		}
+	}
+
+	@keyframes fadeout {
+		to {
+			opacity: 0;
+		}
+	}
+
 	display: flex;
 	position: absolute;
-	height: 400px;
+	height: 0;
 	width: 250px;
 	left: 0;
 	bottom: 100%;
 	margin-bottom: 2px;
 	background-color: @color-gray-primary;
 	.outset();
+	animation: 0.15s ease-out slidein forwards;
+	overflow: hidden;
 
 	.start-menu-logo {
+		position: relative;
 		height: 100%;
 		width: 35px;
-		background: linear-gradient(0deg, @color-accent, @color-white 120%);
+		background: linear-gradient(0deg, @color-accent, @color-white 140%);
+
+		&::after {
+			content: "";
+			display: block;
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			background-color: @color-accent;
+			opacity: 1;
+			z-index: 1;
+			animation: 0.2s ease-out 0.2s fadeout forwards;
+		}
 
 		.vertical-text {
 			position: absolute;

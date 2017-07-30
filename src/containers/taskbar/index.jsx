@@ -23,7 +23,9 @@ function Taskbar(props) {
 	return (
 		<div className="taskbar">
 			<StartButton launchApp={props.launchApp}/>
-			{apps}
+			<div className="taskbar-apps">
+				{apps}
+			</div>
 			<Clock />
 		</div>
 	);

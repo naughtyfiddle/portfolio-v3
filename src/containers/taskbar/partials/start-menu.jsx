@@ -11,11 +11,11 @@ export default class StartMenu extends React.Component {
 	}
 
 	componentDidMount() {
-		document.addEventListener('mousedown', this.rootClose);
+		document.addEventListener('click', this.rootClose);
 	}
 
 	componentWillUnmount() {
-		document.removeEventListener('mousedown', this.rootClose);
+		document.removeEventListener('click', this.rootClose);
 	}
 
 	rootClose(e) {
