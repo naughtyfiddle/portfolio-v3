@@ -77,7 +77,10 @@ export default class Window extends React.Component {
 			>
 				<div
 					className="window-title"
-					onMouseDown={() => this.setState({isDragged: true})}
+					onMouseDown={(e) => {
+						this.setState({isDragged: true});
+						e.preventDefault();
+					}}
 				>
 					<img src={this.props.app.iconSrc} className="window-title-icon" alt=""/>
 					{this.props.app.name}
