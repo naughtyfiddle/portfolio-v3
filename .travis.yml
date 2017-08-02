@@ -9,7 +9,7 @@ deploy:
   skip_cleanup: true
   github_token: $GITHUB_TOKEN
   local_dir: ./dist
-  repo: naughtyfiddle.github.io
+  repo: naughtyfiddle/naughtyfiddle.github.io
   target_branch: master
   on:
     branch: master
