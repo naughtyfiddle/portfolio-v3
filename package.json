@@ -6,12 +6,15 @@
   "license": "ISC",
   "main": "src/index.jsx",
   "scripts": {
-    "build:dev": "npm run copy-assets & npm run watch:css & webpack --env=dev --progress --profile --colors --watch",
-    "build:dist": "npm run build:css && webpack --env=prod -p",
+    "build:dev": "npm run make-dist && ( npm run copy & npm run build:css & webpack --env=dev --progress --profile --colors )",
+    "watch:dev": "npm run make-dist && ( npm run watch:copy & npm run watch:css & webpack --env=dev --progress --profile --colors --watch )",
+    "build:prod": "npm run make-dist && ( npm run copy & npm run build:css & webpack --env=prod -p )",
     "build:css": "lessc --strict-math=on src/main.less dist/bundle.css",
     "watch:css": "nodemon --ext less --ignore node_modules/ --ignore dist/ --exec \"npm run build:css\"",
-    "copy-assets": "nodemon --ignore node_modules/ --ignore dist/ --exec \"cp -r static dist/static\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "copy": "cp -r static dist/static && cp index.html dist/",
+    "watch:copy": "nodemon --ignore node_modules/ --ignore dist/ --exec \"npm run copy\"",
+    "clean": "rm -rf dist",
+    "make-dist": "npm run clean && mkdir -p dist"
   },
   "repository": {
     "type": "git",
