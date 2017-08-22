@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import {
+	reset,
 	navigate,
 	setUrl,
 	goForward,
@@ -16,7 +17,7 @@ class WebBrowser extends React.Component {
 	}
 
 	componentWillMount() {
-		this.props.setUrl('');
+		this.props.reset();
 	}
 
 	handleKeyDown(e) {
@@ -73,6 +74,9 @@ function mapDispatchToProps(dispatch) {
 	return {
 		setUrl(url) {
 			return dispatch(setUrl(url));
+		},
+		reset() {
+			return dispatch(reset());
 		},
 		navigate() {
 			return dispatch(navigate());
