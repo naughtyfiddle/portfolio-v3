@@ -97,6 +97,15 @@ export default class Window extends React.Component {
 			left: this.state.left
 		};
 
+		/*
+			this mask is a bit of a hack to prevent window content from
+			interfering with click + drag actions (eg if the window content
+			is an iframe it would otherwise swallow mouseup and mousemove events)
+		*/
+		const mask = this.state.isDragging || this.state.isResizing ? (
+			<div className="window-content-mask"/>
+		) : null;
+
 		const footer = this.props.app.isResizable ? (
 			<div className="window-footer">
 				<button
@@ -133,6 +142,7 @@ export default class Window extends React.Component {
 						width={this.state.width}
 						height={this.state.height}
 					/>
+					{mask}
 				</div>
 				{footer}
 			</div>

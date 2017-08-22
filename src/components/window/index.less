@@ -47,9 +47,19 @@
 	}
 
 	.window-content {
+		position: relative;
 		flex: 1 0 auto;
 		overflow: auto;
 		margin: 0 2px 2px 2px;
+
+		.window-content-mask {
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			z-index: 1000;
+		}
 	}
 
 	.window-footer {
