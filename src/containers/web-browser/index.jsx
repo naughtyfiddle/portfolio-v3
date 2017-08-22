@@ -51,7 +51,11 @@ class WebBrowser extends React.Component {
 					/>
 				</div>
 				<div className="content">
-					<iframe src={this.props.location}/>
+					<iframe
+						src={this.props.location}
+						width={this.props.width}
+						height={this.props.height}
+					/>
 				</div>
 			</div>
 		);

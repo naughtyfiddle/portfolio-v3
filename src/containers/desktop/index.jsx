@@ -37,9 +37,7 @@ function Desktop(props) {
 				unmaximizeApp={props.unmaximizeApp}
 				focusApp={props.focusApp}
 				key={app.name}
-			>
-				<app.content/>
-			</Window>
+			/>
 		);
 	});
 
