@@ -8,7 +8,9 @@ const AboutMe = {
 	iconSrc: 'static/img/my-computer.png',
 	isResizable: true,
 	width: 500,
-	height: 400
+	height: 400,
+	minWidth: 250,
+	minHeight: 200
 };
 
 const WebBrowser = {
@@ -17,7 +19,9 @@ const WebBrowser = {
 	iconSrc: 'static/img/netscape.gif',
 	isResizable: true,
 	width: 500,
-	height: 400
+	height: 400,
+	minWidth: 350,
+	minHeight: 230
 };
 
 const Worm = {

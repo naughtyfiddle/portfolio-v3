@@ -51,13 +51,7 @@ class WebBrowser extends React.Component {
 						onKeyDown={this.handleKeyDown}
 					/>
 				</div>
-				<div className="content">
-					<iframe
-						src={this.props.location}
-						width={this.props.width}
-						height={this.props.height}
-					/>
-				</div>
+				<iframe src={this.props.location}/>
 			</div>
 		);
 	}

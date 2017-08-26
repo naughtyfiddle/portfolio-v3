@@ -4,6 +4,13 @@ import classnames from 'classnames';
 
 import WindowTitleButtons from './partials/window-title-buttons';
 
+function clamp(val, min, max) {
+	return Math.max(
+		Math.min(val, max),
+		min
+	);
+}
+
 export default class Window extends React.Component {
 
 	constructor(props) {
@@ -12,8 +19,8 @@ export default class Window extends React.Component {
 		this.state = {
 			top: 0,
 			left: 0,
-			width: props.app.width || 500,
-			height: props.app.height || 500,
+			right: this.props.containerWidth - this.props.app.width,
+			bottom: this.props.containerHeight - this.props.app.height,
 			isDragging: false,
 			isResizing: false
 		};
@@ -36,6 +43,14 @@ export default class Window extends React.Component {
 	componentWillUnmount() {
 		document.removeEventListener('mousemove', this.handleMouseMove);
 		document.removeEventListener('mouseup', this.handleMouseUp);
+	}
+
+	get width() {
+		return this.props.containerWidth - this.state.left - this.state.right;
+	}
+
+	get height() {
+		return this.props.containerHeight - this.state.top - this.state.bottom;
 	}
 
 	focusWindow() {
@@ -64,10 +79,9 @@ export default class Window extends React.Component {
 	}
 
 	handleMaximize(e) {
-		if (this.state.top === 0 && this.state.left === 0 && this.props.app.isMaximized) {
+		if (this.props.app.isMaximized) {
 			this.props.unmaximizeApp(this.props.app);
 		} else {
-			this.setState({top: 0, left: 0});
 			this.props.maximizeApp(this.props.app);
 		}
 	}
@@ -79,22 +93,41 @@ export default class Window extends React.Component {
 
 	handleMouseMove(e) {
 		if (this.state.isDragging) {
+			if (this.props.app.isMaximized) {
+				this.props.unmaximizeApp(this.props.app);
+			}
+
+			const left = this.state.left + e.movementX;
+			const top = Math.max(this.state.top + e.movementY, 0);
+
 			this.setState({
-				top: Math.max(this.state.top + e.movementY, 0),
-				left: this.state.left + e.movementX
+				top,
+				left,
+				right: this.props.containerWidth - left - this.width,
+				bottom: this.props.containerHeight - top - this.height
 			});
 		} else if (this.state.isResizing) {
+			const maxRight = this.props.containerWidth - this.state.left - this.props.app.minWidth;
+			const maxBottom = this.props.containerHeight - this.state.top - this.props.app.minHeight;
+
 			this.setState({
-				height: Math.max(this.state.height + e.movementY, 0),
-				width: Math.max(this.state.width + e.movementX, 0)
+				right: clamp(this.state.right - e.movementX, 0, maxRight),
+				bottom: clamp(this.state.bottom - e.movementY, 0, maxBottom)
 			});
 		}
 	}
 
 	render() {
-		const position = {
+		const position = this.props.app.isMaximized ? {
+			top: 0,
+			left: 0,
+			right: 0,
+			bottom: 0
+		} : {
 			top: this.state.top,
-			left: this.state.left
+			left: this.state.left,
+			right: this.state.right,
+			bottom: this.state.bottom
 		};
 
 		/*
@@ -106,7 +139,7 @@ export default class Window extends React.Component {
 			<div className="window-content-mask"/>
 		) : null;
 
-		const footer = this.props.app.isResizable ? (
+		const footer = this.props.app.isResizable && !this.props.app.isMaximized ? (
 			<div className="window-footer">
 				<button
 					className="resize"
@@ -118,7 +151,6 @@ export default class Window extends React.Component {
 		return !this.props.app.isMinimized ? (
 			<div
 				className={classnames('window', {
-					maximized: this.props.app.isMaximized,
 					focused: this.props.app.isFocused
 				})}
 				style={position}
@@ -138,10 +170,7 @@ export default class Window extends React.Component {
 					/>
 				</div>
 				<div className="window-content">
-					<this.props.app.content
-						width={this.state.width}
-						height={this.state.height}
-					/>
+					{this.props.children}
 					{mask}
 				</div>
 				{footer}
@@ -162,12 +191,12 @@ Window.propTypes = {
 		]),
 		name: PropTypes.string.isRequired,
 		iconSrc: PropTypes.string,
-		isResizable: PropTypes.bool,
-		content: PropTypes.func.isRequired
+		isResizable: PropTypes.bool
 	}).isRequired,
 	killApp: PropTypes.func.isRequired,
 	focusApp: PropTypes.func.isRequired,
 	maximizeApp: PropTypes.func.isRequired,
 	minimizeApp: PropTypes.func.isRequired,
-	unmaximizeApp: PropTypes.func.isRequired
+	unmaximizeApp: PropTypes.func.isRequired,
+	children: PropTypes.node
 };

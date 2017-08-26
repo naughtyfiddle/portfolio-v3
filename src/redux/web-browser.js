@@ -18,7 +18,7 @@ function generateUrl(inputString) {
 
 	const matchDomainName = /^[a-zA-Z0-9-]*\./;
 
-	const matchPrefix = /^https?:\/\//;
+	const matchPrefix = /^(https?|file):\/\//;
 
 	if (inputString.search(matchPrefix) === -1 && inputString.search(matchDomainName) >= 0) {
 		return 'http://'.concat(inputString);

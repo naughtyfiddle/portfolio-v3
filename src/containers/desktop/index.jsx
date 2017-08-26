@@ -16,39 +16,69 @@ import {
 	unmaximizeApp
 } from '../../redux/windows';
 
-function Desktop(props) {
-	const icons = Apps.map((app) => {
-		return (
-			<DesktopIcon
-				app={app}
-				launchApp={props.launchApp}
-				key={app.name}
-			/>
-		);
-	});
+class Desktop extends React.Component {
 
-	const windows = props.runningApps.map((app) => {
-		return (
-			<Window
-				app={app}
-				killApp={props.killApp}
-				maximizeApp={props.maximizeApp}
-				minimizeApp={props.minimizeApp}
-				unmaximizeApp={props.unmaximizeApp}
-				focusApp={props.focusApp}
-				key={app.name}
-			/>
-		);
-	});
+	constructor(props) {
+		super(props);
 
-	return (
-		<div className="desktop">
-			<Wallpaper onClick={props.blurApps}/>
-			{icons}
-			{windows}
-			<Taskbar/>
-		</div>
-	);
+		this.state = {
+			width: 0,
+			height: 0
+		};
+
+		this.captureDesktopDimensions = this.captureDesktopDimensions.bind(this);
+	}
+
+	captureDesktopDimensions(ref) {
+		if (ref.clientWidth !== this.state.width || ref.clientHeight !== this.props.height) {
+			this.setState({
+				width: ref.clientWidth,
+				height: ref.clientHeight
+			});
+		}
+	}
+
+	render() {
+		const icons = Apps.map((app) => {
+			return (
+				<DesktopIcon
+					app={app}
+					launchApp={this.props.launchApp}
+					key={app.name}
+				/>
+			);
+		});
+
+		const windows = this.props.runningApps.map((app) => {
+			return (
+				<Window
+					app={app}
+					killApp={this.props.killApp}
+					maximizeApp={this.props.maximizeApp}
+					minimizeApp={this.props.minimizeApp}
+					unmaximizeApp={this.props.unmaximizeApp}
+					focusApp={this.props.focusApp}
+					key={app.name}
+					containerWidth={this.state.width}
+					containerHeight={this.state.height}
+				>
+					<app.content/>
+				</Window>
+			);
+		});
+
+		return (
+			<div
+				className="desktop"
+				ref={this.captureDesktopDimensions}
+			>
+				<Wallpaper onClick={this.props.blurApps}/>
+				{icons}
+				{windows}
+				<Taskbar/>
+			</div>
+		);
+	}
 }
 
 function mapStateToProps(state) {

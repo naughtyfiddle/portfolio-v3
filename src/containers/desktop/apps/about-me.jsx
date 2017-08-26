@@ -1,20 +1,12 @@
 import React from 'react';
 
 export default function AboutMe(props) {
-	const dimensions = {
-		width: props.width,
-		height: props.height
-	};
-
 	return (
 		<div className="about-me-app">
 			<h3>
 				About <span className="about-me-light">Me</span>
 			</h3>
-			<div
-				className="about-me-content"
-				style={dimensions}
-			>
+			<div className="about-me-content">
 				<p>
 					Thanks for checking out my website! My name is Christian Dinh
 					and I'm a software engineer living in Austin TX.
