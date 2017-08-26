@@ -118,12 +118,7 @@ export default class Window extends React.Component {
 	}
 
 	render() {
-		const position = this.props.app.isMaximized ? {
-			top: 0,
-			left: 0,
-			right: 0,
-			bottom: 0
-		} : {
+		const position = {
 			top: this.state.top,
 			left: this.state.left,
 			right: this.state.right,
@@ -151,7 +146,8 @@ export default class Window extends React.Component {
 		return !this.props.app.isMinimized ? (
 			<div
 				className={classnames('window', {
-					focused: this.props.app.isFocused
+					focused: this.props.app.isFocused,
+					maximized: this.props.app.isMaximized
 				})}
 				style={position}
 				onMouseDown={this.focusWindow}

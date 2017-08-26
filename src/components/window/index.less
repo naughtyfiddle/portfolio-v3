@@ -17,6 +17,17 @@
 	opacity: 0;
 	animation: 0.1s ease-out fadein forwards;
 
+	&.maximized {
+		top: 0 !important;
+		right: 0 !important;
+		bottom: 0 !important;
+		left: 0 !important;
+		transition: top 0.1s ease-out,
+			right 0.1s ease-out,
+			bottom 0.1s ease-out,
+			left 0.1s ease-out;
+	}
+
 	&.focused {
 		z-index: 500;
 
