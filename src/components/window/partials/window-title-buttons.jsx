@@ -2,12 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 export default function WindowTitleButtons(props) {
+	const maximizeFileName = props.isMaximized ? 'restore_down' : 'maximize';
+
 	const maximize = props.canMaximize ? (
 		<button
 			className="window-title-button"
 			onClick={props.onMaximize}
 		>
-			<img src="static/img/maximize.png" alt="maximize window"/>
+			<img
+				src={`static/img/${maximizeFileName}.png`}
+				alt="maximize window"
+			/>
 		</button>
 	) : null;
 

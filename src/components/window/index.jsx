@@ -33,6 +33,7 @@ export default class Window extends React.Component {
 		this.handleMinimize = this.handleMinimize.bind(this);
 		this.handleMaximize = this.handleMaximize.bind(this);
 		this.handleClose = this.handleClose.bind(this);
+		this.unmaximizeWithDrag = this.unmaximizeWithDrag.bind(this);
 	}
 
 	componentDidMount() {
@@ -94,7 +95,7 @@ export default class Window extends React.Component {
 	handleMouseMove(e) {
 		if (this.state.isDragging) {
 			if (this.props.app.isMaximized) {
-				this.props.unmaximizeApp(this.props.app);
+				this.unmaximizeWithDrag(e.clientX);
 			}
 
 			const left = this.state.left + e.movementX;
@@ -115,6 +116,29 @@ export default class Window extends React.Component {
 				bottom: clamp(this.state.bottom - e.movementY, 0, maxBottom)
 			});
 		}
+	}
+
+	unmaximizeWithDrag(cursorX) {
+		if (cursorX < this.state.left) {
+			const left = Math.max(cursorX - Math.ceil(this.width / 2), 0);
+			this.setState({
+				left,
+				right: this.props.containerWidth - left - this.width
+			});
+		} else if (cursorX > this.state.left + this.width) {
+			const right = Math.max(this.props.containerWidth - cursorX - Math.ceil(this.width / 2), 0);
+			this.setState({
+				right,
+				left: this.props.containerWidth - right - this.width
+			});
+		}
+
+		this.setState({
+			top: 0,
+			bottom: this.props.containerHeight - this.height
+		});
+
+		this.props.unmaximizeApp(this.props.app);
 	}
 
 	render() {
@@ -163,6 +187,7 @@ export default class Window extends React.Component {
 						onMaximize={this.handleMaximize}
 						onClose={this.handleClose}
 						canMaximize={this.props.app.isResizable}
+						isMaximized={this.props.app.isMaximized}
 					/>
 				</div>
 				<div className="window-content">
