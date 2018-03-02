@@ -1,74 +1,66 @@
 import Actor from './actor';
 import Rect from '../lib/rect';
 import EventBus from '../lib/event-bus';
-import {getCanvasUnit} from '../lib/utils';
 import Config from '../config';
 import Direction from '../lib/direction';
+import Canvas from '../lib/canvas';
 
-export default function Portal(canvas, pos, dir, color) {
-	const ctx = canvas.getContext('2d');
-	const unit = getCanvasUnit(canvas);
+export default function Portal(pos, dir, color) {
+	this.pos = pos;
+	this.dir = dir;
+	this.color = color;
+	this.bounds = new Rect(pos.x, pos.y, this.w, this.h);
 
-	const getWidth = (dir) => {
-		return Math.abs(dir.y) * 2 * Config.portal.radius * unit + unit;
-	};
-
-	const getHeight = (dir) => {
-		return Math.abs(dir.x) * 2 * Config.portal.radius * unit + unit;
-	};
-
-	const portal = Object.assign(Actor(), {
-		pos, dir,
-		bounds: Rect(pos.x, pos.y, getWidth(dir), getHeight(dir)),
-
-		draw() {
-			ctx.fillStyle = color;
-			ctx.fillRect(this.pos.x, this.pos.y, this.w, this.h);
-		},
-
-		move(bullet) {
-			if (bullet.color === color) {
-				this.dir = bullet.dir.multiply(-1);
-
-				// center portal over bullet impact
-				if (this.dir.equals(Direction.UP) || this.dir.equals(Direction.DOWN)) {
-					this.pos.x = bullet.pos.x - unit * Config.portal.radius;
-					this.pos.y = bullet.pos.y;
-				} else {
-					this.pos.y = bullet.pos.y - unit * Config.portal.radius;
-					this.pos.x = bullet.pos.x;
-				}
-
-				// keep portal onscreen
-				if (this.pos.x < 0) {
-					this.pos.x = 0;
-				} else if (this.pos.x > canvas.clientWidth - this.w) {
-					this.pos.x = canvas.clientWidth - this.w;
-				}
-
-				if (this.pos.y < 0) {
-					this.pos.y = 0;
-				} else if (this.pos.y > canvas.clientHeight - this.h) {
-					this.pos.y = canvas.clientHeight - this.h;
-				}
-
-				this.bounds.moveTo(this.pos.x, this.pos.y, this.w, this.h);
-			}
-		}
-	});
-
-	Object.defineProperty(portal, 'w', {
-		get: function() {
-			return getWidth(this.dir);
-		}
-	});
-
-	Object.defineProperty(portal, 'h', {
-		get: function() {
-			return getHeight(this.dir);
-		}
-	});
-
-	EventBus.on('bullet_offscreen', portal.move.bind(portal));
-	return portal;
+	EventBus.on('bullet_offscreen', this.move.bind(this));
 }
+
+Portal.prototype = Object.create(Actor.prototype);
+
+Portal.prototype.constructor = Portal;
+
+Portal.prototype.draw = function() {
+	Canvas.drawRect(this.color, this.pos.x, this.pos.y, this.w, this.h);
+};
+
+Portal.prototype.move = function(bullet) {
+	if (bullet.color === this.color) {
+		this.dir = bullet.dir.multiply(-1);
+
+		// center portal over bullet impact
+		if (this.dir.equals(Direction.UP) || this.dir.equals(Direction.DOWN)) {
+			this.pos.x = bullet.pos.x - Canvas.unit * Config.portal.radius;
+			this.pos.y = bullet.pos.y;
+		} else {
+			this.pos.y = bullet.pos.y - Canvas.unit * Config.portal.radius;
+			this.pos.x = bullet.pos.x;
+		}
+
+		// keep portal onscreen
+		if (this.pos.x < 0) {
+			this.pos.x = 0;
+		} else if (this.pos.x > Canvas.clientWidth - this.w) {
+			this.pos.x = Canvas.clientWidth - this.w;
+		}
+
+		if (this.pos.y < 0) {
+			this.pos.y = 0;
+		} else if (this.pos.y > Canvas.clientHeight - this.h) {
+			this.pos.y = Canvas.clientHeight - this.h;
+		}
+
+		this.bounds.moveTo(this.pos.x, this.pos.y, this.w, this.h);
+	}
+};
+
+Object.defineProperties(Portal.prototype, {
+	w: {
+		get: function() {
+			return Math.abs(this.dir.y) * 2 * Config.portal.radius * Canvas.unit + Canvas.unit;
+		}
+	},
+	h: {
+		get: function() {
+			return Math.abs(this.dir.x) * 2 * Config.portal.radius * Canvas.unit + Canvas.unit;
+		}
+	}
+});

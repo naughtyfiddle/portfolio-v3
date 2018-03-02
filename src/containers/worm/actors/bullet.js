@@ -2,31 +2,31 @@ import Actor from './actor';
 import EventBus from '../lib/event-bus';
 import Rect from '../lib/rect';
 import Config from '../config';
-import {getCanvasUnit} from '../lib/utils';
+import Canvas from '../lib/canvas';
 
-export default function Bullet(canvas, pos, dir, color) {
-	const ctx = canvas.getContext('2d');
-	const unit = getCanvasUnit(canvas);
-	const size = unit * Config.bullet.size;
-
-	return Object.assign(Actor(), {
-		pos, size, dir, color,
-		bounds: Rect(pos.x, pos.y, size, size),
-		shouldRemove: false,
-
-		update() {
-			this.pos = this.pos.add(this.dir.multiply(unit * Config.bullet.speed));
-			this.bounds.moveTo(this.pos.x, this.pos.y);
-
-			if (this.bounds.isOffscreen(canvas)) {
-				EventBus.emit('bullet_offscreen', this);
-				this.shouldRemove = true;
-			}
-		},
-
-		draw() {
-			ctx.fillStyle = this.color;
-			ctx.fillRect(this.pos.x, this.pos.y, this.size, this.size);
-		}
-	});
+export default function Bullet(pos, dir, color) {
+	this.pos = pos;
+	this.dir = dir;
+	this.color = color;
+	this.size = Canvas.unit * Config.bullet.size;
+	this.bounds = new Rect(pos.x, pos.y, this.size, this.size);
+	this.shouldRemove = false;
 }
+
+Bullet.prototype = Object.create(Actor.prototype);
+
+Bullet.prototype.constructor = Bullet;
+
+Bullet.prototype.update = function () {
+	this.pos = this.pos.add(this.dir.multiply(Canvas.unit * Config.bullet.speed));
+	this.bounds.moveTo(this.pos.x, this.pos.y);
+
+	if (this.bounds.isOffscreen) {
+		EventBus.emit('bullet_offscreen', this);
+		this.shouldRemove = true;
+	}
+};
+
+Bullet.prototype.draw = function() {
+	Canvas.drawRect(this.color, this.pos.x, this.pos.y, this.size, this.size);
+};

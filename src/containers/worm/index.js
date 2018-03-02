@@ -6,15 +6,16 @@ import Config from './config';
 import EventBus from './lib/event-bus';
 import Vector from './lib/vector';
 import Direction from './lib/direction';
+import Canvas from './lib/canvas';
 
-function createNewGameState(canvas) {
+function createNewGameState() {
 	return {
 		actors: {
-			worm: Worm(canvas),
-			food: Food(canvas),
+			worm: new Worm(),
+			food: new Food(),
 			bullets: [],
-			portal1: Portal(canvas, Vector(), Direction.RIGHT, Config.portal.color1),
-			portal2: Portal(canvas, Vector(), Direction.LEFT, Config.portal.color2)
+			portal1: new Portal(new Vector(), Direction.RIGHT, Config.portal.color1),
+			portal2: new Portal(new Vector(), Direction.LEFT, Config.portal.color2)
 		},
 		score: 0,
 		shouldTween: false,
@@ -57,11 +58,11 @@ function update(state) {
 	state.shouldTween = !state.shouldTween;
 }
 
-function render(canvas, state) {
+function render(state) {
 	//console.log(state);
-	const ctx = canvas.getContext('2d');
+	const ctx = Canvas.context;
 	ctx.fillStyle = Config.scene.color;
-	ctx.fillRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+	ctx.fillRect(0, 0, Canvas.clientWidth, Canvas.clientHeight);
 
 	for (const actorKey in state.actors) {
 		const actor = state.actors[actorKey];
@@ -79,22 +80,21 @@ function render(canvas, state) {
 	ctx.fillText(state.score, 0, 0);
 }
 
-function doGameLoop(canvas, state, frameTs = 0) {
+function doGameLoop(state, frameTs = 0) {
 	if (frameTs - state.lastUpdateTs >= Config.scene.updateStep) {
 		update(state);
 		doCollisions(state);
-		render(canvas, state);
+		render(state);
 		state.lastUpdateTs = frameTs;
 	}
 
 	if (!state.isEnded) {
-		window.requestAnimationFrame((frameTs) => doGameLoop(canvas, state, frameTs));
+		window.requestAnimationFrame((frameTs) => doGameLoop(state, frameTs));
 	}
 }
 
 export default function Game(canvas) {
-	canvas.width = canvas.clientWidth;
-	canvas.height = canvas.clientHeight;
+	Canvas.load(canvas);
 
 	const handlePlayerInput = function(e) {
 		const {bullets, worm} = this.state.actors;
@@ -118,14 +118,14 @@ export default function Game(canvas) {
 			case Config.controls.fire1:
 				if (worm.canShoot) {
 					bullets.push(
-						Bullet(canvas, worm.head.pos, worm.dir, Config.portal.color1)
+						new Bullet(worm.head.pos, worm.dir, Config.portal.color1)
 					);
 				}
 				break;
 			case Config.controls.fire2:
 				if (worm.canShoot) {
 					bullets.push(
-						Bullet(canvas, worm.head.pos, worm.dir, Config.portal.color2)
+						new Bullet(worm.head.pos, worm.dir, Config.portal.color2)
 					);
 				}
 				break;
@@ -139,9 +139,9 @@ export default function Game(canvas) {
 
 		start() {
 			window.addEventListener('keydown', handlePlayerInput.bind(this));
-			this.state = createNewGameState(canvas);
+			this.state = createNewGameState();
 			EventBus.on('food_eaten', () => { this.state.score += 10; });
-			doGameLoop(canvas, this.state);
+			doGameLoop(this.state);
 		},
 
 		end() {
