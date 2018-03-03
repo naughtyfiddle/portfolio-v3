@@ -62,7 +62,9 @@ class Desktop extends React.Component {
 					containerWidth={this.state.width}
 					containerHeight={this.state.height}
 				>
-					<app.content/>
+					<app.content
+						isFocused={app.isFocused}
+					/>
 				</Window>
 			);
 		});

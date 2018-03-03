@@ -1,6 +1,6 @@
 export default {
 	controls: {
-		quit: 27,  // esc
+		pause: 27,  // esc
 		left: 37,  // left arrow
 		up: 38,    // up arrow
 		right: 39, // right arrow

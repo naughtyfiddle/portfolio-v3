@@ -8,7 +8,17 @@ import Vector from './lib/vector';
 import Direction from './lib/direction';
 import Canvas from './lib/canvas';
 
-function createNewGameState() {
+export default function Game(canvas) {
+	Canvas.load(canvas);
+	this.state = this.createNewGameState();
+	EventBus.on('food_eaten', () => { this.state.score += 10; });
+
+	// bind handlePlayerInput here so we can remove the event listener later
+	this.handlePlayerInput = this.handlePlayerInput.bind(this);
+	window.addEventListener('keydown', this.handlePlayerInput);
+}
+
+Game.prototype.createNewGameState = function() {
 	return {
 		actors: {
 			worm: new Worm(),
@@ -20,12 +30,12 @@ function createNewGameState() {
 		score: 0,
 		shouldTween: false,
 		lastUpdateTs: 0,
-		isEnded: false
+		isPaused: true
 	};
-}
+};
 
-function doCollisions(state) {
-	const {worm, bullets, food, portal1, portal2} = state.actors;
+Game.prototype.doCollisions = function() {
+	const {worm, bullets, food, portal1, portal2} = this.state.actors;
 
 	if (worm.isColliding(food)) {
 		EventBus.emit('food_eaten');
@@ -38,34 +48,31 @@ function doCollisions(state) {
 	}
 
 	// remove offscreen bullets
-	state.actors.bullets = bullets.reduce((acc, bullet) => {
+	this.state.actors.bullets = bullets.reduce((acc, bullet) => {
 		if (!bullet.shouldRemove) {
 			acc.push(bullet);
 		}
 		return acc;
 	}, []);
-}
+};
 
-function update(state) {
-	for (const actorKey in state.actors) {
-		const actor = state.actors[actorKey];
+Game.prototype.update = function() {
+	for (const actorKey in this.state.actors) {
+		const actor = this.state.actors[actorKey];
 		if (Array.isArray(actor)) {
 			actor.forEach((e) => e.update());
 		} else {
 			actor.update();
 		}
 	}
-	state.shouldTween = !state.shouldTween;
-}
+	this.state.shouldTween = !this.state.shouldTween;
+};
 
-function render(state) {
-	//console.log(state);
-	const ctx = Canvas.context;
-	ctx.fillStyle = Config.scene.color;
-	ctx.fillRect(0, 0, Canvas.clientWidth, Canvas.clientHeight);
+Game.prototype.render = function() {
+	Canvas.clear();
 
-	for (const actorKey in state.actors) {
-		const actor = state.actors[actorKey];
+	for (const actorKey in this.state.actors) {
+		const actor = this.state.actors[actorKey];
 		if (Array.isArray(actor)) {
 			actor.forEach((e) => e.draw());
 		} else {
@@ -73,81 +80,80 @@ function render(state) {
 		}
 	}
 
-	// draw score
-	ctx.fillStyle = Config.score.color;
-	ctx.font = Config.score.font;
-	ctx.textBaseline = 'hanging';
-	ctx.fillText(state.score, 0, 0);
-}
+	Canvas.drawText(`Score: ${this.state.score}`, Config.score.font, Config.score.color, 0, 0);
+};
 
-function doGameLoop(state, frameTs = 0) {
-	if (frameTs - state.lastUpdateTs >= Config.scene.updateStep) {
-		update(state);
-		doCollisions(state);
-		render(state);
-		state.lastUpdateTs = frameTs;
+Game.prototype.doGameLoop = function(frameTs = 0) {
+	if (!Canvas.isLoaded) {
+		return;
 	}
 
-	if (!state.isEnded) {
-		window.requestAnimationFrame((frameTs) => doGameLoop(state, frameTs));
+	if (frameTs - this.state.lastUpdateTs >= Config.scene.updateStep) {
+		this.update();
+		this.doCollisions();
+		this.render();
+		this.state.lastUpdateTs = frameTs;
 	}
-}
 
-export default function Game(canvas) {
-	Canvas.load(canvas);
+	if (!this.state.isPaused) {
+		window.requestAnimationFrame((frameTs) => this.doGameLoop(frameTs));
+	} else {
+		Canvas.clear();
+		Canvas.drawText('Paused', Config.score.font, Config.score.color, 0, 0);
+	}
+};
 
-	const handlePlayerInput = function(e) {
-		const {bullets, worm} = this.state.actors;
+Game.prototype.handlePlayerInput = function(e) {
+	const {bullets, worm} = this.state.actors;
 
-		switch (e.keyCode) {
-			case Config.controls.quit:
-				this.quit();
-				break;
-			case Config.controls.left:
-				worm.setDir(Direction.LEFT);
-				break;
-			case Config.controls.up:
-				worm.setDir(Direction.UP);
-				break;
-			case Config.controls.right:
-				worm.setDir(Direction.RIGHT);
-				break;
-			case Config.controls.down:
-				worm.setDir(Direction.DOWN);
-				break;
-			case Config.controls.fire1:
-				if (worm.canShoot) {
-					bullets.push(
-						new Bullet(worm.head.pos, worm.dir, Config.portal.color1)
-					);
-				}
-				break;
-			case Config.controls.fire2:
-				if (worm.canShoot) {
-					bullets.push(
-						new Bullet(worm.head.pos, worm.dir, Config.portal.color2)
-					);
-				}
-				break;
-			default:
-				break;
-		}
-	};
+	switch (e.keyCode) {
+		case Config.controls.pause:
+			this.state.isPaused ? this.play() : this.pause();
+			break;
+		case Config.controls.left:
+			worm.setDir(Direction.LEFT);
+			break;
+		case Config.controls.up:
+			worm.setDir(Direction.UP);
+			break;
+		case Config.controls.right:
+			worm.setDir(Direction.RIGHT);
+			break;
+		case Config.controls.down:
+			worm.setDir(Direction.DOWN);
+			break;
+		case Config.controls.fire1:
+			if (worm.canShoot) {
+				bullets.push(
+					new Bullet(worm.head.pos, worm.dir, Config.portal.color1)
+				);
+			}
+			break;
+		case Config.controls.fire2:
+			if (worm.canShoot) {
+				bullets.push(
+					new Bullet(worm.head.pos, worm.dir, Config.portal.color2)
+				);
+			}
+			break;
+		default:
+			break;
+	}
+};
 
-	return {
-		state: {},
+Game.prototype.play = function() {
+	if (this.state.isPaused) {
+		this.state.isPaused = false;
+		this.doGameLoop();
+	}
+};
 
-		start() {
-			window.addEventListener('keydown', handlePlayerInput.bind(this));
-			this.state = createNewGameState();
-			EventBus.on('food_eaten', () => { this.state.score += 10; });
-			doGameLoop(this.state);
-		},
+Game.prototype.pause = function() {
+	this.state.isPaused = true;
+};
 
-		end() {
-			window.removeEventListener('keydown', handlePlayerInput.bind(this));
-			EventBus.clear();
-			this.state.isEnded = true;
-		}
-	};
-}
+Game.prototype.end = function() {
+	window.removeEventListener('keydown', this.handlePlayerInput);
+	EventBus.clear();
+	Canvas.unload();
+};
