@@ -27,7 +27,9 @@ export default {
 		this.context.fillRect(this.toCanvas(x), this.toCanvas(y), this.toCanvas(w), this.toCanvas(h));
 	},
 
-	drawImage(sprite, x, y, w, h) {
+	drawImage(src, x, y, w, h) {
+		const sprite = new Image();
+		sprite.src = src;
 		this.context.drawImage(sprite, this.toCanvas(x), this.toCanvas(y), this.toCanvas(w), this.toCanvas(h));
 	},
 

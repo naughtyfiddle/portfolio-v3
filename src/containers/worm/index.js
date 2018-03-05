@@ -8,6 +8,12 @@ import Vector from './lib/vector';
 import Direction from './lib/direction';
 import Canvas from './lib/canvas';
 
+const SCREENS = {
+	GAME: 'game',
+	PAUSE: 'pause',
+	TITLE: 'title'
+};
+
 export default function Game(canvas) {
 	Canvas.load(canvas);
 	this.state = this.createNewGameState();
@@ -17,6 +23,8 @@ export default function Game(canvas) {
 	// bind handlePlayerInput here so we can remove the event listener later
 	this.handlePlayerInput = this.handlePlayerInput.bind(this);
 	window.addEventListener('keydown', this.handlePlayerInput);
+
+	this.doGameLoop();
 }
 
 Game.prototype.createNewGameState = function() {
@@ -38,7 +46,7 @@ Game.prototype.createNewGameState = function() {
 		score: 0,
 		shouldTween: false,
 		lastUpdateTs: 0,
-		isPaused: true
+		activeScreen: SCREENS.TITLE
 	};
 };
 
@@ -101,7 +109,7 @@ Game.prototype.update = function() {
 	this.state.shouldTween = !this.state.shouldTween;
 };
 
-Game.prototype.render = function() {
+Game.prototype.renderGame = function() {
 	Canvas.clear();
 
 	for (const actorKey in this.state.actors) {
@@ -116,73 +124,85 @@ Game.prototype.render = function() {
 	Canvas.drawText(`Score: ${this.state.score}`, Config.score.font, Config.score.color, 0, 0);
 };
 
+Game.prototype.renderPause = function() {
+	Canvas.clear();
+	Canvas.drawText('Paused', Config.score.font, Config.score.color, 0, 0);
+};
+
+Game.prototype.renderTitle = function() {
+	Canvas.clear();
+	Canvas.drawImage(Config.titleScreen.src, 0, 0, Config.scene.cellCount, Config.scene.cellCount);
+};
+
 Game.prototype.doGameLoop = function(frameTs = 0) {
 	if (!Canvas.isLoaded) {
 		return;
 	}
 
-	if (frameTs - this.state.lastUpdateTs >= Config.scene.updateStep) {
-		this.update();
-		this.doCollisions();
-		this.render();
-		this.state.lastUpdateTs = frameTs;
+	if (this.state.activeScreen === SCREENS.PAUSE) {
+		this.renderPause();
+	} else if (this.state.activeScreen === SCREENS.TITLE) {
+		this.renderTitle();
+	} else if (this.state.activeScreen === SCREENS.GAME) {
+		if (frameTs - this.state.lastUpdateTs >= Config.scene.updateStep) {
+			this.update();
+			this.doCollisions();
+			this.renderGame();
+			this.state.lastUpdateTs = frameTs;
+		}
 	}
-
-	if (!this.state.isPaused) {
-		window.requestAnimationFrame((frameTs) => this.doGameLoop(frameTs));
-	} else {
-		Canvas.clear();
-		Canvas.drawText('Paused', Config.score.font, Config.score.color, 0, 0);
-	}
+	window.requestAnimationFrame((frameTs) => this.doGameLoop(frameTs));
 };
 
 Game.prototype.handlePlayerInput = function(e) {
 	const {bullets, worm} = this.state.actors;
 
-	switch (e.keyCode) {
-		case Config.controls.pause:
-			this.state.isPaused ? this.play() : this.pause();
-			break;
-		case Config.controls.left:
-			worm.setDir(Direction.LEFT);
-			break;
-		case Config.controls.up:
-			worm.setDir(Direction.UP);
-			break;
-		case Config.controls.right:
-			worm.setDir(Direction.RIGHT);
-			break;
-		case Config.controls.down:
-			worm.setDir(Direction.DOWN);
-			break;
-		case Config.controls.fire1:
-			if (worm.canShoot) {
-				bullets.push(
-					new Bullet(worm.head.pos, worm.dir, Config.portal.color1)
-				);
-			}
-			break;
-		case Config.controls.fire2:
-			if (worm.canShoot) {
-				bullets.push(
-					new Bullet(worm.head.pos, worm.dir, Config.portal.color2)
-				);
-			}
-			break;
-		default:
-			break;
+	// press any key to start on title screen, else use normal game controls
+	if (this.state.activeScreen === SCREENS.TITLE) {
+		this.play();
+	} else {
+		switch (e.keyCode) {
+			case Config.controls.pause:
+				this.state.activeScreen === SCREENS.GAME ? this.pause() : this.play();
+				break;
+			case Config.controls.left:
+				worm.setDir(Direction.LEFT);
+				break;
+			case Config.controls.up:
+				worm.setDir(Direction.UP);
+				break;
+			case Config.controls.right:
+				worm.setDir(Direction.RIGHT);
+				break;
+			case Config.controls.down:
+				worm.setDir(Direction.DOWN);
+				break;
+			case Config.controls.fire1:
+				if (worm.canShoot) {
+					bullets.push(
+						new Bullet(worm.head.pos, worm.dir, Config.portal.color1)
+					);
+				}
+				break;
+			case Config.controls.fire2:
+				if (worm.canShoot) {
+					bullets.push(
+						new Bullet(worm.head.pos, worm.dir, Config.portal.color2)
+					);
+				}
+				break;
+			default:
+				break;
+		}
 	}
 };
 
 Game.prototype.play = function() {
-	if (this.state.isPaused) {
-		this.state.isPaused = false;
-		this.doGameLoop();
-	}
+	this.state.activeScreen = SCREENS.GAME;
 };
 
 Game.prototype.pause = function() {
-	this.state.isPaused = true;
+	this.state.activeScreen = SCREENS.PAUSE;
 };
 
 Game.prototype.end = function() {

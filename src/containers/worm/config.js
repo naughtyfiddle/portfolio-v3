@@ -28,12 +28,15 @@ export default {
 	portal: {
 		radius: 2, // number of units from the center to either edge
 		depth: 1,
-		color1: '#b1c1c4',
-		color2: '#e1caa8'
+		color1: '#1daeec',
+		color2: '#fc6a21'
 	},
 	worm: {
 		size: 1,
 		growthRate: 4,
-		color: 'gray'
+		color: 'black'
+	},
+	titleScreen: {
+		src: 'static/img/worm/splash.png'
 	}
 };

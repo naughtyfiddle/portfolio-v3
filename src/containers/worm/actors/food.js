@@ -7,8 +7,6 @@ import Canvas from '../lib/canvas';
 
 export default function Food() {
 	this.size = Config.food.size;
-	this.sprite = new Image();
-	this.sprite.src = Config.food.src;
 	this.pos = new Vector();
 	this.bounds = new Rect(this.pos.x, this.pos.y, this.size, this.size);
 
@@ -27,5 +25,5 @@ Food.prototype.randomizePos = function() {
 };
 
 Food.prototype.draw = function() {
-	Canvas.drawImage(this.sprite, this.pos.x, this.pos.y, this.size, this.size);
+	Canvas.drawImage(Config.food.src, this.pos.x, this.pos.y, this.size, this.size);
 };

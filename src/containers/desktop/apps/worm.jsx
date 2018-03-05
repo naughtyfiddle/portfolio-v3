@@ -4,13 +4,10 @@ import WormGame from '../../worm';
 export default class Worm extends React.Component {
 	componentDidMount() {
 		this.game = new WormGame(this.canvas);
-		this.game.play();
 	}
 
 	componentDidUpdate(prevProps) {
-		if (!prevProps.isFocused && this.props.isFocused) {
-			this.game.play();
-		} else if (prevProps.isFocused && !this.props.isFocused) {
+		if (prevProps.isFocused && !this.props.isFocused) {
 			this.game.pause();
 		}
 	}
