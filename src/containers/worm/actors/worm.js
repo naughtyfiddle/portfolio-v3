@@ -30,13 +30,9 @@ Object.defineProperties(Worm.prototype, {
 			if (this.head.bounds.isOffscreen) {
 				return true;
 			}
-			this.tail.forEach((seg) => {
-				if (this.head.bounds.overlaps(seg.bounds)) {
-					return true;
-				}
-			});
-
-			return false;
+			return this.tail.some((seg) => (
+				seg !== this.head && this.head.bounds.overlaps(seg.bounds)
+			));
 		}
 	}
 });

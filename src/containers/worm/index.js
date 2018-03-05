@@ -12,6 +12,7 @@ export default function Game(canvas) {
 	Canvas.load(canvas);
 	this.state = this.createNewGameState();
 	EventBus.on('food_eaten', () => { this.state.score += 10; });
+	EventBus.on('worm_dead', () => { this.state = this.createNewGameState(); });
 
 	// bind handlePlayerInput here so we can remove the event listener later
 	this.handlePlayerInput = this.handlePlayerInput.bind(this);
