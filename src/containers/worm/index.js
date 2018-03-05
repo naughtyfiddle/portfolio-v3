@@ -20,19 +20,51 @@ export default function Game(canvas) {
 }
 
 Game.prototype.createNewGameState = function() {
+	const portal1 = this.randomizePortal(Config.portal.color1);
+	let portal2 = this.randomizePortal(Config.portal.color2);
+
+	while (portal1.bounds.overlaps(portal2.bounds)) {
+		portal2 = this.randomizePortal(Config.portal.color2);
+	}
+
 	return {
 		actors: {
 			worm: new Worm(),
 			food: new Food(),
 			bullets: [],
-			portal1: new Portal(new Vector(), Direction.RIGHT, Config.portal.color1),
-			portal2: new Portal(new Vector(), Direction.LEFT, Config.portal.color2)
+			portal1,
+			portal2
 		},
 		score: 0,
 		shouldTween: false,
 		lastUpdateTs: 0,
 		isPaused: true
 	};
+};
+
+Game.prototype.randomizePortal = function(color) {
+	const dirs = [Direction.UP, Direction.RIGHT, Direction.DOWN, Direction.LEFT];
+	const dir = dirs[Math.floor(Math.random() * 4)];
+
+	const portalWidth = 2 * Config.portal.radius + 1;
+	const offset = Canvas.unit * Math.floor(
+		Math.random() * (Config.scene.resolution - portalWidth)
+	);
+
+	const oneUnitFromFarEdge = Config.scene.resolution * Canvas.unit - Canvas.unit;
+	let pos;
+
+	if (dir === Direction.UP) {
+		pos = new Vector(offset, oneUnitFromFarEdge);
+	} else if (dir === Direction.RIGHT) {
+		pos = new Vector(0, offset);
+	} else if (dir === Direction.DOWN) {
+		pos = new Vector(offset, 0);
+	} else if (dir === Direction.LEFT) {
+		pos = new Vector(oneUnitFromFarEdge, offset);
+	}
+
+	return new Portal(pos, dir, color);
 };
 
 Game.prototype.doCollisions = function() {
