@@ -122,8 +122,8 @@ Game.prototype.renderGame = function() {
 	}
 
 	Canvas.drawText(`Score: ${this.state.score}`, 0, 0, {
-		font: Config.score.font,
-		fillStyle: Config.score.color,
+		font: `${Config.font.size} ${Config.font.family}`,
+		fillStyle: Config.font.color,
 		textBaseline: 'hanging'
 	});
 };
@@ -133,8 +133,8 @@ Game.prototype.renderPause = function() {
 	const gridMiddle = Math.floor(Config.scene.cellCount / 2);
 
 	Canvas.drawText('Paused', gridMiddle, gridMiddle, {
-		font: Config.score.font,
-		fillStyle: Config.score.color,
+		font: `${Config.font.size} ${Config.font.family}`,
+		fillStyle: Config.font.color,
 		textBaseline: 'middle',
 		textAlign: 'center'
 	});
@@ -142,7 +142,16 @@ Game.prototype.renderPause = function() {
 
 Game.prototype.renderTitle = function() {
 	Canvas.clear();
+	const gridMiddle = Math.floor(Config.scene.cellCount / 2);
+
 	Canvas.drawImage(Config.titleScreen.src, 0, 0, Config.scene.cellCount, Config.scene.cellCount);
+
+	Canvas.drawText('Press any key to begin', gridMiddle, Config.scene.cellCount, {
+		font: `${Config.font.size} ${Config.font.family}`,
+		fillStyle: Config.font.color,
+		textBaseline: 'bottom',
+		textAlign: 'center'
+	});
 };
 
 Game.prototype.doGameLoop = function(frameTs = 0) {
@@ -213,7 +222,9 @@ Game.prototype.play = function() {
 };
 
 Game.prototype.pause = function() {
-	this.state.activeScreen = SCREENS.PAUSE;
+	if (this.state.activeScreen === SCREENS.GAME) {
+		this.state.activeScreen = SCREENS.PAUSE;
+	}
 };
 
 Game.prototype.end = function() {

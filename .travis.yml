@@ -11,5 +11,6 @@ deploy:
   local_dir: ./dist
   repo: naughtyfiddle/naughtyfiddle.github.io
   target_branch: master
+  fqdn: "pizza-pizza.pizza"
   on:
     branch: master

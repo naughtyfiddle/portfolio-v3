@@ -13,9 +13,10 @@ export default {
 		cellCount: 35,
 		updateStep: 33 // ~30 fps
 	},
-	score: {
+	font: {
 		color: 'black',
-		font: '20px wendy'
+		family: 'wendy',
+		size: '20px'
 	},
 	bullet: {
 		size: 1,
