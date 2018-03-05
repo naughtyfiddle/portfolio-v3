@@ -11,8 +11,9 @@ export default function Worm() {
 	this.tail = [new Segment(new Vector(screenMiddle, screenMiddle))];
 	this.dir = Direction.UP;
 	this.head = this.tail[0];
+	this.segmentsToAdd = 0;
 
-	EventBus.on('food_eaten', this.addSegment.bind(this));
+	EventBus.on('food_eaten', () => { this.segmentsToAdd += Config.worm.growthRate; });
 }
 
 Worm.prototype = Object.create(Actor.prototype);
@@ -76,7 +77,15 @@ Worm.prototype.addSegment = function() {
 
 Worm.prototype.update = function() {
 	this.addSegment();
-	this.tail.shift();
+
+	// If the worm does not need to grow, remove the last tail segment to offset
+	// the new head segment we just added. Else "add" a segment by not deleting the tail.
+	if (this.segmentsToAdd === 0) {
+		this.tail.shift();
+	} else {
+		this.segmentsToAdd--;
+	}
+
 	if (this.isDead) {
 		EventBus.emit('worm_dead');
 	}

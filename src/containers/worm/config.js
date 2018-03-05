@@ -33,6 +33,7 @@ export default {
 	},
 	worm: {
 		size: 1,
+		growthRate: 4,
 		color: 'gray'
 	}
 };
