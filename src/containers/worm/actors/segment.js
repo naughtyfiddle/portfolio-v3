@@ -4,7 +4,7 @@ import Rect from '../lib/rect';
 import Canvas from '../lib/canvas';
 
 export default function Segment(pos) {
-	this.size = Canvas.unit * Config.worm.size;
+	this.size = Config.worm.size;
 	this.pos = pos;
 	this.bounds = new Rect(this.pos.x, this.pos.y, this.size, this.size);
 	this.color = Config.worm.color;

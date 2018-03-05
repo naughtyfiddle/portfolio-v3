@@ -1,4 +1,4 @@
-import Canvas from './canvas';
+import Config from '../config';
 
 export default function Rect(x, y, w, h) {
 	this.x = x;
@@ -61,7 +61,10 @@ Object.defineProperties(Rect.prototype, {
 	},
 	isOffscreen: {
 		get: function() {
-			return this.left >= Canvas.clientWidth || this.right <= 0 || this.top >= Canvas.clientHeight || this.bottom <= 0;
+			return this.left >= Config.scene.cellCount
+				|| this.right <= 0
+				|| this.top >= Config.scene.cellCount
+				|| this.bottom <= 0;
 		}
 	}
 });

@@ -6,7 +6,7 @@ import Vector from '../lib/vector';
 import Canvas from '../lib/canvas';
 
 export default function Food() {
-	this.size = Canvas.unit * Config.food.size;
+	this.size = Config.food.size;
 	this.sprite = new Image();
 	this.sprite.src = Config.food.src;
 	this.pos = new Vector();
@@ -21,8 +21,8 @@ Food.prototype = Object.create(Actor.prototype);
 Food.prototype.constructor = Food;
 
 Food.prototype.randomizePos = function() {
-	this.pos.x = Math.random() * (Canvas.clientWidth - this.size);
-	this.pos.y = Math.random() * (Canvas.clientHeight - this.size);
+	this.pos.x = Math.random() * (Config.scene.cellCount - this.size);
+	this.pos.y = Math.random() * (Config.scene.cellCount - this.size);
 	this.bounds.moveTo(this.pos.x, this.pos.y);
 };
 

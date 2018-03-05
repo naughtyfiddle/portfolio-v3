@@ -2,12 +2,11 @@ import Actor from './actor';
 import Segment from './segment';
 import EventBus from '../lib/event-bus';
 import Vector from '../lib/vector';
-import Canvas from '../lib/canvas';
 import Direction from '../lib/direction';
 import Config from '../config';
 
 export default function Worm() {
-	const screenMiddle = Canvas.unit * Config.scene.resolution / 2;
+	const screenMiddle = Math.floor(Config.scene.cellCount / 2);
 	this.tail = [new Segment(new Vector(screenMiddle, screenMiddle))];
 	this.dir = Direction.UP;
 	this.head = this.tail[0];
@@ -54,7 +53,7 @@ Worm.prototype.teleport = function(entrance, exit) {
 	}
 
 	this.head.pos = exit.pos
-		.add(exit.dir.multiply(Canvas.unit * Config.portal.depth))
+		.add(exit.dir.multiply(Config.portal.depth))
 		.add(exit.dir.getPositivePerpendicular().multiply(offset));
 
 	this.tail.forEach((seg, i) => {
@@ -69,7 +68,7 @@ Worm.prototype.setDir = function(dir) {
 };
 
 Worm.prototype.addSegment = function() {
-	const newSegmentPos = this.head.pos.add(this.dir.multiply(Canvas.unit * Config.worm.size));
+	const newSegmentPos = this.head.pos.add(this.dir.multiply(Config.worm.size));
 	const newSegment = new Segment(newSegmentPos);
 	this.tail.push(newSegment);
 	this.head = newSegment;

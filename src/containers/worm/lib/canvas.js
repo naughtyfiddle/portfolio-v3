@@ -7,20 +7,8 @@ export default {
 		return !!Canvas;
 	},
 
-	get unit() {
-		return Canvas.clientWidth / Config.scene.resolution;
-	},
-
 	get context() {
 		return Canvas.getContext('2d');
-	},
-
-	get clientWidth() {
-		return Canvas.clientWidth;
-	},
-
-	get clientHeight() {
-		return Canvas.clientHeight;
 	},
 
 	load(canvas) {
@@ -29,20 +17,25 @@ export default {
 		Canvas = canvas;
 	},
 
+	toCanvas(gridUnits) {
+		const gridToCanvas = Canvas.clientWidth / Config.scene.cellCount;
+		return gridUnits * gridToCanvas;
+	},
+
 	drawRect(color, x, y, w, h) {
 		this.context.fillStyle = color;
-		this.context.fillRect(x, y, w, h);
+		this.context.fillRect(this.toCanvas(x), this.toCanvas(y), this.toCanvas(w), this.toCanvas(h));
 	},
 
 	drawImage(sprite, x, y, w, h) {
-		this.context.drawImage(sprite, x, y, w, h);
+		this.context.drawImage(sprite, this.toCanvas(x), this.toCanvas(y), this.toCanvas(w), this.toCanvas(h));
 	},
 
 	drawText(text, font, color, x, y) {
 		this.context.fillStyle = color;
 		this.context.font = font;
 		this.context.textBaseline = 'hanging';
-		this.context.fillText(text, x, y);
+		this.context.fillText(text, this.toCanvas(x), this.toCanvas(y));
 	},
 
 	clear() {

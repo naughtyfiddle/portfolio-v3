@@ -8,7 +8,7 @@ export default function Bullet(pos, dir, color) {
 	this.pos = pos;
 	this.dir = dir;
 	this.color = color;
-	this.size = Canvas.unit * Config.bullet.size;
+	this.size = Config.bullet.size;
 	this.bounds = new Rect(pos.x, pos.y, this.size, this.size);
 	this.shouldRemove = false;
 }
@@ -18,7 +18,7 @@ Bullet.prototype = Object.create(Actor.prototype);
 Bullet.prototype.constructor = Bullet;
 
 Bullet.prototype.update = function () {
-	this.pos = this.pos.add(this.dir.multiply(Canvas.unit * Config.bullet.speed));
+	this.pos = this.pos.add(this.dir.multiply(Config.bullet.speed));
 	this.bounds.moveTo(this.pos.x, this.pos.y);
 
 	if (this.bounds.isOffscreen) {

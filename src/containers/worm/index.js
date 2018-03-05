@@ -47,11 +47,11 @@ Game.prototype.randomizePortal = function(color) {
 	const dir = dirs[Math.floor(Math.random() * 4)];
 
 	const portalWidth = 2 * Config.portal.radius + 1;
-	const offset = Canvas.unit * Math.floor(
-		Math.random() * (Config.scene.resolution - portalWidth)
+	const offset = Math.floor(
+		Math.random() * (Config.scene.cellCount - portalWidth)
 	);
 
-	const oneUnitFromFarEdge = Config.scene.resolution * Canvas.unit - Canvas.unit;
+	const oneUnitFromFarEdge = Config.scene.cellCount - 1;
 	let pos;
 
 	if (dir === Direction.UP) {

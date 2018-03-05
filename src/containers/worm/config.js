@@ -10,7 +10,7 @@ export default {
 	},
 	scene: {
 		color: 'white',
-		resolution: 40,
+		cellCount: 35,
 		updateStep: 33 // ~30 fps
 	},
 	score: {

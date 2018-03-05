@@ -28,24 +28,24 @@ Portal.prototype.move = function(bullet) {
 
 		// center portal over bullet impact
 		if (this.dir.equals(Direction.UP) || this.dir.equals(Direction.DOWN)) {
-			this.pos.x = bullet.pos.x - Canvas.unit * Config.portal.radius;
+			this.pos.x = bullet.pos.x - Config.portal.radius;
 			this.pos.y = bullet.pos.y;
 		} else {
-			this.pos.y = bullet.pos.y - Canvas.unit * Config.portal.radius;
+			this.pos.y = bullet.pos.y - Config.portal.radius;
 			this.pos.x = bullet.pos.x;
 		}
 
 		// keep portal onscreen
 		if (this.pos.x < 0) {
 			this.pos.x = 0;
-		} else if (this.pos.x > Canvas.clientWidth - this.w) {
-			this.pos.x = Canvas.clientWidth - this.w;
+		} else if (this.pos.x > Config.scene.cellCount - this.w) {
+			this.pos.x = Config.scene.cellCount - this.w;
 		}
 
 		if (this.pos.y < 0) {
 			this.pos.y = 0;
-		} else if (this.pos.y > Canvas.clientHeight - this.h) {
-			this.pos.y = Canvas.clientHeight - this.h;
+		} else if (this.pos.y > Config.scene.cellCount - this.h) {
+			this.pos.y = Config.scene.cellCount - this.h;
 		}
 
 		this.bounds.moveTo(this.pos.x, this.pos.y, this.w, this.h);
@@ -55,12 +55,12 @@ Portal.prototype.move = function(bullet) {
 Object.defineProperties(Portal.prototype, {
 	w: {
 		get: function() {
-			return Math.abs(this.dir.y) * 2 * Config.portal.radius * Canvas.unit + Canvas.unit;
+			return Math.abs(this.dir.y) * 2 * Config.portal.radius + 1;
 		}
 	},
 	h: {
 		get: function() {
-			return Math.abs(this.dir.x) * 2 * Config.portal.radius * Canvas.unit + Canvas.unit;
+			return Math.abs(this.dir.x) * 2 * Config.portal.radius + 1;
 		}
 	}
 });
