@@ -10,7 +10,7 @@ export default {
 	},
 	scene: {
 		color: 'white',
-		resolution: 50,
+		resolution: 40,
 		updateStep: 33 // ~30 fps
 	},
 	score: {

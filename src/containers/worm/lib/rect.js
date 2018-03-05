@@ -61,7 +61,7 @@ Object.defineProperties(Rect.prototype, {
 	},
 	isOffscreen: {
 		get: function() {
-			return this.left > Canvas.clientWidth || this.right < 0 || this.top > Canvas.clientHeight || this.bottom < 0;
+			return this.left >= Canvas.clientWidth || this.right <= 0 || this.top >= Canvas.clientHeight || this.bottom <= 0;
 		}
 	}
 });
