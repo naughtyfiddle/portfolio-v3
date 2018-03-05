@@ -23,8 +23,10 @@ export default {
 	},
 
 	drawRect(color, x, y, w, h) {
+		this.context.save();
 		this.context.fillStyle = color;
 		this.context.fillRect(this.toCanvas(x), this.toCanvas(y), this.toCanvas(w), this.toCanvas(h));
+		this.context.restore();
 	},
 
 	drawImage(src, x, y, w, h) {
@@ -33,11 +35,13 @@ export default {
 		this.context.drawImage(sprite, this.toCanvas(x), this.toCanvas(y), this.toCanvas(w), this.toCanvas(h));
 	},
 
-	drawText(text, font, color, x, y) {
-		this.context.fillStyle = color;
-		this.context.font = font;
-		this.context.textBaseline = 'hanging';
+	drawText(text, x, y, opts = {}) {
+		this.context.save();
+		Object.keys(opts).forEach((key) => {
+			this.context[key] = opts[key];
+		});
 		this.context.fillText(text, this.toCanvas(x), this.toCanvas(y));
+		this.context.restore();
 	},
 
 	clear() {

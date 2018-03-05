@@ -121,12 +121,23 @@ Game.prototype.renderGame = function() {
 		}
 	}
 
-	Canvas.drawText(`Score: ${this.state.score}`, Config.score.font, Config.score.color, 0, 0);
+	Canvas.drawText(`Score: ${this.state.score}`, 0, 0, {
+		font: Config.score.font,
+		fillStyle: Config.score.color,
+		textBaseline: 'hanging'
+	});
 };
 
 Game.prototype.renderPause = function() {
 	Canvas.clear();
-	Canvas.drawText('Paused', Config.score.font, Config.score.color, 0, 0);
+	const gridMiddle = Math.floor(Config.scene.cellCount / 2);
+
+	Canvas.drawText('Paused', gridMiddle, gridMiddle, {
+		font: Config.score.font,
+		fillStyle: Config.score.color,
+		textBaseline: 'middle',
+		textAlign: 'center'
+	});
 };
 
 Game.prototype.renderTitle = function() {
