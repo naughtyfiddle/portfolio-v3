@@ -1,11 +1,12 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import Wallpaper from './partials/wallpaper';
-import Apps from './apps';
-import Taskbar from '../taskbar';
-import DesktopIcon from '../../components/desktop-icon';
-import Window from '../../components/window';
+import Apps from '../apps';
+import DesktopIcon from '../components/desktop-icon';
+import Taskbar from '../components/taskbar';
+import Wallpaper from '../components/wallpaper';
+import Window from '../components/window';
+
 import {
 	blurApps,
 	focusApp,
@@ -14,9 +15,9 @@ import {
 	maximizeApp,
 	minimizeApp,
 	unmaximizeApp
-} from '../../redux/windows';
+} from '../redux/windows';
 
-class Desktop extends React.Component {
+class DesktopContainer extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -77,7 +78,11 @@ class Desktop extends React.Component {
 				<Wallpaper onClick={this.props.blurApps}/>
 				{icons}
 				{windows}
-				<Taskbar/>
+				<Taskbar
+					focusApp={this.props.focusApp}
+					launchApp={this.props.launchApp}
+					runningApps={this.props.runningApps}
+				/>
 			</div>
 		);
 	}
@@ -115,4 +120,4 @@ function mapDispatchToProps(dispatch) {
 	};
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Desktop);
+export default connect(mapStateToProps, mapDispatchToProps)(DesktopContainer);

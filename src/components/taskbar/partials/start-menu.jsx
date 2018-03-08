@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Apps from '../../desktop/apps';
+import Apps from '../../../apps';
 
 export default class StartMenu extends React.Component {
 

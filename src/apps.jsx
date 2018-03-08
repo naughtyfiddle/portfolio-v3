@@ -1,6 +1,6 @@
-import AboutMeApp from './about-me';
-import WormApp from './worm';
-import WebBrowserApp from '../../web-browser';
+import AboutMeApp from './components/app-about-me';
+import WormApp from './components/app-worm';
+import WebBrowserApp from './containers/web-browser';
 
 const AboutMe = {
 	name: 'About Me',

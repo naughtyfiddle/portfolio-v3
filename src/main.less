@@ -41,9 +41,6 @@
 }
 
 body {
-	@import './containers/desktop/desktop.less';
-	@import './containers/taskbar/taskbar.less';
-	@import './containers/web-browser/web-browser.less';
 	@import './components/index.less';
 
 	font-family: pixel-arial;
@@ -58,5 +55,13 @@ body {
 		*:focus {
 			outline: 0;
 		}
+	}
+
+	.desktop {
+		position: fixed;
+		top: 0;
+		right: 0;
+		bottom: @taskbar-height;
+		left: 0;
 	}
 }

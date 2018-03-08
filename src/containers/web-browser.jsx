@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import WebBrowser from '../components/app-web-browser';
 
 import {
 	reset,
@@ -7,9 +8,9 @@ import {
 	setUrl,
 	goForward,
 	goBackward
-} from '../../redux/web-browser';
+} from '../redux/web-browser';
 
-class WebBrowser extends React.Component {
+class WebBrowserContainer extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -29,30 +30,14 @@ class WebBrowser extends React.Component {
 
 	render() {
 		return (
-			<div className="web-browser">
-				<div className="url-bar-wrapper">
-					<button
-						className="back"
-						onClick={this.props.goBackward}
-					>
-						{'<'}
-					</button>
-					<button
-						className="forward"
-						onClick={this.props.goForward}
-					>
-						{'>'}
-					</button>
-					<input
-						type="text"
-						className="url-bar"
-						value={this.props.url}
-						onChange={(e) => this.props.setUrl(e.target.value)}
-						onKeyDown={this.handleKeyDown}
-					/>
-				</div>
-				<iframe src={this.props.location}/>
-			</div>
+			<WebBrowser
+				goBackward={this.props.goBackward}
+				goForward={this.props.goForward}
+				setUrl={this.props.setUrl}
+				handleKeyDown={this.handleKeyDown}
+				url={this.props.url}
+				location={this.props.location}
+			/>
 		);
 	}
 }
@@ -84,4 +69,4 @@ function mapDispatchToProps(dispatch) {
 	};
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(WebBrowser);
+export default connect(mapStateToProps, mapDispatchToProps)(WebBrowserContainer);

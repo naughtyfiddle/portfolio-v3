@@ -149,29 +149,22 @@ export default class Window extends React.Component {
 			bottom: this.state.bottom
 		};
 
+		const app = this.props.app;
+
 		/*
 			this mask is a bit of a hack to prevent window content from
 			interfering with click + drag actions (eg if the window content
 			is an iframe it would otherwise swallow mouseup and mousemove events)
 		*/
-		const mask = this.state.isDragging || this.state.isResizing ? (
+		const mask = this.state.isDragging || this.state.isResizing || !app.isFocused ? (
 			<div className="window-content-mask"/>
 		) : null;
 
-		const footer = this.props.app.isResizable && !this.props.app.isMaximized ? (
-			<div className="window-footer">
-				<button
-					className="resize"
-					onMouseDown={this.startResize}
-				/>
-			</div>
-		) : null;
-
-		return !this.props.app.isMinimized ? (
+		return !app.isMinimized ? (
 			<div
 				className={classnames('window', {
-					focused: this.props.app.isFocused,
-					maximized: this.props.app.isMaximized
+					focused: app.isFocused,
+					maximized: app.isMaximized
 				})}
 				style={position}
 				onMouseDown={this.focusWindow}
@@ -180,21 +173,28 @@ export default class Window extends React.Component {
 					className="window-title"
 					onMouseDown={this.startDrag}
 				>
-					<img src={this.props.app.iconSrc} className="window-title-icon" alt=""/>
-					{this.props.app.name}
+					<img src={app.iconSrc} className="window-title-icon" alt=""/>
+					{app.name}
 					<WindowTitleButtons
 						onMinimize={this.handleMinimize}
 						onMaximize={this.handleMaximize}
 						onClose={this.handleClose}
-						canMaximize={this.props.app.isResizable}
-						isMaximized={this.props.app.isMaximized}
+						canMaximize={app.isResizable}
+						isMaximized={app.isMaximized}
 					/>
 				</div>
 				<div className="window-content">
 					{this.props.children}
 					{mask}
 				</div>
-				{footer}
+				{app.isResizable && !app.isMaximized ? (
+					<div className="window-footer">
+						<button
+							className="resize"
+							onMouseDown={this.startResize}
+						/>
+					</div>
+				) : null}
 			</div>
 		) : null;
 	}

@@ -1,12 +1,11 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 import Clock from './partials/clock';
 import StartButton from './partials/start-button';
-import {focusApp, launchApp} from '../../redux/windows';
 
-function Taskbar(props) {
+export default function Taskbar(props) {
 	const apps = props.runningApps.map((app) => {
 		return (
 			<button
@@ -31,21 +30,15 @@ function Taskbar(props) {
 	);
 }
 
-function mapStateToProps(state) {
-	return {
-		runningApps: state.windows.runningApps
-	};
-}
+Taskbar.propTypes = {
+	focusApp: PropTypes.func.isRequired,
+	launchApp: PropTypes.func.isRequired,
+	runningApps: PropTypes.arrayOf(
+		PropTypes.shape({
+		})
+	).isRequired
+};
 
-function mapDispatchToProps(dispatch) {
-	return {
-		focusApp(app) {
-			return dispatch(focusApp(app));
-		},
-		launchApp(app) {
-			return dispatch(launchApp(app));
-		}
-	};
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Taskbar);
+Taskbar.defaultProps = {
+	runningApps: []
+};
