@@ -12,16 +12,11 @@ import {
 
 class WebBrowserContainer extends React.Component {
 
-	constructor(props) {
-		super(props);
-		this.handleKeyDown = this.handleKeyDown.bind(this);
-	}
-
 	componentWillMount() {
 		this.props.reset();
 	}
 
-	handleKeyDown(e) {
+	handleKeyDown = (e) => {
 		if (e.keyCode === 13) {
 			this.props.navigate();
 			e.preventDefault();

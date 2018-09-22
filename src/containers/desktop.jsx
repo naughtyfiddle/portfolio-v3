@@ -19,18 +19,12 @@ import {
 
 class DesktopContainer extends React.Component {
 
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			width: 0,
-			height: 0
-		};
-
-		this.captureDesktopDimensions = this.captureDesktopDimensions.bind(this);
+	state = {
+		width: 0,
+		height: 0
 	}
 
-	captureDesktopDimensions(ref) {
+	captureDesktopDimensions = (ref) => {
 		if (ref.clientWidth !== this.state.width || ref.clientHeight !== this.props.height) {
 			this.setState({
 				width: ref.clientWidth,

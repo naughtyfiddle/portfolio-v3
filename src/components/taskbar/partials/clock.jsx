@@ -2,12 +2,9 @@ import React from 'react';
 
 export default class Clock extends React.Component {
 
-	constructor(props) {
-		super(props);
-		this.state = {
-			time: this.getCurrentTime(),
-			interval: null
-		};
+	state = {
+		time: this.getCurrentTime(),
+		interval: null
 	}
 
 	componentWillMount() {
@@ -25,7 +22,7 @@ export default class Clock extends React.Component {
 
 	getCurrentTime() {
 		const date = new Date();
-		return date.toLocaleTimeString();
+		return date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
 	}
 
 	render() {

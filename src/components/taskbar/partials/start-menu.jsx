@@ -4,10 +4,9 @@ import Apps from '../../../apps';
 
 export default class StartMenu extends React.Component {
 
-	constructor(props) {
-		super(props);
-		this.rootClose = this.rootClose.bind(this);
-		this.launchApp = this.launchApp.bind(this);
+	static propTypes = {
+		close: PropTypes.func.isRequired,
+		launchApp: PropTypes.func.isRequired
 	}
 
 	componentDidMount() {
@@ -18,13 +17,13 @@ export default class StartMenu extends React.Component {
 		document.removeEventListener('click', this.rootClose);
 	}
 
-	rootClose(e) {
+	rootClose = (e) => {
 		if (this.menu !== e.target && !this.menu.contains(e.target)) {
 			this.props.close();
 		}
 	}
 
-	launchApp(app) {
+	launchApp = (app) => {
 		this.props.launchApp(app);
 		this.props.close();
 	}
@@ -62,8 +61,3 @@ export default class StartMenu extends React.Component {
 		);
 	}
 }
-
-StartMenu.propTypes = {
-	close: PropTypes.func.isRequired,
-	launchApp: PropTypes.func.isRequired
-};

@@ -13,27 +13,35 @@ function clamp(val, min, max) {
 
 export default class Window extends React.Component {
 
-	constructor(props) {
-		super(props);
+	static propTypes = {
+		app: PropTypes.shape({
+			width: PropTypes.oneOfType([
+				PropTypes.number,
+				PropTypes.string
+			]),
+			height: PropTypes.oneOfType([
+				PropTypes.number,
+				PropTypes.string
+			]),
+			name: PropTypes.string.isRequired,
+			iconSrc: PropTypes.string,
+			isResizable: PropTypes.bool
+		}).isRequired,
+		killApp: PropTypes.func.isRequired,
+		focusApp: PropTypes.func.isRequired,
+		maximizeApp: PropTypes.func.isRequired,
+		minimizeApp: PropTypes.func.isRequired,
+		unmaximizeApp: PropTypes.func.isRequired,
+		children: PropTypes.node
+	}
 
-		this.state = {
-			top: 0,
-			left: 0,
-			right: this.props.containerWidth - this.props.app.width,
-			bottom: this.props.containerHeight - this.props.app.height,
-			isDragging: false,
-			isResizing: false
-		};
-
-		this.focusWindow = this.focusWindow.bind(this);
-		this.startDrag = this.startDrag.bind(this);
-		this.startResize = this.startResize.bind(this);
-		this.handleMouseMove = this.handleMouseMove.bind(this);
-		this.handleMouseUp = this.handleMouseUp.bind(this);
-		this.handleMinimize = this.handleMinimize.bind(this);
-		this.handleMaximize = this.handleMaximize.bind(this);
-		this.handleClose = this.handleClose.bind(this);
-		this.unmaximizeWithDrag = this.unmaximizeWithDrag.bind(this);
+	state = {
+		top: 0,
+		left: 0,
+		right: this.props.containerWidth - this.props.app.width,
+		bottom: this.props.containerHeight - this.props.app.height,
+		isDragging: false,
+		isResizing: false
 	}
 
 	componentDidMount() {
@@ -54,32 +62,32 @@ export default class Window extends React.Component {
 		return this.props.containerHeight - this.state.top - this.state.bottom;
 	}
 
-	focusWindow() {
+	focusWindow = () => {
 		this.props.focusApp(this.props.app);
 	}
 
-	startDrag(e) {
+	startDrag = (e) => {
 		this.setState({isDragging: true});
 		e.preventDefault();
 	}
 
-	startResize() {
+	startResize = () => {
 		this.setState({isResizing: true});
 	}
 
-	handleMouseUp() {
+	handleMouseUp = () => {
 		this.setState({
 			isDragging: false,
 			isResizing: false
 		});
 	}
 
-	handleMinimize(e) {
+	handleMinimize = (e) => {
 		this.props.minimizeApp(this.props.app);
 		e.stopPropagation();
 	}
 
-	handleMaximize(e) {
+	handleMaximize = (e) => {
 		if (this.props.app.isMaximized) {
 			this.props.unmaximizeApp(this.props.app);
 		} else {
@@ -87,12 +95,12 @@ export default class Window extends React.Component {
 		}
 	}
 
-	handleClose(e) {
+	handleClose = (e) => {
 		this.props.killApp(this.props.app);
 		e.stopPropagation();
 	}
 
-	handleMouseMove(e) {
+	handleMouseMove = (e) => {
 		if (this.state.isDragging) {
 			if (this.props.app.isMaximized) {
 				this.unmaximizeWithDrag(e.clientX);
@@ -118,7 +126,7 @@ export default class Window extends React.Component {
 		}
 	}
 
-	unmaximizeWithDrag(cursorX) {
+	unmaximizeWithDrag = (cursorX) => {
 		if (cursorX < this.state.left) {
 			const left = Math.max(cursorX - Math.ceil(this.width / 2), 0);
 			this.setState({
@@ -199,25 +207,3 @@ export default class Window extends React.Component {
 		) : null;
 	}
 }
-
-Window.propTypes = {
-	app: PropTypes.shape({
-		width: PropTypes.oneOfType([
-			PropTypes.number,
-			PropTypes.string
-		]),
-		height: PropTypes.oneOfType([
-			PropTypes.number,
-			PropTypes.string
-		]),
-		name: PropTypes.string.isRequired,
-		iconSrc: PropTypes.string,
-		isResizable: PropTypes.bool
-	}).isRequired,
-	killApp: PropTypes.func.isRequired,
-	focusApp: PropTypes.func.isRequired,
-	maximizeApp: PropTypes.func.isRequired,
-	minimizeApp: PropTypes.func.isRequired,
-	unmaximizeApp: PropTypes.func.isRequired,
-	children: PropTypes.node
-};
