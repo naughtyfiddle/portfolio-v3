@@ -22,22 +22,40 @@ export default function AboutMe(props) {
 				</ul>
 				<p>
 					And that's about it! Source code can be
-					viewed <a href="https://github.com/naughtyfiddle/portfolio-v3">on Github</a>.
+					viewed on <a href="https://github.com/bass-dandy/portfolio-v3" target="blank">this site's Github repo</a>.
 				</p>
 				<p>
 					This site is intended to be fully keyboard and screen-reader accessible.
 					Accessibility is great and makes the internet a better place for
 					everyone, so if you haven't made your apps accessible you should
-					definitely do that!
+					definitely do that! Perhaps I could even help ;)
 				</p>
 				<p>
 					Thanks for reading this far! If you would like to contact me,
 					you have a few options:
 				</p>
 				<ul>
-					<li>email</li>
-					<li>linkedin</li>
-					<li>github</li>
+					<li>
+						<a href="mailto:christian.t.dinh@gmail.com">
+							christian.t.dinh@gmail.com
+						</a>
+					</li>
+					<li>
+						<a
+							href="https://www.linkedin.com/in/christiandinh/"
+							target="blank"
+						>
+							my Linkedin profile
+						</a>
+					</li>
+					<li>
+						<a
+							href="https://github.com/bass-dandy"
+							target="blank"
+						>
+							my Github profile
+						</a>
+					</li>
 				</ul>
 			</div>
 		</div>

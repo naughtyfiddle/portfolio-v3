@@ -51,6 +51,12 @@ body {
 		transform: translateY(-50%);
 	}
 
+	&.keyboard-accessible {
+		*:focus {
+			outline: 2px solid red;
+		}
+	}
+
 	&:not(.keyboard-accessible) {
 		*:focus {
 			outline: 0;

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Apps from '../../../apps';
+import Clickable from '../../clickable';
 
 export default class StartMenu extends React.Component {
 
@@ -24,14 +25,16 @@ export default class StartMenu extends React.Component {
 	}
 
 	launchApp = (app) => {
-		this.props.launchApp(app);
+		// timeout prevents the window from closing as soon as it opens when using keyboard controls
+		window.setTimeout(this.props.launchApp, 10, app);
 		this.props.close();
 	}
 
 	render() {
 		const apps = Apps.map((app) => {
 			return (
-				<div
+				<Clickable
+					element="li"
 					className="start-menu-item"
 					onClick={() => this.launchApp(app)}
 					key={app.name}
@@ -40,7 +43,7 @@ export default class StartMenu extends React.Component {
 					<div className="start-menu-item-name">
 						{app.name}
 					</div>
-				</div>
+				</Clickable>
 			);
 		});
 
@@ -54,9 +57,9 @@ export default class StartMenu extends React.Component {
 						pizza-pizza
 					</div>
 				</div>
-				<div className="start-menu-items">
+				<ul className="start-menu-items">
 					{apps}
-				</div>
+				</ul>
 			</div>
 		);
 	}

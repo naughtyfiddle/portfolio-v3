@@ -1,43 +1,49 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export default function WindowTitleButtons(props) {
-	const maximizeFileName = props.isMaximized ? 'restore_down' : 'maximize';
+export default class WindowTitleButtons extends React.Component {
 
-	const maximize = props.canMaximize ? (
-		<button
-			className="window-title-button"
-			onClick={props.onMaximize}
-		>
-			<img
-				src={`static/img/${maximizeFileName}.png`}
-				alt="maximize window"
-			/>
-		</button>
-	) : null;
+	static propTypes = {
+		onMinimize: PropTypes.func.isRequired,
+		onMaximize: PropTypes.func.isRequired,
+		onClose: PropTypes.func.isRequired,
+		canMaximize: PropTypes.bool
+	}
 
-	return (
-		<div className="window-title-buttons">
-			<button
-				className="window-title-button"
-				onClick={props.onMinimize}
-			>
-				<img src="static/img/minimize.png" alt="minimize window"/>
-			</button>
-			{maximize}
-			<button
-				className="window-title-button"
-				onClick={props.onClose}
-			>
-				<img src="static/img/close.png" alt="close window"/>
-			</button>
-		</div>
-	);
+	componentDidMount() {
+		this.closeButton.focus();
+	}
+
+	render() {
+		const maximizeFileName = this.props.isMaximized ? 'restore_down' : 'maximize';
+
+		return (
+			<div className="window-title-buttons">
+				<button
+					className="window-title-button"
+					onClick={this.props.onMinimize}
+				>
+					<img src="static/img/minimize.png" alt="minimize window"/>
+				</button>
+				{ this.props.canMaximize ? (
+					<button
+						className="window-title-button"
+						onClick={this.props.onMaximize}
+					>
+						<img
+							src={`static/img/${maximizeFileName}.png`}
+							alt="maximize window"
+						/>
+					</button>
+				) : null }
+				<button
+					className="window-title-button"
+					onClick={this.props.onClose}
+					ref={(e) => { this.closeButton = e; }}
+				>
+					<img src="static/img/close.png" alt="close window"/>
+				</button>
+			</div>
+		);
+	}
 }
-
-WindowTitleButtons.propTypes = {
-	onMinimize: PropTypes.func.isRequired,
-	onMaximize: PropTypes.func.isRequired,
-	onClose: PropTypes.func.isRequired,
-	canMaximize: PropTypes.bool
-};
