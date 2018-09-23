@@ -10,7 +10,7 @@
     "watch:dev": "npm run make-dist && ( npm run watch:copy & webpack --mode development --watch )",
     "build:prod": "npm run make-dist && ( npm run copy & webpack --mode production )",
     "copy": "cp -r static dist/static && cp index.html dist/",
-    "watch:copy": "nodemon --watch static --exec \"npm run copy\"",
+    "watch:copy": "nodemon --watch static --watch index.html --exec \"npm run copy\"",
     "make-dist": "rm -rf dist && mkdir -p dist"
   },
   "repository": {
