@@ -54,6 +54,20 @@ export default class Window extends React.Component {
 		document.removeEventListener('mouseup', this.handleMouseUp);
 	}
 
+	componentDidUpdate(prevProps) {
+		// prevents a bug in which resizing the browser window would let you resize the
+		// app below its minWidth and minHeight boundaries
+		if (this.props.containerWidth !== prevProps.containerWidth || this.props.containerHeight !== prevProps.containerHeight) {
+			const maxRight = this.props.containerWidth - this.state.left - this.props.app.minWidth;
+			const maxBottom = this.props.containerHeight - this.state.top - this.props.app.minHeight;
+
+			this.setState({
+				right: Math.min(this.state.right, maxRight),
+				bottom: Math.min(this.state.bottom, maxBottom)
+			});
+		}
+	}
+
 	get width() {
 		return this.props.containerWidth - this.state.left - this.state.right;
 	}

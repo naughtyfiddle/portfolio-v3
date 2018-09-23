@@ -24,13 +24,22 @@ class DesktopContainer extends React.Component {
 		height: 0
 	}
 
-	captureDesktopDimensions = (ref) => {
-		if (ref.clientWidth !== this.state.width || ref.clientHeight !== this.props.height) {
+	captureDesktopDimensions = () => {
+		if (this.container.clientWidth !== this.state.width || this.container.clientHeight !== this.props.height) {
 			this.setState({
-				width: ref.clientWidth,
-				height: ref.clientHeight
+				width: this.container.clientWidth,
+				height: this.container.clientHeight
 			});
 		}
+	}
+
+	componentDidMount() {
+		this.captureDesktopDimensions();
+		window.addEventListener('resize', this.captureDesktopDimensions);
+	}
+
+	componentWillUnmount() {
+		window.removeEventListener('resize', this.captureDesktopDimensions);
 	}
 
 	render() {
@@ -67,7 +76,7 @@ class DesktopContainer extends React.Component {
 		return (
 			<div
 				className="desktop"
-				ref={this.captureDesktopDimensions}
+				ref={(e) => { this.container = e; }}
 			>
 				<Wallpaper onClick={this.props.blurApps}/>
 				{icons}
