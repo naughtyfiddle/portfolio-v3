@@ -153,8 +153,8 @@ export default class Window extends React.Component {
 		const position = {
 			top: this.state.top,
 			left: this.state.left,
-			right: this.state.right,
-			bottom: this.state.bottom
+			right: this.props.app.isResizable ? this.state.right : 'auto',
+			bottom: this.props.app.isResizable ? this.state.bottom : 'auto'
 		};
 
 		const app = this.props.app;
@@ -197,7 +197,8 @@ export default class Window extends React.Component {
 				</div>
 				{app.isResizable && !app.isMaximized ? (
 					<div className="window-footer">
-						<button
+						{/* purposefully use a div rather than a button here to prevent keyboard interaction */}
+						<div
 							className="resize"
 							onMouseDown={this.startResize}
 						/>

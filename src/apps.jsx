@@ -28,9 +28,7 @@ const Worm = {
 	name: 'Worm',
 	content: WormApp,
 	iconSrc: 'static/img/joystick.png',
-	isResizable: false,
-	width: 'auto',
-	height: 'auto'
+	isResizable: false
 };
 
 export default [
