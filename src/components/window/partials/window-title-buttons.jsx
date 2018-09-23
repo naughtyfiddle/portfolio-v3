@@ -20,14 +20,14 @@ export default class WindowTitleButtons extends React.Component {
 		return (
 			<div className="window-title-buttons">
 				<button
-					className="window-title-button"
+					className="window-title-button minimize"
 					onClick={this.props.onMinimize}
 				>
 					<img src="static/img/minimize.png" alt="minimize window"/>
 				</button>
 				{ this.props.canMaximize ? (
 					<button
-						className="window-title-button"
+						className="window-title-button maximize"
 						onClick={this.props.onMaximize}
 					>
 						<img
@@ -37,7 +37,7 @@ export default class WindowTitleButtons extends React.Component {
 					</button>
 				) : null }
 				<button
-					className="window-title-button"
+					className="window-title-button close"
 					onClick={this.props.onClose}
 					ref={(e) => { this.closeButton = e; }}
 				>

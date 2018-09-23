@@ -107,8 +107,21 @@
 		left: 0 !important;
 
 		.window-title {
+			font-size: 1.5rem;
+
+			.window-title-icon {
+				height: 1.5rem;
+			}
+
 			.window-title-buttons {
-				display: none;
+				.window-title-button.minimize, .window-title-button.maximize {
+					display: none;
+				}
+
+				.window-title-button.close {
+					width: 1.5rem;
+					height: 1.5rem;
+				}
 			}
 		}
 
