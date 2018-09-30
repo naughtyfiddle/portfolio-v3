@@ -2,8 +2,8 @@ import Actor from './actor';
 import Rect from '../lib/rect';
 import EventBus from '../lib/event-bus';
 import Config from '../config';
-import Direction from '../lib/direction';
 import Canvas from '../lib/canvas';
+import {directions, events} from '../lib/constants';
 
 export default function Portal(pos, dir, color) {
 	this.pos = pos;
@@ -11,7 +11,7 @@ export default function Portal(pos, dir, color) {
 	this.color = color;
 	this.bounds = new Rect(pos.x, pos.y, this.w, this.h);
 
-	EventBus.on('bullet_offscreen', this.move.bind(this));
+	EventBus.on(events.BULLET_OFFSCREEN, this.move.bind(this));
 }
 
 Portal.prototype = Object.create(Actor.prototype);
@@ -27,7 +27,7 @@ Portal.prototype.move = function(bullet) {
 		this.dir = bullet.dir.multiply(-1);
 
 		// center portal over bullet impact
-		if (this.dir.equals(Direction.UP) || this.dir.equals(Direction.DOWN)) {
+		if (this.dir.equals(directions.UP) || this.dir.equals(directions.DOWN)) {
 			this.pos.x = bullet.pos.x - Config.portal.radius;
 			this.pos.y = bullet.pos.y;
 		} else {

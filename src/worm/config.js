@@ -14,28 +14,24 @@ export default {
 		updateStep: 33 // ~30 fps
 	},
 	font: {
-		color: 'black',
-		family: 'wendy',
-		size: '20px'
+		color: '#58595b',
+		family: 'monaco',
+		size: '14px'
 	},
 	bullet: {
-		size: 1,
 		speed: 2 // in units per tick
 	},
 	food: {
-		size: 4,
-		src: 'static/img/worm/cake.png'
+		color: 'red'
 	},
 	portal: {
 		radius: 2, // number of units from the center to either edge
-		depth: 1,
 		color1: '#1daeec',
 		color2: '#fc6a21'
 	},
 	worm: {
-		size: 1,
 		growthRate: 4,
-		color: 'black'
+		color: '#58595b'
 	},
 	titleScreen: {
 		src: 'static/img/worm/splash.png'

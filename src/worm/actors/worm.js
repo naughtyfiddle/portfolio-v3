@@ -2,17 +2,17 @@ import Actor from './actor';
 import Segment from './segment';
 import EventBus from '../lib/event-bus';
 import Vector from '../lib/vector';
-import Direction from '../lib/direction';
 import Config from '../config';
+import {directions, events} from '../lib/constants';
 
 export default function Worm() {
 	const screenMiddle = Math.floor(Config.scene.cellCount / 2);
 	this.tail = [new Segment(new Vector(screenMiddle, screenMiddle))];
-	this.dir = Direction.UP;
+	this.dir = directions.UP;
 	this.head = this.tail[0];
 	this.segmentsToAdd = 0;
 
-	EventBus.on('food_eaten', () => { this.segmentsToAdd += Config.worm.growthRate; });
+	EventBus.on(events.FOOD_EATEN, () => { this.segmentsToAdd += Config.worm.growthRate; });
 }
 
 Worm.prototype = Object.create(Actor.prototype);
@@ -46,14 +46,14 @@ Worm.prototype.teleport = function(entrance, exit) {
 
 	let offset;
 
-	if (entrance.dir.equals(Direction.LEFT) || entrance.dir.equals(Direction.RIGHT)) {
+	if (entrance.dir.equals(directions.LEFT) || entrance.dir.equals(directions.RIGHT)) {
 		offset = this.head.pos.y - entrance.pos.y;
 	} else {
 		offset = this.head.pos.x - entrance.pos.x;
 	}
 
 	this.head.pos = exit.pos
-		.add(exit.dir.multiply(Config.portal.depth))
+		.add(exit.dir)
 		.add(exit.dir.getPositivePerpendicular().multiply(offset));
 
 	this.tail.forEach((seg, i) => {
@@ -68,7 +68,7 @@ Worm.prototype.setDir = function(dir) {
 };
 
 Worm.prototype.addSegment = function() {
-	const newSegmentPos = this.head.pos.add(this.dir.multiply(Config.worm.size));
+	const newSegmentPos = this.head.pos.add(this.dir);
 	const newSegment = new Segment(newSegmentPos);
 	this.tail.push(newSegment);
 	this.head = newSegment;
@@ -86,7 +86,7 @@ Worm.prototype.update = function() {
 	}
 
 	if (this.isDead) {
-		EventBus.emit('worm_dead');
+		EventBus.emit(events.WORM_DEAD);
 	}
 };
 

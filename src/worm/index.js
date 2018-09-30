@@ -5,7 +5,7 @@ import Worm from './actors/worm';
 import Config from './config';
 import EventBus from './lib/event-bus';
 import Vector from './lib/vector';
-import Direction from './lib/direction';
+import {directions, events} from './lib/constants';
 import Canvas from './lib/canvas';
 
 const SCREENS = {
@@ -17,8 +17,8 @@ const SCREENS = {
 export default function Game(canvas) {
 	Canvas.load(canvas);
 	this.state = this.createNewGameState();
-	EventBus.on('food_eaten', () => { this.state.score += 10; });
-	EventBus.on('worm_dead', () => { this.state = this.createNewGameState(); });
+	EventBus.on(events.FOOD_EATEN, () => { this.state.score += 10; });
+	EventBus.on(events.WORM_DEAD, () => { this.state = this.createNewGameState(); });
 
 	// bind handlePlayerInput here so we can remove the event listener later
 	this.handlePlayerInput = this.handlePlayerInput.bind(this);
@@ -38,10 +38,10 @@ Game.prototype.createNewGameState = function() {
 	return {
 		actors: {
 			worm: new Worm(),
-			food: new Food(),
 			bullets: [],
 			portal1,
-			portal2
+			portal2,
+			food: new Food()
 		},
 		score: 0,
 		shouldTween: false,
@@ -51,7 +51,7 @@ Game.prototype.createNewGameState = function() {
 };
 
 Game.prototype.randomizePortal = function(color) {
-	const dirs = [Direction.UP, Direction.RIGHT, Direction.DOWN, Direction.LEFT];
+	const dirs = [directions.UP, directions.RIGHT, directions.DOWN, directions.LEFT];
 	const dir = dirs[Math.floor(Math.random() * 4)];
 
 	const portalWidth = 2 * Config.portal.radius + 1;
@@ -62,13 +62,13 @@ Game.prototype.randomizePortal = function(color) {
 	const oneUnitFromFarEdge = Config.scene.cellCount - 1;
 	let pos;
 
-	if (dir === Direction.UP) {
+	if (dir === directions.UP) {
 		pos = new Vector(offset, oneUnitFromFarEdge);
-	} else if (dir === Direction.RIGHT) {
+	} else if (dir === directions.RIGHT) {
 		pos = new Vector(0, offset);
-	} else if (dir === Direction.DOWN) {
+	} else if (dir === directions.DOWN) {
 		pos = new Vector(offset, 0);
-	} else if (dir === Direction.LEFT) {
+	} else if (dir === directions.LEFT) {
 		pos = new Vector(oneUnitFromFarEdge, offset);
 	}
 
@@ -79,12 +79,12 @@ Game.prototype.doCollisions = function() {
 	const {worm, bullets, food, portal1, portal2} = this.state.actors;
 
 	if (worm.isColliding(food)) {
-		EventBus.emit('food_eaten');
+		EventBus.emit(events.FOOD_EATEN);
 	}
 
-	if (worm.isColliding(portal1)) {
+	if (worm.isColliding(portal1) && worm.dir.equals(portal1.dir.multiply(-1))) {
 		worm.teleport(portal1, portal2);
-	} else if (worm.isColliding(portal2)) {
+	} else if (worm.isColliding(portal2) && worm.dir.equals(portal2.dir.multiply(-1))) {
 		worm.teleport(portal2, portal1);
 	}
 
@@ -177,25 +177,30 @@ Game.prototype.doGameLoop = function(frameTs = 0) {
 Game.prototype.handlePlayerInput = function(e) {
 	const {bullets, worm} = this.state.actors;
 
-	// press any key to start on title screen, else use normal game controls
 	if (this.state.activeScreen === SCREENS.TITLE) {
+		// press any key to start on title screen
 		this.play();
+	} else if (this.state.activeScreen === SCREENS.PAUSE) {
+		// only allow unpausing from pause screen
+		if (e.keyCode === Config.controls.pause) {
+			this.play();
+		}
 	} else {
 		switch (e.keyCode) {
 			case Config.controls.pause:
-				this.state.activeScreen === SCREENS.GAME ? this.pause() : this.play();
+				this.pause();
 				break;
 			case Config.controls.left:
-				worm.setDir(Direction.LEFT);
+				worm.setDir(directions.LEFT);
 				break;
 			case Config.controls.up:
-				worm.setDir(Direction.UP);
+				worm.setDir(directions.UP);
 				break;
 			case Config.controls.right:
-				worm.setDir(Direction.RIGHT);
+				worm.setDir(directions.RIGHT);
 				break;
 			case Config.controls.down:
-				worm.setDir(Direction.DOWN);
+				worm.setDir(directions.DOWN);
 				break;
 			case Config.controls.fire1:
 				if (worm.canShoot) {

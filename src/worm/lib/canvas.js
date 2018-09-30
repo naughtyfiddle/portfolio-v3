@@ -1,6 +1,6 @@
 import Config from '../config';
 
-let Canvas;
+let Canvas = null;
 
 export default {
 	get isLoaded() {
