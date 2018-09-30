@@ -1,4 +1,5 @@
 import AboutMeApp from './components/app-about-me';
+import ResumeApp from './components/app-resume';
 import WormApp from './components/app-worm';
 import WebBrowserApp from './containers/web-browser';
 
@@ -31,8 +32,20 @@ const Worm = {
 	isResizable: false
 };
 
+const Resume = {
+	name: 'Resume',
+	content: ResumeApp,
+	iconSrc: 'static/img/rich-text.png',
+	isResizable: true,
+	width: 600,
+	height: 800,
+	minWidth: 250,
+	minHeight: 200
+};
+
 export default [
 	AboutMe,
 	WebBrowser,
-	Worm
+	Worm,
+	Resume
 ];
