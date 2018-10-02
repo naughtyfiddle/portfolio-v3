@@ -1,4 +1,5 @@
 .worm-app {
+	@import "./partials/controls";
 	padding: 10px;
 
 	.worm-canvas {
@@ -6,22 +7,17 @@
 		width: 500px;
 		height: 500px;
 	}
+}
 
-	.desktop-controls {
-		padding-top: 5px;
-		font-size: 0.6rem;
+@media only screen and (max-width: @mobile-cutoff) {
+	.worm-app {
+		width: 100%;
+		padding: 10px 0 0;
+		text-align: center;
 
-		.worm-desc {
-			float: left;
-		}
-
-		.controls-table {
-			.inset();
-			float: right;
-
-			td {
-				padding: 0 5px;
-			}
+		.worm-canvas {
+			width: 90vw;
+			height: 90vw;
 		}
 	}
 }

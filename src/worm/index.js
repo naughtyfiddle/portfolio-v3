@@ -15,6 +15,17 @@ const SCREENS = {
 };
 
 export default function Game(canvas) {
+	// bind public methods
+	this.play = this.play.bind(this);
+	this.pause = this.pause.bind(this);
+	this.up = this.up.bind(this);
+	this.right = this.right.bind(this);
+	this.down = this.down.bind(this);
+	this.left = this.left.bind(this);
+	this.fire1 = this.fire1.bind(this);
+	this.fire2 = this.fire2.bind(this);
+	this.end = this.end.bind(this);
+
 	Canvas.load(canvas);
 	this.state = this.createNewGameState();
 	EventBus.on(events.FOOD_EATEN, () => { this.state.score += 10; });
@@ -175,60 +186,93 @@ Game.prototype.doGameLoop = function(frameTs = 0) {
 };
 
 Game.prototype.handlePlayerInput = function(e) {
-	const {bullets, worm} = this.state.actors;
-
-	if (this.state.activeScreen === SCREENS.TITLE) {
-		// press any key to start on title screen
-		this.play();
-	} else if (this.state.activeScreen === SCREENS.PAUSE) {
-		// only allow unpausing from pause screen
-		if (e.keyCode === Config.controls.pause) {
+	switch (e.keyCode) {
+		case Config.controls.pause:
+			this.pause();
+			break;
+		case Config.controls.left:
+			this.left();
+			break;
+		case Config.controls.up:
+			this.up();
+			break;
+		case Config.controls.right:
+			this.right();
+			break;
+		case Config.controls.down:
+			this.down();
+			break;
+		case Config.controls.fire1:
+			this.fire1();
+			break;
+		case Config.controls.fire2:
+			this.fire2();
+			break;
+		default:
 			this.play();
-		}
-	} else {
-		switch (e.keyCode) {
-			case Config.controls.pause:
-				this.pause();
-				break;
-			case Config.controls.left:
-				worm.setDir(directions.LEFT);
-				break;
-			case Config.controls.up:
-				worm.setDir(directions.UP);
-				break;
-			case Config.controls.right:
-				worm.setDir(directions.RIGHT);
-				break;
-			case Config.controls.down:
-				worm.setDir(directions.DOWN);
-				break;
-			case Config.controls.fire1:
-				if (worm.canShoot) {
-					bullets.push(
-						new Bullet(worm.head.pos, worm.dir, Config.portal.color1)
-					);
-				}
-				break;
-			case Config.controls.fire2:
-				if (worm.canShoot) {
-					bullets.push(
-						new Bullet(worm.head.pos, worm.dir, Config.portal.color2)
-					);
-				}
-				break;
-			default:
-				break;
-		}
+			break;
 	}
 };
 
+// ----------------------------------
+// Public methods for a Game instance
+// ----------------------------------
+
+// note that play() is called by every control input function
+// this is because every control input should also unpause or begin the game
 Game.prototype.play = function() {
-	this.state.activeScreen = SCREENS.GAME;
+	if (this.state.activeScreen === SCREENS.TITLE || this.state.activeScreen === SCREENS.PAUSE) {
+		this.state.activeScreen = SCREENS.GAME;
+	}
 };
 
 Game.prototype.pause = function() {
 	if (this.state.activeScreen === SCREENS.GAME) {
 		this.state.activeScreen = SCREENS.PAUSE;
+	} else {
+		this.play();
+	}
+};
+
+Game.prototype.up = function() {
+	this.play();
+	this.state.actors.worm.setDir(directions.UP);
+};
+
+Game.prototype.right = function() {
+	this.play();
+	this.state.actors.worm.setDir(directions.RIGHT);
+};
+
+Game.prototype.down = function() {
+	this.play();
+	this.state.actors.worm.setDir(directions.DOWN);
+};
+
+Game.prototype.left = function() {
+	this.play();
+	this.state.actors.worm.setDir(directions.LEFT);
+};
+
+Game.prototype.fire1 = function() {
+	this.play();
+
+	const {worm, bullets} = this.state.actors;
+	if (worm.canShoot) {
+		bullets.push(
+			new Bullet(worm.head.pos, worm.dir, Config.portal.color1)
+		);
+	}
+};
+
+Game.prototype.fire2 = function() {
+	this.play();
+
+	const {worm, bullets} = this.state.actors;
+	if (worm.canShoot) {
+		bullets.push(
+			new Bullet(worm.head.pos, worm.dir, Config.portal.color2)
+		);
 	}
 };
 
