@@ -6,16 +6,14 @@
   "license": "ISC",
   "main": "src/index.jsx",
   "scripts": {
-    "build:dev": "npm run make-dist && ( npm run copy & webpack --mode development )",
-    "watch:dev": "npm run make-dist && ( npm run watch:copy & webpack --mode development --watch )",
-    "build:prod": "npm run make-dist && ( npm run copy & webpack --mode production )",
+    "start": "npm run watch:copy & webpack --mode development --watch",
+    "build": "npm run copy & webpack --mode production",
     "copy": "cp -r static dist/static && cp index.html dist/",
-    "watch:copy": "nodemon --watch static --watch index.html --exec \"npm run copy\"",
-    "make-dist": "rm -rf dist && mkdir -p dist"
+    "watch:copy": "nodemon --watch static --watch index.html --exec \"npm run copy\""
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/naughtyfiddle/portfolio-v3.git"
+    "url": "git+https://github.com/bass-dandy/portfolio-v3.git"
   },
   "dependencies": {
     "classnames": "^2.2.6",

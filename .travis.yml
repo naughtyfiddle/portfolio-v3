@@ -1,6 +1,6 @@
 language: node_js
 node_js: "node"
-script: npm run build:prod
+script: npm run build
 cache:
   directories:
     - "node_modules"
@@ -9,8 +9,8 @@ deploy:
   skip_cleanup: true
   github_token: $GITHUB_TOKEN
   local_dir: ./dist
-  repo: naughtyfiddle/naughtyfiddle.github.io
-  target_branch: master
+  repo: bass-dandy/portfolio-v3
+  target_branch: gh-pages
   fqdn: "pizza-pizza.pizza"
   on:
     branch: master
