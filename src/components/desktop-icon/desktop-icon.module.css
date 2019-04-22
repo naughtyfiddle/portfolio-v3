@@ -1,0 +1,24 @@
+@value white from 'src/theme.module.css';
+
+.desktopIcon {
+	display: block;
+	margin: 10px;
+	border: 0;
+	background-color: transparent;
+	font-family: wendy;
+	font-size: 1rem;
+	color: white;
+	user-select: none;
+}
+
+.desktopIcon:hover {
+	cursor: pointer;
+}
+
+.desktopIcon:active {
+	border: 0;
+}
+
+.desktopIcon img {
+	height: 50px;
+}

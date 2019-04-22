@@ -1,12 +1,13 @@
 import React from 'react';
+import styles from './about-me.module.css';
 
 export default function AboutMe(props) {
 	return (
-		<div className="about-me-app">
+		<div className={styles.aboutMe}>
 			<h3>
-				About <span className="about-me-light">Me</span>
+				About <span className={styles.lightText}>Me</span>
 			</h3>
-			<div className="about-me-content">
+			<div className={styles.content}>
 				<p>
 					Thanks for checking out my website! My name is Christian Dinh
 					and I'm a software engineer living in Austin TX.

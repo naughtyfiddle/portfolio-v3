@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Apps from '../../../apps';
 import Clickable from '../../clickable';
+import styles from './start-menu.module.css';
 
 export default class StartMenu extends React.Component {
 
@@ -31,34 +32,30 @@ export default class StartMenu extends React.Component {
 	}
 
 	render() {
-		const apps = Apps.map((app) => {
-			return (
-				<Clickable
-					element="li"
-					className="start-menu-item"
-					onClick={() => this.launchApp(app)}
-					key={app.name}
-				>
-					<img src={app.iconSrc} alt=""/>
-					<div className="start-menu-item-name">
-						{app.name}
-					</div>
-				</Clickable>
-			);
-		});
-
 		return (
 			<div
-				className="start-menu"
+				className={styles.startMenu}
 				ref={(e) => { this.menu = e; }}
 			>
-				<div className="start-menu-logo">
-					<div className="vertical-text">
+				<div className={styles.menuLogo}>
+					<div className={styles.verticalText}>
 						pizza-pizza
 					</div>
 				</div>
-				<ul className="start-menu-items">
-					{apps}
+				<ul className={styles.menuItems}>
+					{ Apps.map((app) => (
+						<Clickable
+							element="li"
+							className={styles.menuItem}
+							onClick={() => this.launchApp(app)}
+							key={app.name}
+						>
+							<img src={app.iconSrc} alt=""/>
+							<div className={styles.menuItemName}>
+								{app.name}
+							</div>
+						</Clickable>
+					)) }
 				</ul>
 			</div>
 		);

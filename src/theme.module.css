@@ -1,0 +1,67 @@
+@value grayPrimary: rgb(192, 192, 192);
+@value grayLight: rgb(234, 234, 234);
+@value grayInset: rgb(142, 142, 141);
+@value black: rgb(0, 0, 0);
+@value white: rgb(255, 255, 255);
+@value teal: rgb(0, 128, 129);
+@value bluePrimary: rgb(1, 0, 129);
+@value accent1: #ffc0cb;
+@value accent2: #e9ffe9;
+
+@value taskbarHeight: 35px;
+@value mobileCutoff: 600px;
+
+@font-face {
+	font-family: wendy;
+	src: url(static/fonts/wendy.ttf);
+}
+
+@font-face {
+	font-family: perfect-dos;
+	src: url(static/fonts/perfect-dos.ttf);
+}
+
+@font-face {
+	font-family: pixel-arial;
+	src: url(static/fonts/pixel-arial.ttf);
+}
+
+.outset, button {
+	border: 2px outset;
+	border-top-color: white;
+	border-left-color: white;
+	border-right-color: black;
+	border-bottom-color: black;
+}
+
+.inset, button:active {
+	border: 2px inset;
+	border-top-color: grayInset;
+	border-left-color: grayInset;
+	border-right-color: white;
+	border-bottom-color: white;
+}
+
+button {
+	cursor: pointer;
+}
+
+.keyboardAccessible *:focus {
+	outline: 2px solid red;
+}
+
+:not(.keyboardAccessible) *:focus {
+	outline: 0;
+}
+
+.desktop {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: taskbarHeight;
+	left: 0;
+}
+
+body {
+	font-family: pixel-arial;
+}

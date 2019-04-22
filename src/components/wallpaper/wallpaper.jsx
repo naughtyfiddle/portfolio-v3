@@ -1,13 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import WallpaperImg from 'static/img/wallpaper.png';
+import styles from './wallpaper.module.css';
 
 export default function Wallpaper(props) {
 	return (
 		<div
-			className="wallpaper"
+			className={styles.wallpaper}
 			onClick={props.onClick}
 		>
-			<img src="static/img/wallpaper.png" alt=""/>
+			<img src={WallpaperImg} alt=""/>
 		</div>
 	);
 }

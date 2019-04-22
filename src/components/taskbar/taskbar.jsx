@@ -4,12 +4,15 @@ import classnames from 'classnames';
 
 import Clock from './partials/clock';
 import StartButton from './partials/start-button';
+import styles from './taskbar.module.css';
 
 export default function Taskbar(props) {
 	const apps = props.runningApps.map((app) => {
 		return (
 			<button
-				className={classnames('taskbar-app', {focused: app.isFocused})}
+				className={classnames(styles.taskbarApp, {
+					[styles.focused]: app.isFocused
+				})}
 				onClick={() => props.focusApp(app)}
 				key={app.name}
 			>
@@ -20,9 +23,9 @@ export default function Taskbar(props) {
 	});
 
 	return (
-		<div className="taskbar">
+		<div className={styles.taskbar}>
 			<StartButton launchApp={props.launchApp}/>
-			<div className="taskbar-apps">
+			<div className={styles.taskbarApps}>
 				{apps}
 			</div>
 			<Clock />

@@ -6,6 +6,7 @@ import DesktopIcon from '../components/desktop-icon';
 import Taskbar from '../components/taskbar';
 import Wallpaper from '../components/wallpaper';
 import Window from '../components/window';
+import styles from '../theme.module.css';
 
 import {
 	blurApps,
@@ -75,7 +76,7 @@ class DesktopContainer extends React.Component {
 
 		return (
 			<div
-				className="desktop"
+				className={styles.desktop}
 				ref={(e) => { this.container = e; }}
 			>
 				<Wallpaper onClick={this.props.blurApps}/>

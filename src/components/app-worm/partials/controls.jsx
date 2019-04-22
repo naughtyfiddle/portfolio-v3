@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styles from './controls.module.css';
 
 export default function Controls(props) {
 	return (
 		<>
-			<div className="desktop-controls">
-				<div className="worm-desc">
+			<div className={styles.desktopControls}>
+				<div className={styles.desc}>
 					<div>
 						A game by Christian Dinh
 					</div>
@@ -15,7 +16,7 @@ export default function Controls(props) {
 						</a>
 					</div>
 				</div>
-				<table className="controls-table">
+				<table className={styles.controlsTable}>
 					<tbody>
 						<tr>
 							<td>arrow keys</td>
@@ -32,16 +33,16 @@ export default function Controls(props) {
 					</tbody>
 				</table>
 			</div>
-			<div className="mobile-controls">
-				<div className="dpad">
-					<button className="dpad-up" onClick={props.game.up}/>
-					<button className="dpad-left" onClick={props.game.left}/>
-					<button className="dpad-right" onClick={props.game.right}/>
-					<button className="dpad-down" onClick={props.game.down}/>
+			<div className={styles.mobileControls}>
+				<div className={styles.dpad}>
+					<button className={styles.dpadUp} onClick={props.game.up}/>
+					<button className={styles.dpadLeft} onClick={props.game.left}/>
+					<button className={styles.dpadRight} onClick={props.game.right}/>
+					<button className={styles.dpadDown} onClick={props.game.down}/>
 				</div>
-				<div className="fire">
-					<button className="fire1" onClick={props.game.fire1}/>
-					<button className="fire2" onClick={props.game.fire2}/>
+				<div className={styles.fireButtons}>
+					<button className={styles.fire1} onClick={props.game.fire1}/>
+					<button className={styles.fire2} onClick={props.game.fire2}/>
 				</div>
 			</div>
 		</>

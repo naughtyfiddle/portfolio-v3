@@ -1,0 +1,26 @@
+.wrapper {
+	position: relative;
+	display: inline-block;
+	height: 100%;
+	box-sizing: border-box;
+}
+
+.startButton {
+	height: 100%;
+	padding: 3px;
+	box-sizing: border-box;
+	font-family: wendy;
+	font-size: 1rem;
+	cursor: pointer;
+	white-space: nowrap;
+}
+
+.active {
+	composes: inset from 'src/theme.module.css';
+}
+
+.startButton img {
+	height: 100%;
+	margin-right: 3px;
+	vertical-align: middle;
+}

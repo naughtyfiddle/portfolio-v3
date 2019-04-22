@@ -1,3 +1,5 @@
+import Logo from 'static/img/worm/splash.png';
+
 export default {
 	controls: {
 		pause: 27,  // esc
@@ -34,6 +36,6 @@ export default {
 		color: '#58595b'
 	},
 	titleScreen: {
-		src: 'static/img/worm/splash.png'
+		src: Logo
 	}
 };

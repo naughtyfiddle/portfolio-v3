@@ -1,7 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export default class WindowTitleButtons extends React.Component {
+import MinimizeIcon from 'static/img/minimize.png';
+import MaximizeIcon from 'static/img/maximize.png';
+import RestoreDownIcon from 'static/img/restore_down.png';
+import CloseIcon from 'static/img/close.png';
+import styles from './title-buttons.module.css';
+
+export default class TitleButtons extends React.Component {
 
 	static propTypes = {
 		onMinimize: PropTypes.func.isRequired,
@@ -15,33 +21,31 @@ export default class WindowTitleButtons extends React.Component {
 	}
 
 	render() {
-		const maximizeFileName = this.props.isMaximized ? 'restore_down' : 'maximize';
-
 		return (
-			<div className="window-title-buttons">
+			<div className={styles.titleButtons}>
 				<button
-					className="window-title-button minimize"
+					className={styles.minimize}
 					onClick={this.props.onMinimize}
 				>
-					<img src="static/img/minimize.png" alt="minimize window"/>
+					<img src={MinimizeIcon} alt="minimize window"/>
 				</button>
 				{ this.props.canMaximize ? (
 					<button
-						className="window-title-button maximize"
+						className={styles.maximize}
 						onClick={this.props.onMaximize}
 					>
 						<img
-							src={`static/img/${maximizeFileName}.png`}
+							src={this.props.isMaximized ? RestoreDownIcon : MaximizeIcon}
 							alt="maximize window"
 						/>
 					</button>
 				) : null }
 				<button
-					className="window-title-button close"
+					className={styles.close}
 					onClick={this.props.onClose}
 					ref={(e) => { this.closeButton = e; }}
 				>
-					<img src="static/img/close.png" alt="close window"/>
+					<img src={CloseIcon} alt="close window"/>
 				</button>
 			</div>
 		);

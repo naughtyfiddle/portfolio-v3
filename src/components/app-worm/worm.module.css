@@ -1,0 +1,24 @@
+@value mobileCutoff from 'src/theme.module.css';
+
+.worm {
+	padding: 10px;
+}
+
+.canvas {
+	composes: inset from 'src/theme.module.css';
+	width: 500px;
+	height: 500px;
+}
+
+@media only screen and (max-width: mobileCutoff) {
+	.worm {
+		width: 100%;
+		padding: 10px 0 0;
+		text-align: center;
+	}
+
+	.canvas {
+		width: 90vw;
+		height: 90vw;
+	}
+}

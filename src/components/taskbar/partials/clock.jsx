@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from './clock.module.css';
 
 export default class Clock extends React.Component {
 
@@ -27,7 +28,7 @@ export default class Clock extends React.Component {
 
 	render() {
 		return (
-			<div className="clock">
+			<div className={styles.clock}>
 				<div className="center-vertical">
 					{this.state.time}
 				</div>

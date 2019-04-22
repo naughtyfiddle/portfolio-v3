@@ -1,6 +1,7 @@
 import React from 'react';
 import Controls from './partials/controls';
 import WormGame from '../../worm';
+import styles from './worm.module.css';
 
 export default class Worm extends React.Component {
 
@@ -22,9 +23,9 @@ export default class Worm extends React.Component {
 
 	render() {
 		return (
-			<div className="worm-app">
+			<div className={styles.worm}>
 				<canvas
-					className="worm-canvas"
+					className={styles.canvas}
 					ref={(e) => { this.canvas = e; }}
 				/>
 				{ this.state.game ? (

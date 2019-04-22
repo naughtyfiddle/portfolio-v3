@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
-import WindowTitleButtons from './partials/window-title-buttons';
+import TitleButtons from './partials/title-buttons';
+import styles from './window.module.css';
 
 function clamp(val, min, max) {
 	return Math.max(
@@ -179,25 +180,25 @@ export default class Window extends React.Component {
 			is an iframe it would otherwise swallow mouseup and mousemove events)
 		*/
 		const mask = this.state.isDragging || this.state.isResizing || !app.isFocused ? (
-			<div className="window-content-mask"/>
+			<div className={styles.contentMask}/>
 		) : null;
 
 		return !app.isMinimized ? (
 			<div
-				className={classnames('window', {
-					focused: app.isFocused,
-					maximized: app.isMaximized
+				className={classnames(styles.window, {
+					[styles.focused]: app.isFocused,
+					[styles.maximized]: app.isMaximized
 				})}
 				style={position}
 				onMouseDown={this.focusWindow}
 			>
 				<div
-					className="window-title"
+					className={styles.title}
 					onMouseDown={this.startDrag}
 				>
-					<img src={app.iconSrc} className="window-title-icon" alt=""/>
+					<img src={app.iconSrc} className={styles.titleIcon} alt=""/>
 					{app.name}
-					<WindowTitleButtons
+					<TitleButtons
 						onMinimize={this.handleMinimize}
 						onMaximize={this.handleMaximize}
 						onClose={this.handleClose}
@@ -205,15 +206,15 @@ export default class Window extends React.Component {
 						isMaximized={app.isMaximized}
 					/>
 				</div>
-				<div className="window-content">
+				<div className={styles.content}>
 					{this.props.children}
 					{mask}
 				</div>
 				{app.isResizable && !app.isMaximized ? (
-					<div className="window-footer">
+					<div className={styles.footer}>
 						{/* purposefully use a div rather than a button here to prevent keyboard interaction */}
 						<div
-							className="resize"
+							className={styles.resize}
 							onMouseDown={this.startResize}
 						/>
 					</div>

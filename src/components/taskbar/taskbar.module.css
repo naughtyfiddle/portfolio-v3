@@ -1,0 +1,60 @@
+@value grayPrimary, grayLight, white, taskbarHeight from 'src/theme.module.css';
+
+.taskbar {
+	position: fixed;
+	display: flex;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: taskbarHeight;
+	padding: 3px;
+	background-color: grayPrimary;
+	border-top: 2px solid white;
+	box-sizing: border-box;
+	z-index: 10000;
+	user-select: none;
+	font-size: 0.6rem;
+}
+
+.taskbarApps {
+	display: flex;
+	flex: 1;
+	min-width: 0;
+	padding: 0 3px;
+}
+
+.taskbarApp {
+	composes: outset from 'src/theme.module.css';
+	flex: 1;
+	box-sizing: border-box;
+	min-width: 0;
+	max-width: 200px;
+	height: 100%;
+	margin-right: 3px;
+	font-family: wendy;
+	font-size: 1rem;
+	vertical-align: bottom;
+	text-align: left;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+.taskbarApp:last-child {
+	margin: 0;
+}
+
+.taskbarApp:hover:not(.focused) {
+	cursor: pointer;
+}
+
+.focused {
+	composes: inset from 'src/theme.module.css';
+	background-color: grayLight;
+}
+
+.taskbarApp img {
+	height: 1rem;
+	vertical-align: middle;
+	margin-right: 5px;
+}

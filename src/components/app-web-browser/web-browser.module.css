@@ -1,0 +1,20 @@
+.webBrowser {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+}
+
+.urlBarWrapper {
+	display: flex;
+}
+
+.urlBar {
+	flex: 1;
+}
+
+.frame {
+	composes: inset from 'src/theme.module.css';
+	flex: 1;
+	box-sizing: border-box;
+	margin-top: 2px;
+}

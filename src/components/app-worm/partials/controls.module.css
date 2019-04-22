@@ -1,0 +1,109 @@
+@value mobileCutoff from 'src/theme.module.css';
+
+.desktopControls {
+	padding-top: 5px;
+	font-size: 0.6rem;
+}
+
+.desc {
+	float: left;
+}
+
+.controlsTable {
+	composes: inset from 'src/theme.module.css';
+	float: right;
+}
+
+.controlsTable td {
+	padding: 0 5px;
+}
+
+.mobileControls {
+	position: relative;
+}
+
+.dpad {
+	position: absolute;
+	height: 40vw;
+	width: 40vw;
+	left: 10px;
+	top: 10px;
+}
+
+.dpadButton {
+	position: absolute;
+	height: 13vw;
+	width: 13vw;
+	background-color: gray;
+}
+
+.dpadUp {
+	composes: dpadButton;
+	top: 0;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.dpadLeft {
+	composes: dpadButton;
+	top: 50%;
+	left: 0;
+	transform: translateY(-50%);
+}
+
+.dpadRight {
+	composes: dpadButton;
+	top: 50%;
+	right: 0;
+	transform: translateY(-50%);
+}
+
+.dpadDown {
+	composes: dpadButton;
+	bottom: 0;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.fireButtons {
+	position: absolute;
+	width: 35vw;
+	height: 40vw;
+	right: 10px;
+	top: 10px;
+}
+
+.fireButton {
+	position: absolute;
+	height: 15vw;
+	width: 15vw;
+	border-radius: 50%;
+}
+
+.fire1 {
+	composes: fireButton;
+	left: 0;
+	top: 60%;
+	transform: translateY(-50%);
+	background-color: #1DAEEC;
+}
+
+.fire2 {
+	composes: fireButton;
+	right: 0;
+	top: 40%;
+	transform: translateY(-50%);
+	background-color: #FC6A21;
+}
+
+@media only screen and (max-width: mobileCutoff) {
+	.desktopControls {
+		display: none;
+	}
+}
+
+@media only screen and (min-width: mobileCutoff) {
+	.mobileControls {
+		display: none;
+	}
+}

@@ -1,0 +1,26 @@
+@value grayPrimary, mobileCutoff from 'src/theme.module.css';
+
+.resume {
+	composes: inset from 'src/theme.module.css';
+	width: 100%;
+	text-align: center;
+	overflow: auto;
+	background-color: grayPrimary;
+}
+
+.resume img {
+	width: 550px;
+	height: auto;
+	margin: 10px 0;
+	user-select: none;
+	pointer-events: none;
+	box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.3);
+}
+
+@media only screen and (max-width: mobileCutoff) {
+	.resume img {
+		width: 100%;
+		margin: 0;
+		box-shadow: none;
+	}
+}

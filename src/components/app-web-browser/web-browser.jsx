@@ -1,31 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styles from './web-browser.module.css';
 
 export default function WebBrowser(props) {
 	return (
-		<div className="web-browser">
-			<div className="url-bar-wrapper">
-				<button
-					className="back"
-					onClick={props.goBackward}
-				>
+		<div className={styles.webBrowser}>
+			<div className={styles.urlBarWrapper}>
+				<button onClick={props.goBackward}>
 					{'<'}
 				</button>
-				<button
-					className="forward"
-					onClick={props.goForward}
-				>
+				<button onClick={props.goForward}>
 					{'>'}
 				</button>
 				<input
 					type="text"
-					className="url-bar"
+					className={styles.urlBar}
 					value={props.url}
 					onChange={(e) => props.setUrl(e.target.value)}
 					onKeyDown={props.handleKeyDown}
 				/>
 			</div>
-			<iframe src={props.location}/>
+			<iframe
+				className={styles.frame}
+				src={props.location}
+			/>
 		</div>
 	);
 }

@@ -1,0 +1,84 @@
+@value grayPrimary, accent1, accent2, white, bluePrimary from 'src/theme.module.css';
+
+@keyframes slidein {
+	to { height: 400px; }
+}
+
+@keyframes fadeout {
+	to { opacity: 0; }
+}
+
+.startMenu {
+	composes: outset from 'src/theme.module.css';
+	display: flex;
+	position: absolute;
+	height: 0;
+	width: 250px;
+	left: 0;
+	bottom: 100%;
+	margin-bottom: 2px;
+	background-color: grayPrimary;
+	animation: slidein 0.15s ease-out forwards;
+	overflow: hidden;
+}
+
+.menuLogo {
+	position: relative;
+	height: 100%;
+	width: 35px;
+	background: linear-gradient(0deg, accent1, accent2 115%);
+}
+
+.menuLogo::after {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-color: accent1;
+	opacity: 1;
+	z-index: 1;
+	animation: fadeout 0.2s ease-out 0.2s forwards;
+}
+
+.verticalText {
+	position: absolute;
+	bottom: 10px;
+	width: 35px;
+	transform: rotate(-90deg);
+	font-family: perfect-dos;
+	font-size: 1.7rem;
+	color: white;
+	white-space: nowrap;
+}
+
+.menuItems {
+	flex: 1;
+	height: 100%;
+	padding: 3px 3px 3px 0;
+	margin: 0;
+}
+
+.menuItem {
+	display: flex;
+	align-items: center;
+	padding: 3px;
+}
+
+.menuItem:hover {
+	background-color: bluePrimary;
+	color: white;
+	cursor: pointer;
+}
+
+.menuItem img {
+	height: 30px;
+}
+
+.menuItemName {
+	flex: 1;
+	margin-left: 10px;
+	display: inline-block;
+}

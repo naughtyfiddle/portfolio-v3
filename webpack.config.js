@@ -1,48 +1,69 @@
-const path = require('path');
+const webpack = require('webpack');
+const ExtractCssChunks = require("extract-css-chunks-webpack-plugin");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const path = require('path');
 
-const config = {
+module.exports = (env, options) => ({
 	stats: 'normal',
-	entry: {
-		js: path.resolve(__dirname, './src/index.jsx'),
-		css: path.resolve(__dirname, './src/main.less')
-	},
+	entry: path.resolve(__dirname, 'src/index.jsx'),
 	output: {
-		path: path.resolve(__dirname, './dist'),
-		// unfortunately we end up with a useless css-bundle.js
-		filename: '[name]-bundle.js'
+		path: path.resolve(__dirname, 'dist'),
+		filename: 'bundle.js'
 	},
 	module: {
 		rules: [{
 			// transpile js and jsx files in src/ using config in babel.config.js
-			use: 'babel-loader',
 			test: /\.(js|jsx)$/,
-			include: path.resolve(__dirname, './src')
+			use: 'babel-loader',
+			include: path.resolve(__dirname, 'src')
 		}, {
-			// compile less to css, remove webpack runtime, and output to css/bundle.css
+			// css modules
+			test: /\.module\.css$/,
 			use: [
-				'file-loader?name=css-bundle.css',
-				'extract-loader',
-				'css-loader?url=false', // by default css-loader treats url() like @import for some reason
-				'less-loader'
-			],
-			test: /\.(less|css)$/
+				ExtractCssChunks.loader,
+				'css-loader?modules'
+			]
+		}, {
+			// images and fonts
+			test: /\.(gif|jpg|png|ttf)$/,
+			use: [{
+				loader: 'file-loader',
+				options: {
+					name: '[path][name].[ext]'
+				}
+			}]
 		}]
 	},
-	resolve: {
-		extensions: ['.js', '.jsx']
-	}
-};
-
-module.exports = function(env, options) {
-	if (options.mode === 'development') {
-		config.plugins = [
+	plugins: [
+		// automatically link bundled assets in index.html
+		new HtmlWebpackPlugin({
+			template: path.resolve(__dirname, 'index.html'),
+			favicon: path.resolve(__dirname, 'static/favicon.ico')
+		}),
+		// extract css modules to single css file
+		new ExtractCssChunks({
+			filename: '[name].css'
+		}),
+		...(options.mode === 'production' ? [
+			// output bundle analysis for prod builds
 			new BundleAnalyzerPlugin({
-				reportFilename: '../bundle-report.html',
+				reportFilename: path.resolve(__dirname, 'bundle-report.html'),
 				analyzerMode: 'static',
 				openAnalyzer: false
 			})
-		];
+		] : []),
+		...(options.mode === 'development' ? [
+			// enable hot module reloading for dev builds
+			new webpack.HotModuleReplacementPlugin(),
+			new webpack.NamedModulesPlugin()
+		] : [])
+	],
+	resolve: {
+		modules: [
+			'node_modules',
+			path.resolve(__dirname)
+		],
+		extensions: ['.js', '.jsx']
 	}
-	return config;
-};
+});

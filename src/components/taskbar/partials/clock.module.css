@@ -1,0 +1,10 @@
+.clock {
+	composes: inset from 'src/theme.module.css';
+	display: flex;
+	height: 100%;
+	min-width: 100px;
+	align-items: center;
+	justify-content: flex-end;
+	box-sizing: border-box;
+	padding: 3px;
+}
