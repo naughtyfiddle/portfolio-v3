@@ -1,6 +1,6 @@
 import React from 'react';
+import WormGame from '@bass_dandy/w0rm';
 import Controls from './partials/controls';
-import WormGame from '../../worm';
 import styles from './worm.module.css';
 
 export default class Worm extends React.Component {
