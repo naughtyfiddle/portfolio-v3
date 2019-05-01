@@ -1,0 +1,47 @@
+@value white from 'src/theme.module.css';
+
+.nowPlaying {
+	display: flex;
+	padding: 5px;
+}
+
+.album {
+	width: 80px;
+	height: 80px;
+	background-color: #e9ffe9;
+}
+
+.songInfo {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	margin-left: 5px;
+}
+
+.song, .artist {
+	display: inline-block;
+	padding: 2px;
+	vertical-align: top;
+	color: white;
+	background-color: rgba(0,0,0,0.5);
+}
+
+.song {
+	font-size: 0.7rem;
+}
+
+.artist {
+	margin-top: 2px;
+	font-size: 0.5rem;
+}
+
+.controls {
+	flex: 1;
+	display: flex;
+	align-items: flex-end;
+}
+
+.controls button {
+	margin-right: 3px;
+}

@@ -2,11 +2,13 @@ import AboutMeApp from './components/app-about-me';
 import ResumeApp from './components/app-resume';
 import WormApp from './components/app-worm';
 import WebBrowserApp from './containers/web-browser';
+import MediaPlayerApp from './components/app-media-player';
 
 import AboutMeIcon from 'static/img/my-computer.png';
 import ResumeIcon from 'static/img/rich-text.png';
 import WormIcon from 'static/img/joystick.png';
 import WebBrowserIcon from 'static/img/netscape.gif';
+import MediaPlayerIcon from 'static/img/media-player.png';
 
 const AboutMe = {
 	name: 'About Me',
@@ -48,9 +50,21 @@ const Resume = {
 	minHeight: 200
 };
 
+const MediaPlayer = {
+	name: 'My Music',
+	content: MediaPlayerApp,
+	iconSrc: MediaPlayerIcon,
+	isResizable: true,
+	width: 500,
+	height: 400,
+	minWidth: 250,
+	minHeight: 200
+};
+
 export default [
 	AboutMe,
-	WebBrowser,
+	Resume,
 	Worm,
-	Resume
+	MediaPlayer,
+	WebBrowser
 ];

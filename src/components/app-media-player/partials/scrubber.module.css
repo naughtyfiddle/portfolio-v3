@@ -1,0 +1,42 @@
+@value black, grayPrimary from 'src/theme.module.css';
+
+.scrubber {
+	display: flex;
+	align-items: center;
+	margin: 5px;
+	font-size: 0.5rem;
+}
+
+.time {
+	min-width: 35px;
+}
+
+.time:last-child {
+	text-align: right;
+}
+
+.track {
+	flex: 1;
+	position: relative;
+	height: 2px;
+	background-color: black;
+}
+
+.playhead {
+	composes: outset from 'src/theme.module.css';
+	position: absolute;
+	width: 5px;
+	height: 10px;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	background-color: grayPrimary;
+	cursor: grab;
+}
+
+.seeking {
+	cursor: grabbing;
+}
+
+.disabled {
+	cursor: not-allowed;
+}

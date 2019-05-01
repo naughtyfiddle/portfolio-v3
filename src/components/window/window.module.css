@@ -27,6 +27,10 @@
 		left 0.1s ease-out;
 }
 
+.minimized {
+	display: none;
+}
+
 .focused {
 	z-index: 500;
 }

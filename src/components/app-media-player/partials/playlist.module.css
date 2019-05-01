@@ -1,0 +1,55 @@
+@value black, white, grayPrimary, grayLight, bluePrimary from 'src/theme.module.css';
+
+.wrapper {
+	composes: inset from 'src/theme.module.css';
+	flex: 1;
+	margin: 0 5px;
+	background-color: grayLight;
+	overflow: auto;
+}
+
+.playlist {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.playlist th, .playlist td {
+	padding: 10px;
+	font-size: 0.5rem;
+	text-align: left;
+	min-width: 0;
+}
+
+.playlist .titleColumn {
+	width: 99%;
+	padding-left: 0;
+}
+
+.playlist th:last-child, .playlist td:last-child {
+	text-align: right;
+}
+
+.playlist tr {
+	border-bottom: 1px solid grayPrimary;
+}
+
+.playlist .selected {
+	background-color: grayPrimary;
+}
+
+.playlist tbody tr:hover {
+	background-color: bluePrimary;
+	color: white;
+}
+
+.playButton {
+	visibility: hidden;
+}
+
+.playlist tbody tr:hover .playButton, .selected .playButton {
+	visibility: visible;
+}
+
+.playlist tbody tr:hover .trackNumber, .selected .trackNumber {
+	display: none;
+}

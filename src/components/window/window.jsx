@@ -2,15 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
+import {clamp} from 'src/util';
 import TitleButtons from './partials/title-buttons';
 import styles from './window.module.css';
-
-function clamp(val, min, max) {
-	return Math.max(
-		Math.min(val, max),
-		min
-	);
-}
 
 export default class Window extends React.Component {
 
@@ -183,11 +177,12 @@ export default class Window extends React.Component {
 			<div className={styles.contentMask}/>
 		) : null;
 
-		return !app.isMinimized ? (
+		return (
 			<div
 				className={classnames(styles.window, {
 					[styles.focused]: app.isFocused,
-					[styles.maximized]: app.isMaximized
+					[styles.maximized]: app.isMaximized,
+					[styles.minimized]: app.isMinimized
 				})}
 				style={position}
 				onMouseDown={this.focusWindow}
@@ -220,6 +215,6 @@ export default class Window extends React.Component {
 					</div>
 				) : null}
 			</div>
-		) : null;
+		);
 	}
 }

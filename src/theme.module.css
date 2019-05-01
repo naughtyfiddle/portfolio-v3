@@ -46,11 +46,11 @@ button {
 	cursor: pointer;
 }
 
-.keyboardAccessible *:focus {
+body.keyboardAccessible *:focus {
 	outline: 2px solid red;
 }
 
-:not(.keyboardAccessible) *:focus {
+body:not(.keyboardAccessible) *:focus {
 	outline: 0;
 }
 

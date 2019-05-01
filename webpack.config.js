@@ -25,8 +25,8 @@ module.exports = (env, options) => ({
 				'css-loader?modules'
 			]
 		}, {
-			// images and fonts
-			test: /\.(gif|jpg|png|ttf)$/,
+			// static assets
+			test: /\.(gif|jpg|png|ttf|mp3)$/,
 			use: [{
 				loader: 'file-loader',
 				options: {
