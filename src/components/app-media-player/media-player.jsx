@@ -1,6 +1,7 @@
 import React, {useRef, useState} from 'react';
 
 import songs from './songs';
+import Visualizer from './partials/visualizer';
 import NowPlaying from './partials/now-playing';
 import Playlist from './partials/playlist';
 import Scrubber from './partials/scrubber';
@@ -8,8 +9,7 @@ import Scrubber from './partials/scrubber';
 import styles from './media-player.module.css';
 
 export default function MediaPlayer(props) {
-	const audio = useRef(null);
-
+	const [audio, setAudio] = useState(null);
 	const [nowPlaying, setNowPlaying] = useState(null);
 	const [paused, setPaused] = useState(true);
 	const [currentTime, setCurrentTime] = useState(0);
@@ -18,7 +18,7 @@ export default function MediaPlayer(props) {
 	const selectSong = (song) => {
 		song !== nowPlaying
 			? setNowPlaying(song)
-			: audio.current.play();
+			: audio.play();
 	};
 
 	const playPrev = () => {
@@ -26,7 +26,7 @@ export default function MediaPlayer(props) {
 		if (nowPlayingIndex > 0) {
 			setNowPlaying(songs[nowPlayingIndex - 1]);
 		} else {
-			audio.current.load();
+			audio.load();
 		}
 	};
 
@@ -36,26 +36,31 @@ export default function MediaPlayer(props) {
 			setNowPlaying(songs[nowPlayingIndex + 1])
 		} else {
 			setNowPlaying(null);
-			audio.current.load();
+			audio.load();
 		}
 	};
 
 	return (
 		<div className={styles.mediaPlayer}>
-			<NowPlaying
-				song={nowPlaying}
-				onPlay={() => audio.current.play()}
-				onPause={() => audio.current.pause()}
-				onPlayPrev={playPrev}
-				onPlayNext={playNext}
-				paused={paused}
-			/>
+			<div className={styles.header}>
+				<Visualizer
+					audio={audio}
+				/>
+				<NowPlaying
+					song={nowPlaying}
+					onPlay={() => audio.play()}
+					onPause={() => audio.pause()}
+					onPlayPrev={playPrev}
+					onPlayNext={playNext}
+					paused={paused}
+				/>
+			</div>
 			<Scrubber
 				disabled={!nowPlaying}
 				currentTime={currentTime}
-				duration={audio.current && audio.current.duration}
+				duration={audio && audio.duration}
 				onSeek={(time) => {
-					audio.current.currentTime = time;
+					audio.currentTime = time;
 					setSeeking(true);
 				}}
 				seeking={seeking}
@@ -64,16 +69,19 @@ export default function MediaPlayer(props) {
 				songs={songs}
 				nowPlaying={nowPlaying}
 				onSelectSong={selectSong}
-				onPause={() => audio.current.pause()}
+				onPause={() => audio.pause()}
 				paused={paused}
 			/>
 			<audio
 				src={nowPlaying && nowPlaying.src}
-				ref={audio}
+				ref={
+					// use callback + state rather than useRef so we can rerender when the ref attaches
+					(e) => setAudio(e)
+				}
 				onPlay={() => setPaused(false)}
 				onPause={() => setPaused(true)}
-				onLoadedData={() => audio.current.play()}
-				onTimeUpdate={() => setCurrentTime(audio.current.currentTime)}
+				onLoadedData={() => audio.play()}
+				onTimeUpdate={() => setCurrentTime(audio.currentTime)}
 				onSeeked={() => setSeeking(false)}
 				onEnded={playNext}
 			/>

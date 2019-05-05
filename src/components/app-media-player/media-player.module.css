@@ -8,3 +8,7 @@
 	background-color: grayPrimary;
 	user-select: none;
 }
+
+.header {
+	position: relative;
+}

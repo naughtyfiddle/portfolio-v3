@@ -9,17 +9,18 @@ export default function NowPlaying(props) {
 
 	return (
 		<div className={styles.nowPlaying}>
-			<div className={styles.album}>
-				<img src={song ? song.cover : placeholderIcon} />
-			</div>
-			{ song ? (
-				<div className={styles.songInfo}>
-					<div className={styles.song}>
-						{song.title}
-					</div>
-					<div className={styles.artist}>
-						{song.artist}
-					</div>
+			<img
+				src={song ? song.cover : placeholderIcon}
+				className={styles.album}
+			/>
+			<div className={styles.songInfo}>
+				<div className={styles.song}>
+					{song ? song.title : 'No Song Playing!'}
+				</div>
+				<div className={styles.artist}>
+					{song ? `${song.artist} - ${song.album}` : 'N/A'}
+				</div>
+				{ song ? (
 					<div className={styles.controls}>
 						<button onClick={props.onPlayPrev}>
 							{'|<'}
@@ -37,8 +38,8 @@ export default function NowPlaying(props) {
 							{'>|'}
 						</button>
 					</div>
-				</div>
-			) : null }
+				) : null }
+			</div>
 		</div>
 	);
 }

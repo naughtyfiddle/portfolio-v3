@@ -7,7 +7,7 @@ export default [
 	{
 		title: 'Sunrise Bleeds Across Ocean Waves',
 		artist: 'Bass Dandy',
-		album: 'Bass Dandy',
+		album: 's/t',
 		length: '4:20',
 		track: '1',
 		src: track1,
@@ -16,7 +16,7 @@ export default [
 	{
 		title: 'Hajimemashite, Aratamemashite, Bass Dandy Desu',
 		artist: 'Bass Dandy',
-		album: 'Bass Dandy',
+		album: 's/t',
 		length: '1:16',
 		track: '2',
 		src: track2,
@@ -25,7 +25,7 @@ export default [
 	{
 		title: 'Hear Me Roar',
 		artist: 'Bass Dandy',
-		album: 'Bass Dandy',
+		album: 's/t',
 		length: '5:02',
 		track: '3',
 		src: track3,

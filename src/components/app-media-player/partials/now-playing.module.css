@@ -1,6 +1,9 @@
 @value white from 'src/theme.module.css';
 
 .nowPlaying {
+	/* position and z-index allow this to float above <canvas> element */
+	position: relative;
+	z-index: 1;
 	display: flex;
 	padding: 5px;
 }
@@ -8,7 +11,6 @@
 .album {
 	width: 80px;
 	height: 80px;
-	background-color: #e9ffe9;
 }
 
 .songInfo {
