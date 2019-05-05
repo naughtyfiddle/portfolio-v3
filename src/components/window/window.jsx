@@ -63,6 +63,10 @@ export default class Window extends React.Component {
 		}
 	}
 
+	componentDidCatch() {
+		// do nothing, just let the window unmount
+	}
+
 	get width() {
 		return this.props.containerWidth - this.state.left - this.state.right;
 	}
