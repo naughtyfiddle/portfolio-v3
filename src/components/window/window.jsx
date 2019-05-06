@@ -20,7 +20,9 @@ export default class Window extends React.Component {
 			]),
 			name: PropTypes.string.isRequired,
 			iconSrc: PropTypes.string,
-			isResizable: PropTypes.bool
+			isResizable: PropTypes.bool,
+			isMinimized: PropTypes.bool,
+			isMaximized: PropTypes.bool
 		}).isRequired,
 		killApp: PropTypes.func.isRequired,
 		focusApp: PropTypes.func.isRequired,
@@ -42,6 +44,7 @@ export default class Window extends React.Component {
 	componentDidMount() {
 		document.addEventListener('mousemove', this.handleMouseMove);
 		document.addEventListener('mouseup', this.handleMouseUp);
+		this.titleButtons.focus();
 	}
 
 	componentWillUnmount() {
@@ -60,6 +63,10 @@ export default class Window extends React.Component {
 				right: Math.min(this.state.right, maxRight),
 				bottom: Math.min(this.state.bottom, maxBottom)
 			});
+		}
+		// shift focus if window was just unminimized
+		if (prevProps.app.isMinimized && !this.props.app.isMinimized) {
+			this.titleButtons.focus();
 		}
 	}
 
@@ -198,6 +205,8 @@ export default class Window extends React.Component {
 					<img src={app.iconSrc} className={styles.titleIcon} alt=""/>
 					{app.name}
 					<TitleButtons
+						ref={(e) => { this.titleButtons = e; }}
+						appName={app.name}
 						onMinimize={this.handleMinimize}
 						onMaximize={this.handleMaximize}
 						onClose={this.handleClose}

@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import styles from './playlist.module.css';
+
+const ENTER = 13;
 
 export default function Playlist(props) {
 	return (
@@ -19,8 +22,16 @@ export default function Playlist(props) {
 					{ props.songs.map((song) => (
 						<tr
 							key={`${song.artist}/${song.album}/${song.title}`}
-							className={song === props.nowPlaying ? styles.selected : null}
+							className={classnames(styles.playlistItem, {
+								[styles.selected]: song === props.nowPlaying
+							})}
 							onDoubleClick={() => props.onSelectSong(song)}
+							onKeyDown={(e) => {
+								if (e.keyCode === ENTER) {
+									props.onSelectSong(song);
+								}
+							}}
+							tabIndex={0}
 						>
 							<td>
 								<span className={styles.trackNumber}>
@@ -30,6 +41,8 @@ export default function Playlist(props) {
 									<button
 										className={styles.playButton}
 										onClick={() => props.onSelectSong(song)}
+										aria-label={`play ${song.title}`}
+										tabIndex={-1}
 									>
 										{'>'}
 									</button>
@@ -37,6 +50,8 @@ export default function Playlist(props) {
 									<button
 										className={styles.playButton}
 										onClick={props.onPause}
+										aria-label={`pause ${song.title}`}
+										tabIndex={-1}
 									>
 										{'||'}
 									</button>

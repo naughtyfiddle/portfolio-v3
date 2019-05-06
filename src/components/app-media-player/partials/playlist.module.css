@@ -14,10 +14,16 @@
 }
 
 .playlist th, .playlist td {
+	position: relative;
 	padding: 10px;
 	font-size: 0.5rem;
 	text-align: left;
 	min-width: 0;
+}
+
+.playlist th:last-child,
+.playlist td:last-child {
+	text-align: right;
 }
 
 .playlist .titleColumn {
@@ -25,19 +31,15 @@
 	padding-left: 0;
 }
 
-.playlist th:last-child, .playlist td:last-child {
-	text-align: right;
-}
-
 .playlist tr {
 	border-bottom: 1px solid grayPrimary;
 }
 
-.playlist .selected {
+.playlistItem.selected {
 	background-color: grayPrimary;
 }
 
-.playlist tbody tr:hover {
+.playlistItem:hover {
 	background-color: bluePrimary;
 	color: white;
 }
@@ -46,10 +48,18 @@
 	visibility: hidden;
 }
 
-.playlist tbody tr:hover .playButton, .selected .playButton {
+.trackNumber {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.playlistItem:hover .playButton,
+.playlistItem.selected .playButton {
 	visibility: visible;
 }
 
-.playlist tbody tr:hover .trackNumber, .selected .trackNumber {
+.playlistItem:hover .trackNumber,
+.playlistItem.selected .trackNumber {
 	display: none;
 }

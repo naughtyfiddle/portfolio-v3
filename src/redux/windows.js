@@ -50,6 +50,10 @@ export default function reducer(state = {runningApps: []}, {type, payload}) {
 			const newApps = state.runningApps.reduce((acc, app) => {
 				if (app.name !== payload.name) {
 					acc.push(app);
+				} else {
+					window.dispatchEvent(
+						new CustomEvent('appkilled', {detail: app.name})
+					);
 				}
 				return acc;
 			}, []);
@@ -72,6 +76,9 @@ export default function reducer(state = {runningApps: []}, {type, payload}) {
 			};
 		}
 		case MINIMIZE_APP: {
+			window.dispatchEvent(
+				new CustomEvent('appminimized', {detail: payload.name})
+			);
 			return {
 				runningApps: _updateApp(state.runningApps, payload.name, {isMinimized: true, isFocused: false})
 			};

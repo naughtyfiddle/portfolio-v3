@@ -12,6 +12,7 @@ export default function NowPlaying(props) {
 			<img
 				src={song ? song.cover : placeholderIcon}
 				className={styles.album}
+				alt=""
 			/>
 			<div className={styles.songInfo}>
 				<div className={styles.song}>
@@ -22,19 +23,31 @@ export default function NowPlaying(props) {
 				</div>
 				{ song ? (
 					<div className={styles.controls}>
-						<button onClick={props.onPlayPrev}>
+						<button
+							onClick={props.onPlayPrev}
+							aria-label="play previous song"
+						>
 							{'|<'}
 						</button>
 						{ props.paused ? (
-							<button onClick={props.onPlay}>
+							<button
+								onClick={props.onPlay}
+								aria-label="play"
+							>
 								{'>'}
 							</button>
 						) : (
-							<button onClick={props.onPause}>
+							<button
+								onClick={props.onPause}
+								aria-label="pause"
+							>
 								{'||'}
 							</button>
 						) }
-						<button onClick={props.onPlayNext}>
+						<button
+							onClick={props.onPlayNext}
+							aria-label="play next song"
+						>
 							{'>|'}
 						</button>
 					</div>

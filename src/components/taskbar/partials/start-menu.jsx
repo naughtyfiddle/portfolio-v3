@@ -1,53 +1,43 @@
-import React from 'react';
+import React, {useRef, useEffect}  from 'react';
 import PropTypes from 'prop-types';
 import Apps from '../../../apps';
 import Clickable from '../../clickable';
+import ArrowKeyFocus from '../../arrow-key-focus';
 import styles from './start-menu.module.css';
 
-export default class StartMenu extends React.Component {
+export default function StartMenu(props) {
+	const menu = useRef(null);
 
-	static propTypes = {
-		close: PropTypes.func.isRequired,
-		launchApp: PropTypes.func.isRequired
-	}
+	useEffect(() => {
+		const rootClose = (e) => {
+			if (menu.current !== e.target && !menu.current.contains(e.target)) {
+				props.close();
+			}
+		};
+		document.addEventListener('click', rootClose);
 
-	componentDidMount() {
-		document.addEventListener('click', this.rootClose);
-	}
+		return () => {
+			document.removeEventListener('click', rootClose);
+		};
+	}, []);
 
-	componentWillUnmount() {
-		document.removeEventListener('click', this.rootClose);
-	}
-
-	rootClose = (e) => {
-		if (this.menu !== e.target && !this.menu.contains(e.target)) {
-			this.props.close();
-		}
-	}
-
-	launchApp = (app) => {
-		// timeout prevents the window from closing as soon as it opens when using keyboard controls
-		window.setTimeout(this.props.launchApp, 10, app);
-		this.props.close();
-	}
-
-	render() {
-		return (
-			<div
-				className={styles.startMenu}
-				ref={(e) => { this.menu = e; }}
-			>
-				<div className={styles.menuLogo}>
-					<div className={styles.verticalText}>
-						pizza-pizza
-					</div>
+	return (
+		<div
+			className={styles.startMenu}
+			ref={menu}
+		>
+			<div className={styles.menuLogo}>
+				<div className={styles.verticalText}>
+					pizza-pizza
 				</div>
-				<ul className={styles.menuItems}>
+			</div>
+			<ul className={styles.menuItems}>
+				<ArrowKeyFocus focusOnMount>
 					{ Apps.map((app) => (
 						<Clickable
 							element="li"
 							className={styles.menuItem}
-							onClick={() => this.launchApp(app)}
+							onClick={() => props.launchApp(app)}
 							key={app.name}
 						>
 							<img src={app.iconSrc} alt=""/>
@@ -56,8 +46,13 @@ export default class StartMenu extends React.Component {
 							</div>
 						</Clickable>
 					)) }
-				</ul>
-			</div>
-		);
-	}
+				</ArrowKeyFocus>
+			</ul>
+		</div>
+	);
 }
+
+StartMenu.propTypes = {
+	launchApp: PropTypes.func.isRequired,
+	close: PropTypes.func.isRequired
+};

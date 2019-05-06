@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {forwardRef, useRef, useImperativeHandle} from 'react';
 import PropTypes from 'prop-types';
 
 import MinimizeIcon from 'static/img/minimize.png';
@@ -7,47 +7,56 @@ import RestoreDownIcon from 'static/img/restore_down.png';
 import CloseIcon from 'static/img/close.png';
 import styles from './title-buttons.module.css';
 
-export default class TitleButtons extends React.Component {
+function TitleButtons(props, ref) {
+	const closeButton = useRef(null);
 
-	static propTypes = {
-		onMinimize: PropTypes.func.isRequired,
-		onMaximize: PropTypes.func.isRequired,
-		onClose: PropTypes.func.isRequired,
-		canMaximize: PropTypes.bool
-	}
+	useImperativeHandle(ref, () => ({
+		focus() {
+			closeButton.current.focus();
+		}
+	}));
 
-	componentDidMount() {
-		this.closeButton.focus();
-	}
-
-	render() {
-		return (
-			<div className={styles.titleButtons}>
+	return (
+		<div className={styles.titleButtons}>
+			<button
+				className={styles.minimize}
+				onClick={props.onMinimize}
+				aria-label="minimize window"
+			>
+				<img src={MinimizeIcon} alt=""/>
+			</button>
+			{ props.canMaximize ? (
 				<button
-					className={styles.minimize}
-					onClick={this.props.onMinimize}
+					className={styles.maximize}
+					onClick={props.onMaximize}
+					aria-label="maximize window"
 				>
-					<img src={MinimizeIcon} alt="minimize window"/>
+					<img
+						src={props.isMaximized ? RestoreDownIcon : MaximizeIcon}
+						alt=""
+					/>
 				</button>
-				{ this.props.canMaximize ? (
-					<button
-						className={styles.maximize}
-						onClick={this.props.onMaximize}
-					>
-						<img
-							src={this.props.isMaximized ? RestoreDownIcon : MaximizeIcon}
-							alt="maximize window"
-						/>
-					</button>
-				) : null }
-				<button
-					className={styles.close}
-					onClick={this.props.onClose}
-					ref={(e) => { this.closeButton = e; }}
-				>
-					<img src={CloseIcon} alt="close window"/>
-				</button>
-			</div>
-		);
-	}
+			) : null }
+			<button
+				className={styles.close}
+				onClick={props.onClose}
+				ref={closeButton}
+				aria-label="close window"
+			>
+				<img src={CloseIcon} alt=""/>
+			</button>
+		</div>
+	);
 }
+
+TitleButtons = forwardRef(TitleButtons);
+
+TitleButtons.propTypes = {
+	appName: PropTypes.string.isRequired,
+	onMinimize: PropTypes.func.isRequired,
+	onMaximize: PropTypes.func.isRequired,
+	onClose: PropTypes.func.isRequired,
+	canMaximize: PropTypes.bool
+};
+
+export default TitleButtons;
