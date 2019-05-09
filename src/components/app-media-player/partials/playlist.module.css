@@ -46,6 +46,12 @@
 
 .playButton {
 	visibility: hidden;
+	padding: 1px;
+}
+
+.playButton img {
+	height: 1rem;
+	vertical-align: middle;
 }
 
 .trackNumber {

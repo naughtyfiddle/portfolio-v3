@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {launchApp} from 'src/redux/windows';
 import {Resume} from 'src/apps';
 
-import headshotSrc from 'static/img/headshot.png';
+import headshotSrc from 'static/img/about-me/headshot.png';
 import styles from './me.module.css';
 
 function Me(props) {

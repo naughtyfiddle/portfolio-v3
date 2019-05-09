@@ -26,7 +26,7 @@ module.exports = (env, options) => ({
 			]
 		}, {
 			// static assets
-			test: /\.(gif|jpg|png|ttf|mp3)$/,
+			test: /\.(gif|jpg|png|svg|ttf|mp3)$/,
 			use: [{
 				loader: 'file-loader',
 				options: {

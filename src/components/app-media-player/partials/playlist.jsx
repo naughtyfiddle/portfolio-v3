@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+
+import playIcon from 'static/img/media-player/play.svg';
+import pauseIcon from 'static/img/media-player/pause.svg';
 import styles from './playlist.module.css';
 
 const ENTER = 13;
@@ -44,7 +47,7 @@ export default function Playlist(props) {
 										aria-label={`play ${song.title}`}
 										tabIndex={-1}
 									>
-										{'>'}
+										<img src={playIcon} alt="play" />
 									</button>
 								) : (
 									<button
@@ -53,7 +56,7 @@ export default function Playlist(props) {
 										aria-label={`pause ${song.title}`}
 										tabIndex={-1}
 									>
-										{'||'}
+										<img src={pauseIcon} alt="pause" />
 									</button>
 								) }
 							</td>

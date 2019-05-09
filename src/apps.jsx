@@ -4,11 +4,11 @@ import WormApp from './components/app-worm';
 import WebBrowserApp from './containers/web-browser';
 import MediaPlayerApp from './components/app-media-player';
 
-import AboutMeIcon from 'static/img/my-computer.png';
-import ResumeIcon from 'static/img/rich-text.png';
-import WormIcon from 'static/img/joystick.png';
-import WebBrowserIcon from 'static/img/netscape.gif';
-import MediaPlayerIcon from 'static/img/media-player.png';
+import AboutMeIcon from 'static/img/app-icons/about-me.png';
+import ResumeIcon from 'static/img/app-icons/resume.png';
+import WormIcon from 'static/img/app-icons/w0rm.png';
+import WebBrowserIcon from 'static/img/app-icons/browser.gif';
+import MediaPlayerIcon from 'static/img/app-icons/media-player.png';
 
 export const AboutMe = {
 	name: 'About Me',

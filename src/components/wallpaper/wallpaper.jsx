@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import WallpaperImg from 'static/img/wallpaper.png';
 import styles from './wallpaper.module.css';
 
 export default function Wallpaper(props) {
@@ -8,9 +7,7 @@ export default function Wallpaper(props) {
 		<div
 			className={styles.wallpaper}
 			onClick={props.onClick}
-		>
-			<img src={WallpaperImg} alt=""/>
-		</div>
+		/>
 	);
 }
 

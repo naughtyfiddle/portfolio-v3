@@ -1,5 +1,5 @@
 import React from 'react';
-import ResumeImg from 'static/img/resume.jpg';
+import ResumeImg from 'static/img/resume/resume.jpg';
 import styles from './resume.module.css';
 
 export default function(props) {

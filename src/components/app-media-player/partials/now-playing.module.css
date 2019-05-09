@@ -44,6 +44,12 @@
 	align-items: flex-end;
 }
 
-.controls button {
+.mediaButton {
 	margin-right: 3px;
+	padding: 1px;
+}
+
+.mediaButton img {
+	height: 1rem;
+	vertical-align: middle;
 }

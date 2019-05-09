@@ -1,10 +1,10 @@
 import React, {forwardRef, useRef, useImperativeHandle} from 'react';
 import PropTypes from 'prop-types';
 
-import MinimizeIcon from 'static/img/minimize.png';
-import MaximizeIcon from 'static/img/maximize.png';
-import RestoreDownIcon from 'static/img/restore_down.png';
-import CloseIcon from 'static/img/close.png';
+import MinimizeIcon from 'static/img/window/minimize.png';
+import MaximizeIcon from 'static/img/window/maximize.png';
+import RestoreDownIcon from 'static/img/window/restore_down.png';
+import CloseIcon from 'static/img/window/close.png';
 import styles from './title-buttons.module.css';
 
 function TitleButtons(props, ref) {

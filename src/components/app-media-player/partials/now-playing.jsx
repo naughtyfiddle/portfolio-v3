@@ -1,7 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import placeholderIcon from 'static/img/blank-cd.png';
+import placeholderIcon from 'static/img/media-player/blank-cd.png';
+import playIcon from 'static/img/media-player/play.svg';
+import pauseIcon from 'static/img/media-player/pause.svg';
+import skipNextIcon from 'static/img/media-player/skip-next.svg';
+import skipPrevIcon from 'static/img/media-player/skip-prev.svg';
 import styles from './now-playing.module.css';
 
 export default function NowPlaying(props) {
@@ -25,30 +29,34 @@ export default function NowPlaying(props) {
 					<div className={styles.controls}>
 						<button
 							onClick={props.onPlayPrev}
+							className={styles.mediaButton}
 							aria-label="play previous song"
 						>
-							{'|<'}
+							<img src={skipPrevIcon} alt="play previous song" />
 						</button>
 						{ props.paused ? (
 							<button
 								onClick={props.onPlay}
+								className={styles.mediaButton}
 								aria-label="play"
 							>
-								{'>'}
+								<img src={playIcon}/>
 							</button>
 						) : (
 							<button
 								onClick={props.onPause}
+								className={styles.mediaButton}
 								aria-label="pause"
 							>
-								{'||'}
+								<img src={pauseIcon} alt="pause" />
 							</button>
 						) }
 						<button
 							onClick={props.onPlayNext}
+							className={styles.mediaButton}
 							aria-label="play next song"
 						>
-							{'>|'}
+							<img src={skipNextIcon} alt="play next song" />
 						</button>
 					</div>
 				) : null }
