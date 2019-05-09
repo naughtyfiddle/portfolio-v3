@@ -92,36 +92,18 @@ class DesktopContainer extends React.Component {
 	}
 }
 
-function mapStateToProps(state) {
-	return {
-		runningApps: state.windows.runningApps
-	};
-}
+const mapStateToProps = (state) => ({
+	runningApps: state.windows.runningApps
+});
 
-function mapDispatchToProps(dispatch) {
-	return {
-		blurApps() {
-			return dispatch(blurApps());
-		},
-		focusApp(app) {
-			return dispatch(focusApp(app));
-		},
-		killApp(app) {
-			return dispatch(killApp(app));
-		},
-		launchApp(app) {
-			return dispatch(launchApp(app));
-		},
-		maximizeApp(app) {
-			return dispatch(maximizeApp(app));
-		},
-		minimizeApp(app) {
-			return dispatch(minimizeApp(app));
-		},
-		unmaximizeApp(app) {
-			return dispatch(unmaximizeApp(app));
-		}
-	};
-}
+const mapDispatchToProps = {
+	blurApps,
+	focusApp,
+	killApp,
+	launchApp,
+	maximizeApp,
+	minimizeApp,
+	unmaximizeApp
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(DesktopContainer);

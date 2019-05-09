@@ -5,6 +5,7 @@
 @value white: rgb(255, 255, 255);
 @value teal: rgb(0, 128, 129);
 @value bluePrimary: rgb(1, 0, 129);
+@value blueLink: #531fff;
 @value accent1: #ffc0cb;
 @value accent2: #e9ffe9;
 
@@ -48,6 +49,15 @@ button {
 	cursor: pointer;
 }
 
+a {
+	color: blueLink;
+	text-decoration: underline dotted;
+}
+
+body {
+	font-family: pixel-arial;
+}
+
 body.keyboardAccessible *:focus {
 	outline: 2px solid red;
 }
@@ -62,8 +72,4 @@ body:not(.keyboardAccessible) *:focus {
 	right: 0;
 	bottom: taskbarHeight;
 	left: 0;
-}
-
-body {
-	font-family: pixel-arial;
 }

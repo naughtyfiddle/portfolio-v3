@@ -1,0 +1,22 @@
+@value blueLink from 'src/theme.module.css';
+
+.headshot {
+	width: 150px;
+	float: left;
+	margin-right: 10px;
+}
+
+.paragraph {
+	margin-top: 0;
+}
+
+.openResume, .openResume:active, .openResume:focus {
+	padding: 0;
+	margin: 0;
+	border: 0;
+	background-color: transparent;
+	font-family: perfect-dos;
+	font-size: 1em;
+	color: blueLink; 
+	text-decoration: underline dotted;
+}

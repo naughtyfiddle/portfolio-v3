@@ -1,63 +1,52 @@
-import React from 'react';
+import React, {useState} from 'react';
+import classnames from 'classnames';
+
+import ArrowKeyFocus from '../arrow-key-focus';
+import Me from './partials/me';
+import Site from './partials/site';
+import Contact from './partials/contact';
+
 import styles from './about-me.module.css';
 
+const TABS = [
+	{
+		label: 'About Me',
+		TabComponent: Me
+	},
+	{
+		label: 'About This Site',
+		TabComponent: Site
+	},
+	{
+		label: 'Contact',
+		TabComponent: Contact
+	}
+];
+
 export default function AboutMe(props) {
+	const [activeTab, setActiveTab] = useState(0);
+	const {TabComponent} = TABS[activeTab];
+
 	return (
 		<div className={styles.aboutMe}>
-			<h3>
-				About <span className={styles.lightText}>Me</span>
-			</h3>
+			<div className={styles.tabs}>
+				<ArrowKeyFocus preventTab>
+					{ TABS.map((tab, i) => (
+						<button
+							key={tab.label}
+							className={classnames(styles.tab, {
+								[styles.activeTab]: activeTab === i
+							})}
+							onClick={() => setActiveTab(i)}
+							onFocus={() => setActiveTab(i)}
+						>
+							<h3>{tab.label}</h3>
+						</button>
+					)) }
+				</ArrowKeyFocus>
+			</div>
 			<div className={styles.content}>
-				<p>
-					Thanks for checking out my website! My name is Christian Dinh
-					and I'm a software engineer living in Austin TX.
-					I use a lot of different technologies in my day-to-day life, but this
-					particular website is built with:
-				</p>
-				<ul>
-					<li>React</li>
-					<li>Redux</li>
-					<li>Webpack</li>
-					<li>Babel</li>
-					<li>Less</li>
-				</ul>
-				<p>
-					And that's about it! Source code can be
-					viewed on <a href="https://github.com/bass-dandy/portfolio-v3" target="blank">this site's Github repo</a>.
-				</p>
-				<p>
-					This site is intended to be fully keyboard and screen-reader accessible.
-					Accessibility is great and makes the internet a better place for
-					everyone, so if you haven't made your apps accessible you should
-					definitely do that! Perhaps I could even help ;)
-				</p>
-				<p>
-					Thanks for reading this far! If you would like to contact me,
-					you have a few options:
-				</p>
-				<ul>
-					<li>
-						<a href="mailto:christian.t.dinh@gmail.com">
-							christian.t.dinh@gmail.com
-						</a>
-					</li>
-					<li>
-						<a
-							href="https://www.linkedin.com/in/christiandinh/"
-							target="blank"
-						>
-							my Linkedin profile
-						</a>
-					</li>
-					<li>
-						<a
-							href="https://github.com/bass-dandy"
-							target="blank"
-						>
-							my Github profile
-						</a>
-					</li>
-				</ul>
+				<TabComponent />
 			</div>
 		</div>
 	);

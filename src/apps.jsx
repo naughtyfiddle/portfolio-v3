@@ -10,36 +10,36 @@ import WormIcon from 'static/img/joystick.png';
 import WebBrowserIcon from 'static/img/netscape.gif';
 import MediaPlayerIcon from 'static/img/media-player.png';
 
-const AboutMe = {
+export const AboutMe = {
 	name: 'About Me',
 	content: AboutMeApp,
 	iconSrc: AboutMeIcon,
 	isResizable: true,
-	width: 500,
-	height: 400,
-	minWidth: 250,
+	width: 530,
+	height: 450,
+	minWidth: 300,
 	minHeight: 200
 };
 
-const WebBrowser = {
+export const WebBrowser = {
 	name: 'Internet',
 	content: WebBrowserApp,
 	iconSrc: WebBrowserIcon,
 	isResizable: true,
-	width: 500,
-	height: 400,
+	width: 600,
+	height: 500,
 	minWidth: 350,
 	minHeight: 230
 };
 
-const Worm = {
+export const Worm = {
 	name: 'Worm',
 	content: WormApp,
 	iconSrc: WormIcon,
 	isResizable: false
 };
 
-const Resume = {
+export const Resume = {
 	name: 'Resume',
 	content: ResumeApp,
 	iconSrc: ResumeIcon,
@@ -50,15 +50,15 @@ const Resume = {
 	minHeight: 200
 };
 
-const MediaPlayer = {
+export const MediaPlayer = {
 	name: 'My Music',
 	content: MediaPlayerApp,
 	iconSrc: MediaPlayerIcon,
 	isResizable: true,
 	width: 500,
 	height: 400,
-	minWidth: 250,
-	minHeight: 200
+	minWidth: 500,
+	minHeight: 300
 };
 
 export default [
