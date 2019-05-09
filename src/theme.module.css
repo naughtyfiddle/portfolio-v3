@@ -73,3 +73,11 @@ body:not(.keyboardAccessible) *:focus {
 	bottom: taskbarHeight;
 	left: 0;
 }
+
+.desktopIcons {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	display: flex;
+	flex-flow: column wrap;
+}

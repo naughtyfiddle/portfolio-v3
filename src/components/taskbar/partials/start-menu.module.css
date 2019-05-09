@@ -1,4 +1,4 @@
-@value grayPrimary, accent1, accent2, white, bluePrimary from 'src/theme.module.css';
+@value taskbarHeight, grayPrimary, accent1, accent2, white, bluePrimary from 'src/theme.module.css';
 
 @keyframes slidein {
 	to { height: 400px; }
@@ -13,6 +13,7 @@
 	display: flex;
 	position: absolute;
 	height: 0;
+	max-height: calc(100vh - taskbarHeight);
 	width: 250px;
 	left: 0;
 	bottom: 100%;
@@ -58,6 +59,7 @@
 	flex: 1;
 	padding: 3px 3px 3px 0;
 	margin: 0 0 0 3px;
+	overflow: auto;
 }
 
 .menuItem {

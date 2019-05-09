@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {connect} from 'react-redux';
 
 import Apps from '../apps';
@@ -18,78 +18,62 @@ import {
 	unmaximizeApp
 } from '../redux/windows';
 
-class DesktopContainer extends React.Component {
+function DesktopContainer(props) {
+	const container = useRef(null);
+	const [containerHeight, setContainerHeight] = useState(0);
+	const [containerWidth, setContainerWidth] = useState(0);
 
-	state = {
-		width: 0,
-		height: 0
-	}
-
-	captureDesktopDimensions = () => {
-		if (this.container.clientWidth !== this.state.width || this.container.clientHeight !== this.props.height) {
-			this.setState({
-				width: this.container.clientWidth,
-				height: this.container.clientHeight
-			});
+	useEffect(() => {
+		const captureDesktopDimensions = () => {
+			setContainerHeight(container.current.clientHeight);
+			setContainerWidth(container.current.clientWidth);
 		}
-	}
+		captureDesktopDimensions();
+		window.addEventListener('resize', captureDesktopDimensions);
+		return () => window.removeEventListener('resize', captureDesktopDimensions);
+	}, []);
 
-	componentDidMount() {
-		this.captureDesktopDimensions();
-		window.addEventListener('resize', this.captureDesktopDimensions);
-	}
-
-	componentWillUnmount() {
-		window.removeEventListener('resize', this.captureDesktopDimensions);
-	}
-
-	render() {
-		const icons = Apps.map((app) => {
-			return (
-				<DesktopIcon
-					app={app}
-					launchApp={this.props.launchApp}
-					key={app.name}
-				/>
-			);
-		});
-
-		const windows = this.props.runningApps.map((app) => {
-			return (
+	return (
+		<div
+			className={styles.desktop}
+			ref={container}
+		>
+			<Wallpaper 
+				onClick={props.blurApps}
+			/>
+			<div className={styles.desktopIcons}>
+				{ Apps.map((app) => (
+					<DesktopIcon
+						app={app}
+						launchApp={props.launchApp}
+						key={app.name}
+					/>
+				)) }
+			</div>
+			{ props.runningApps.map((app) => (
 				<Window
 					app={app}
-					killApp={this.props.killApp}
-					maximizeApp={this.props.maximizeApp}
-					minimizeApp={this.props.minimizeApp}
-					unmaximizeApp={this.props.unmaximizeApp}
-					focusApp={this.props.focusApp}
+					killApp={props.killApp}
+					maximizeApp={props.maximizeApp}
+					minimizeApp={props.minimizeApp}
+					unmaximizeApp={props.unmaximizeApp}
+					focusApp={props.focusApp}
 					key={app.name}
-					containerWidth={this.state.width}
-					containerHeight={this.state.height}
+					containerWidth={containerWidth}
+					containerHeight={containerHeight}
 				>
 					<app.content
 						isFocused={app.isFocused}
 					/>
 				</Window>
-			);
-		});
-
-		return (
-			<div
-				className={styles.desktop}
-				ref={(e) => { this.container = e; }}
-			>
-				<Wallpaper onClick={this.props.blurApps}/>
-				{icons}
-				{windows}
-				<Taskbar
-					focusApp={this.props.focusApp}
-					launchApp={this.props.launchApp}
-					runningApps={this.props.runningApps}
-				/>
-			</div>
-		);
-	}
+			)) }
+			<Taskbar
+				focusApp={props.focusApp}
+				launchApp={props.launchApp}
+				runningApps={props.runningApps}
+			/>
+		</div>
+	);
 }
 
 const mapStateToProps = (state) => ({
