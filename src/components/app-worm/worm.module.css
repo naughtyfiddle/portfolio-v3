@@ -1,13 +1,25 @@
 @value mobileCutoff from 'src/theme.module.css';
 
 .worm {
-	padding: 10px;
+	padding: 0 10px 10px;
+}
+
+.scoreContainer {
+	margin: 5px 0;
+	font-size: 0.6rem;
+}
+
+.score {
+	composes: inset from 'src/theme.module.css';
+	display: inline-block;
+	padding: 0 5px;
+	margin-left: 5px;
 }
 
 .canvas {
 	composes: inset from 'src/theme.module.css';
-	width: 500px;
-	height: 500px;
+	width: 400px;
+	height: 400px;
 }
 
 @media only screen and (max-width: mobileCutoff) {

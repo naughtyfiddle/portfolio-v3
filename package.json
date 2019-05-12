@@ -14,7 +14,7 @@
     "url": "git+https://github.com/bass-dandy/portfolio-v3.git"
   },
   "dependencies": {
-    "@bass_dandy/w0rm": "^1.0.0",
+    "@bass_dandy/w0rm": "^1.0.1",
     "classnames": "^2.2.6",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
