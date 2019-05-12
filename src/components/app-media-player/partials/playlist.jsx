@@ -2,8 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
+import {download} from 'src/util';
+
 import playIcon from 'static/img/media-player/play.svg';
 import pauseIcon from 'static/img/media-player/pause.svg';
+import downloadIcon from 'static/img/media-player/download.svg';
 import styles from './playlist.module.css';
 
 const ENTER = 13;
@@ -40,25 +43,34 @@ export default function Playlist(props) {
 								<span className={styles.trackNumber}>
 									{song.track}
 								</span>
-								{ props.paused || song !== props.nowPlaying ? (
+								<div className={styles.trackButtons}>
+									{ props.paused || song !== props.nowPlaying ? (
+										<button
+											className={styles.trackButton}
+											onClick={() => props.onSelectSong(song)}
+											aria-label={`play ${song.title}`}
+											tabIndex={-1}
+										>
+											<img src={playIcon} alt="play" />
+										</button>
+									) : (
+										<button
+											className={styles.trackButton}
+											onClick={props.onPause}
+											aria-label={`pause ${song.title}`}
+											tabIndex={-1}
+										>
+											<img src={pauseIcon} alt="pause" />
+										</button>
+									) }
 									<button
-										className={styles.playButton}
-										onClick={() => props.onSelectSong(song)}
-										aria-label={`play ${song.title}`}
-										tabIndex={-1}
+										className={styles.trackButton}
+										onClick={() => download(song.src)}
+										aria-label={`download ${song.title}`}
 									>
-										<img src={playIcon} alt="play" />
+										<img src={downloadIcon} alt="download" />
 									</button>
-								) : (
-									<button
-										className={styles.playButton}
-										onClick={props.onPause}
-										aria-label={`pause ${song.title}`}
-										tabIndex={-1}
-									>
-										<img src={pauseIcon} alt="pause" />
-									</button>
-								) }
+								</div>
 							</td>
 							<td className={styles.titleColumn}>
 								{song.title}

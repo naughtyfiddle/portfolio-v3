@@ -44,24 +44,32 @@
 	color: white;
 }
 
-.playButton {
-	visibility: hidden;
-	padding: 1px;
-}
-
-.playButton img {
-	height: 1rem;
-	vertical-align: middle;
-}
-
 .trackNumber {
 	position: absolute;
 	top: 50%;
 	transform: translateY(-50%);
 }
 
-.playlistItem:hover .playButton,
-.playlistItem.selected .playButton {
+.trackButtons {
+	visibility: hidden;
+	white-space: nowrap;
+}
+
+.trackButton {
+	padding: 1px;
+}
+
+.trackButton:first-child {
+	margin-right: 3px;
+}
+
+.trackButton img {
+	height: 1rem;
+	vertical-align: middle;
+}
+
+.playlistItem:hover .trackButtons,
+.playlistItem.selected .trackButtons {
 	visibility: visible;
 }
 
