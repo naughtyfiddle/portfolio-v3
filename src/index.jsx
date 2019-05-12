@@ -4,6 +4,7 @@ import {Provider} from 'react-redux';
 
 import createStore from './redux/store';
 import Desktop from './components/desktop';
+import Taskbar from './components/taskbar';
 import styles from './theme.module.css';
 
 const TAB = 9;
@@ -25,6 +26,10 @@ document.addEventListener('mousedown', () => {
 
 ReactDOM.render(
 	<Provider store={store}>
-		<Desktop/>
-	</Provider>
-, document.getElementById('content'));
+		<>
+			<Desktop/>
+			<Taskbar/>
+		</>
+	</Provider>,
+	document.getElementById('content')
+);

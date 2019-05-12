@@ -5,7 +5,6 @@ import Apps from 'src/apps';
 import Wallpaper from './partials/wallpaper';
 import Window from './partials/window';
 import DesktopIcon from '../desktop-icon';
-import Taskbar from '../taskbar';
 
 import styles from './desktop.module.css';
 
@@ -13,7 +12,6 @@ import {
 	blurApps,
 	focusApp,
 	killApp,
-	launchApp,
 	maximizeApp,
 	minimizeApp,
 	unmaximizeApp
@@ -63,11 +61,6 @@ function Desktop(props) {
 					containerHeight={containerHeight}
 				/>
 			)) }
-			<Taskbar
-				focusApp={props.focusApp}
-				launchApp={props.launchApp}
-				runningApps={props.runningApps}
-			/>
 		</div>
 	);
 }
@@ -80,7 +73,6 @@ const mapDispatchToProps = {
 	blurApps,
 	focusApp,
 	killApp,
-	launchApp,
 	maximizeApp,
 	minimizeApp,
 	unmaximizeApp

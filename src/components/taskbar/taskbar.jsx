@@ -1,12 +1,15 @@
 import React, {useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
 import classnames from 'classnames';
 
+import {focusApp, launchApp} from 'src/redux/windows';
 import Clock from './partials/clock';
 import StartButton from './partials/start-button';
+
 import styles from './taskbar.module.css';
 
-export default function Taskbar(props) {
+function Taskbar(props) {
 	// appRefs.current is actually an object of refs keyed by app name
 	const appRefs = useRef({});
 
@@ -44,18 +47,17 @@ export default function Taskbar(props) {
 	);
 }
 
-Taskbar.propTypes = {
-	focusApp: PropTypes.func.isRequired,
-	launchApp: PropTypes.func.isRequired,
-	runningApps: PropTypes.arrayOf(
-		PropTypes.shape({
-			isFocused: PropTypes.bool,
-			name: PropTypes.string,
-			iconSrc: PropTypes.string
-		})
-	).isRequired
-};
-
 Taskbar.defaultProps = {
 	runningApps: []
 };
+
+const mapStateToProps = (state) => ({
+	runningApps: state.windows.runningApps
+});
+
+const mapDispatchToProps = {
+	focusApp,
+	launchApp
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Taskbar);
