@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 import {clamp} from 'src/util';
+import Directory from '../app-directory';
 import TitleButtons from './partials/title-buttons';
 import styles from './window.module.css';
 
@@ -10,36 +11,29 @@ export default class Window extends React.Component {
 
 	static propTypes = {
 		app: PropTypes.shape({
-			width: PropTypes.oneOfType([
-				PropTypes.number,
-				PropTypes.string
-			]),
-			height: PropTypes.oneOfType([
-				PropTypes.number,
-				PropTypes.string
-			]),
+			width: PropTypes.number,
+			height: PropTypes.number,
 			name: PropTypes.string.isRequired,
 			iconSrc: PropTypes.string,
-			isResizable: PropTypes.bool,
+			resizeDisabled: PropTypes.bool,
 			isMinimized: PropTypes.bool,
 			isMaximized: PropTypes.bool
 		}).isRequired,
-		killApp: PropTypes.func.isRequired,
-		focusApp: PropTypes.func.isRequired,
-		maximizeApp: PropTypes.func.isRequired,
-		minimizeApp: PropTypes.func.isRequired,
-		unmaximizeApp: PropTypes.func.isRequired,
-		children: PropTypes.node
-	}
+		kill: PropTypes.func.isRequired,
+		focus: PropTypes.func.isRequired,
+		maximize: PropTypes.func.isRequired,
+		minimize: PropTypes.func.isRequired,
+		unmaximize: PropTypes.func.isRequired
+	};
 
 	state = {
 		top: 0,
 		left: 0,
-		right: this.props.containerWidth - this.props.app.width,
-		bottom: this.props.containerHeight - this.props.app.height,
+		right: this.props.app.width ? (this.props.containerWidth - this.props.app.width) : null,
+		bottom: this.props.app.width ? (this.props.containerHeight - this.props.app.height) : null,
 		isDragging: false,
 		isResizing: false
-	}
+	};
 
 	componentDidMount() {
 		document.addEventListener('mousemove', this.handleMouseMove);
@@ -71,7 +65,7 @@ export default class Window extends React.Component {
 	}
 
 	componentDidCatch() {
-		// do nothing, just let the window unmount
+		this.props.kill();
 	}
 
 	get width() {
@@ -82,42 +76,11 @@ export default class Window extends React.Component {
 		return this.props.containerHeight - this.state.top - this.state.bottom;
 	}
 
-	focusWindow = () => {
-		this.props.focusApp(this.props.app);
-	}
-
-	startDrag = (e) => {
-		this.setState({isDragging: true});
-		e.preventDefault();
-	}
-
-	startResize = () => {
-		this.setState({isResizing: true});
-	}
-
 	handleMouseUp = () => {
 		this.setState({
 			isDragging: false,
 			isResizing: false
 		});
-	}
-
-	handleMinimize = (e) => {
-		this.props.minimizeApp(this.props.app);
-		e.stopPropagation();
-	}
-
-	handleMaximize = (e) => {
-		if (this.props.app.isMaximized) {
-			this.props.unmaximizeApp(this.props.app);
-		} else {
-			this.props.maximizeApp(this.props.app);
-		}
-	}
-
-	handleClose = (e) => {
-		this.props.killApp(this.props.app);
-		e.stopPropagation();
 	}
 
 	handleMouseMove = (e) => {
@@ -166,27 +129,11 @@ export default class Window extends React.Component {
 			bottom: this.props.containerHeight - this.height
 		});
 
-		this.props.unmaximizeApp(this.props.app);
+		this.props.unmaximize();
 	}
 
 	render() {
-		const position = {
-			top: this.state.top,
-			left: this.state.left,
-			right: this.props.app.isResizable ? this.state.right : 'auto',
-			bottom: this.props.app.isResizable ? this.state.bottom : 'auto'
-		};
-
-		const app = this.props.app;
-
-		/*
-			this mask is a bit of a hack to prevent window content from
-			interfering with click + drag actions (eg if the window content
-			is an iframe it would otherwise swallow mouseup and mousemove events)
-		*/
-		const mask = this.state.isDragging || this.state.isResizing || !app.isFocused ? (
-			<div className={styles.contentMask}/>
-		) : null;
+		const {app} = this.props;
 
 		return (
 			<div
@@ -195,38 +142,63 @@ export default class Window extends React.Component {
 					[styles.maximized]: app.isMaximized,
 					[styles.minimized]: app.isMinimized
 				})}
-				style={position}
-				onMouseDown={this.focusWindow}
+				style={{
+					top: this.state.top,
+					left: this.state.left,
+					right: this.props.app.resizeDisabled ? null : this.state.right,
+					bottom: this.props.app.resizeDisabled ? null : this.state.bottom
+				}}
+				onMouseDown={this.props.focus}
 			>
 				<div
 					className={styles.title}
-					onMouseDown={this.startDrag}
+					onMouseDown={(e) => {
+						e.preventDefault();
+						this.setState({isDragging: true});
+					}}
 				>
-					<img src={app.iconSrc} className={styles.titleIcon} alt=""/>
-					{app.name}
+					<img
+						src={app.iconSrc}
+						className={styles.titleIcon}
+						alt=""
+					/>
+					<h2>
+						{app.name}
+					</h2>
 					<TitleButtons
 						ref={(e) => { this.titleButtons = e; }}
 						appName={app.name}
-						onMinimize={this.handleMinimize}
-						onMaximize={this.handleMaximize}
-						onClose={this.handleClose}
-						canMaximize={app.isResizable}
+						onMinimize={this.props.minimize}
+						onMaximize={this.props.app.isMaximized ? this.props.unmaximize : this.props.maximize}
+						onClose={this.props.kill}
+						canMaximize={!app.resizeDisabled}
 						isMaximized={app.isMaximized}
 					/>
 				</div>
 				<div className={styles.content}>
-					{this.props.children}
-					{mask}
+					{ app.content ? (
+						<app.content isFocused={app.isFocused} />
+					) : null }
+					{ app.children ? (
+						<Directory contents={app.children} />
+					) : null }
+					{/*
+						this mask is a bit of a hack to prevent window content from
+						interfering with click + drag actions (eg if the window content
+						is an iframe it would otherwise swallow mouseup and mousemove events)
+					*/}
+					{ this.state.isDragging || this.state.isResizing || !app.isFocused ? (
+						<div className={styles.contentMask} />
+					) : null }
 				</div>
-				{app.isResizable && !app.isMaximized ? (
+				{ !app.resizeDisabled && !app.isMaximized ? (
 					<div className={styles.footer}>
-						{/* purposefully use a div rather than a button here to prevent keyboard interaction */}
 						<div
 							className={styles.resize}
-							onMouseDown={this.startResize}
+							onMouseDown={() => this.setState({isResizing: true})}
 						/>
 					</div>
-				) : null}
+				) : null }
 			</div>
 		);
 	}

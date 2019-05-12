@@ -41,17 +41,26 @@
 }
 
 .title {
+	display: flex;
+	align-items: center;
 	margin: 2px;
 	padding: 3px;
 	background-color: grayInset;
 	color: grayPrimary;
 	font-family: wendy;
-	user-select: none;
+}
+
+.title h2 {
+	flex: 1;
+	margin: 0;
+	font-size: 1rem;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .titleIcon {
 	height: 1rem;
-	vertical-align: middle;
 	margin-right: 5px;
 }
 

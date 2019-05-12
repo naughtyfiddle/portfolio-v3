@@ -1,3 +1,6 @@
+import {WebBrowser} from 'src/apps';
+import * as webBrowserActions from './web-browser';
+
 const BLUR_APPS = 'apps/BLUR_APPS';
 const FOCUS_APP = 'apps/FOCUS_APP';
 const KILL_APP = 'apps/KILL_APP';
@@ -111,11 +114,22 @@ export function killApp(app) {
 	};
 }
 
-export function launchApp(app) {
-	return {
-		type: LAUNCH_APP,
-		payload: app
-	};
+export const launchApp = (app) => (dispatch) => {
+	if (app.url) {
+		// if app is a browser shortcut, open in in the browser component
+		dispatch({
+			type: LAUNCH_APP,
+			payload: WebBrowser
+		});
+		dispatch(webBrowserActions.setUrl(app.url));
+		dispatch(webBrowserActions.navigate());
+	} else {
+		// else just open the app
+		dispatch({
+			type: LAUNCH_APP,
+			payload: app
+		});
+	}
 }
 
 export function maximizeApp(app) {

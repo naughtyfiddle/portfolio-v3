@@ -1,4 +1,4 @@
-@value taskbarHeight, grayPrimary, accent1, accent2, white, bluePrimary from 'src/theme.module.css';
+@value taskbarHeight, grayPrimary, accent1, accent2, white from 'src/theme.module.css';
 
 @keyframes slidein {
 	to { height: 400px; }
@@ -20,7 +20,6 @@
 	margin-bottom: 2px;
 	background-color: grayPrimary;
 	animation: slidein 0.15s ease-out forwards;
-	overflow: hidden;
 }
 
 .menuLogo {
@@ -53,33 +52,4 @@
 	font-size: 1.7rem;
 	color: white;
 	white-space: nowrap;
-}
-
-.menuItems {
-	flex: 1;
-	padding: 3px 3px 3px 0;
-	margin: 0 0 0 3px;
-	overflow: auto;
-}
-
-.menuItem {
-	display: flex;
-	align-items: center;
-	padding: 3px;
-}
-
-.menuItem:hover {
-	background-color: bluePrimary;
-	color: white;
-	cursor: pointer;
-}
-
-.menuItem img {
-	height: 30px;
-}
-
-.menuItemName {
-	flex: 1;
-	margin-left: 10px;
-	display: inline-block;
 }

@@ -12,7 +12,6 @@
 	border-top: 2px solid white;
 	box-sizing: border-box;
 	z-index: 10000;
-	user-select: none;
 	font-size: 0.6rem;
 }
 

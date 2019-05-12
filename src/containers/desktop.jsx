@@ -45,27 +45,22 @@ function DesktopContainer(props) {
 				{ Apps.map((app) => (
 					<DesktopIcon
 						app={app}
-						launchApp={props.launchApp}
 						key={app.name}
 					/>
 				)) }
 			</div>
 			{ props.runningApps.map((app) => (
 				<Window
-					app={app}
-					killApp={props.killApp}
-					maximizeApp={props.maximizeApp}
-					minimizeApp={props.minimizeApp}
-					unmaximizeApp={props.unmaximizeApp}
-					focusApp={props.focusApp}
 					key={app.name}
+					app={app}
+					kill={() => props.killApp(app)}
+					maximize={() => props.maximizeApp(app)}
+					minimize={() => props.minimizeApp(app)}
+					unmaximize={() => props.unmaximizeApp(app)}
+					focus={() => props.focusApp(app)}
 					containerWidth={containerWidth}
 					containerHeight={containerHeight}
-				>
-					<app.content
-						isFocused={app.isFocused}
-					/>
-				</Window>
+				/>
 			)) }
 			<Taskbar
 				focusApp={props.focusApp}

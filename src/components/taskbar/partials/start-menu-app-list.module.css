@@ -1,0 +1,45 @@
+@value grayPrimary, white, black, bluePrimary from 'src/theme.module.css';
+
+.appList {
+	flex: 1;
+	padding: 3px;
+	margin: 0;
+	background-color: grayPrimary;
+	list-style: none;
+	color: black;
+}
+
+.floating {
+	composes: outset from 'src/theme.module.css';
+	position: absolute;
+	display: none;
+	top: -5px; /* padding plus border */
+	left: 100%;
+}
+
+.appListItem {
+	position: relative;
+	display: flex;
+	align-items: center;
+	padding: 3px;
+	white-space: nowrap;
+	cursor: pointer;
+}
+
+.appListItem img {
+	height: 30px;
+}
+
+.appName {
+	flex: 1;
+	margin-left: 10px;
+}
+
+.appListItem:hover {
+	background-color: bluePrimary;
+	color: white;
+}
+
+.appListItem:hover > .appList.floating {
+	display: block;
+}

@@ -1,38 +1,81 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+
+import {
+	reset,
+	navigate,
+	setUrl,
+	goForward,
+	goBackward
+} from '../../redux/web-browser';
+
 import styles from './web-browser.module.css';
 
-export default function WebBrowser(props) {
-	return (
-		<div className={styles.webBrowser}>
-			<div className={styles.urlBarWrapper}>
-				<button onClick={props.goBackward}>
-					{'<'}
-				</button>
-				<button onClick={props.goForward}>
-					{'>'}
-				</button>
-				<input
-					type="text"
-					className={styles.urlBar}
-					value={props.url}
-					onChange={(e) => props.setUrl(e.target.value)}
-					onKeyDown={props.handleKeyDown}
+const ENTER = 13;
+
+class WebBrowser extends React.Component {
+
+	componentWillUnmount() {
+		this.props.reset();
+	}
+
+	render() {
+		return (
+			<div className={styles.webBrowser}>
+				<div className={styles.urlBarWrapper}>
+					<button onClick={this.props.goBackward}>
+						{'<'}
+					</button>
+					<button onClick={this.props.goForward}>
+						{'>'}
+					</button>
+					<input
+						type="text"
+						className={styles.urlBar}
+						value={this.props.url}
+						onChange={(e) => this.props.setUrl(e.target.value)}
+						onKeyDown={(e) => {
+							if (e.keyCode === ENTER) {
+								e.preventDefault();
+								this.props.navigate();
+							}
+						}}
+					/>
+				</div>
+				<iframe
+					className={styles.frame}
+					src={this.props.location}
 				/>
 			</div>
-			<iframe
-				className={styles.frame}
-				src={props.location}
-			/>
-		</div>
-	);
+		);
+	}
 }
 
-WebBrowser.propTypes = {
-	goBackward: PropTypes.func.isRequired,
-	goForward: PropTypes.func.isRequired,
-	setUrl: PropTypes.func.isRequired,
-	handleKeyDown: PropTypes.func.isRequired,
-	url: PropTypes.string,
-	location: PropTypes.string
-};
+function mapStateToProps(state) {
+	return {
+		url: state.webBrowser.url,
+		location: state.webBrowser.location
+	};
+}
+
+function mapDispatchToProps(dispatch) {
+	return {
+		setUrl(url) {
+			return dispatch(setUrl(url));
+		},
+		reset() {
+			return dispatch(reset());
+		},
+		navigate() {
+			return dispatch(navigate());
+		},
+		goForward() {
+			return dispatch(goForward());
+		},
+		goBackward() {
+			return dispatch(goBackward());
+		}
+	};
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(WebBrowser);

@@ -1,0 +1,13 @@
+@value white, black from 'src/theme.module.css';
+
+.directory {
+	composes: inset from 'src/theme.module.css';
+	flex: 1;
+	background-color: white;
+	color: black;
+}
+
+.appIcon {
+	display: inline-block;
+	vertical-align: top;
+}

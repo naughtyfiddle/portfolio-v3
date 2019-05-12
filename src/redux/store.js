@@ -1,5 +1,6 @@
 import {applyMiddleware, combineReducers, createStore} from 'redux';
 import {createLogger} from 'redux-logger';
+import thunk from 'redux-thunk';
 import webBrowser from './web-browser';
 import windows from './windows';
 
@@ -17,6 +18,6 @@ export default (defaultState = {}) => {
 	return createStore(
 		reducer,
 		defaultState,
-		applyMiddleware(logger)
+		applyMiddleware(logger, thunk)
 	);
 };

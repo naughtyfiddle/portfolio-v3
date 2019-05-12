@@ -91,12 +91,11 @@ class ArrowKeyFocusItem extends React.Component {
 			ref: (e) => {
 				this.item = e;
 
-				// cloning the child and passing a new ref prop overwrites any refs passed
-				// to the child by other components. Here we check if there are existing
-				// callback-style refs and preserve them on the clone. For more info, see
-				// https://github.com/facebook/react/issues/8873#issuecomment-275423780
+				// cloning the child and passing a new ref prop overwrites any refs passed to the child by other
+				// components. Here we check if there are existing refs and preserve them on the clone.
+				// For more info, see https://github.com/facebook/react/issues/8873#issuecomment-275423780
 				const existingRef = Child.ref;
-				if (typeof existingRef === 'function') {
+				if (existingRef) {
 					existingRef(e);
 				}
 			},

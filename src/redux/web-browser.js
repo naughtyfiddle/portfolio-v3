@@ -4,7 +4,7 @@ const SET_URL = 'web-browser/SET_URL';
 const GO_FORWARD = 'web-browser/GO_FORWARD';
 const GO_BACKWARD = 'web-browser/GO_BACKWARD';
 
-const HOME_PAGE = 'http://startpage.com/';
+const HOME_PAGE = 'http://bing.com/';
 
 const DEFAULT_STATE = {
 	url: HOME_PAGE,
