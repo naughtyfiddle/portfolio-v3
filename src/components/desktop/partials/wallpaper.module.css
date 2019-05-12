@@ -1,4 +1,4 @@
-@value teal, white from 'src/theme.module.css';
+@value teal from 'src/theme.module.css';
 
 .wallpaper {
 	position: fixed;

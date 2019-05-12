@@ -1,12 +1,13 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {connect} from 'react-redux';
 
-import Apps from '../apps';
-import DesktopIcon from '../components/desktop-icon';
-import Taskbar from '../components/taskbar';
-import Wallpaper from '../components/wallpaper';
-import Window from '../components/window';
-import styles from '../theme.module.css';
+import Apps from 'src/apps';
+import Wallpaper from './partials/wallpaper';
+import Window from './partials/window';
+import DesktopIcon from '../desktop-icon';
+import Taskbar from '../taskbar';
+
+import styles from './desktop.module.css';
 
 import {
 	blurApps,
@@ -16,9 +17,9 @@ import {
 	maximizeApp,
 	minimizeApp,
 	unmaximizeApp
-} from '../redux/windows';
+} from 'src/redux/windows';
 
-function DesktopContainer(props) {
+function Desktop(props) {
 	const container = useRef(null);
 	const [containerHeight, setContainerHeight] = useState(0);
 	const [containerWidth, setContainerWidth] = useState(0);
@@ -85,4 +86,4 @@ const mapDispatchToProps = {
 	unmaximizeApp
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DesktopContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(Desktop);

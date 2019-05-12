@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 
 import createStore from './redux/store';
-import Desktop from './containers/desktop';
+import Desktop from './components/desktop';
 import styles from './theme.module.css';
 
 const TAB = 9;

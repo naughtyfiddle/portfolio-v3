@@ -5,7 +5,8 @@ import MinimizeIcon from 'static/img/window/minimize.png';
 import MaximizeIcon from 'static/img/window/maximize.png';
 import RestoreDownIcon from 'static/img/window/restore_down.png';
 import CloseIcon from 'static/img/window/close.png';
-import styles from './title-buttons.module.css';
+
+import styles from './window-title-buttons.module.css';
 
 function TitleButtons(props, ref) {
 	const closeButton = useRef(null);

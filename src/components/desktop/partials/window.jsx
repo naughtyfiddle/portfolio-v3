@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 import {clamp} from 'src/util';
-import Directory from '../app-directory';
-import TitleButtons from './partials/title-buttons';
+import TitleButtons from './window-title-buttons';
 import styles from './window.module.css';
+import Directory from '../../app-directory';
 
 export default class Window extends React.Component {
 
