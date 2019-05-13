@@ -130,7 +130,7 @@ export const launchApp = (app) => (dispatch) => {
 			payload: app
 		});
 	}
-}
+};
 
 export function maximizeApp(app) {
 	return {

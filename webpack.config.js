@@ -1,5 +1,5 @@
 const webpack = require('webpack');
-const ExtractCssChunks = require("extract-css-chunks-webpack-plugin");
+const ExtractCssChunks = require('extract-css-chunks-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const path = require('path');
@@ -22,7 +22,13 @@ module.exports = (env, options) => ({
 			test: /\.module\.css$/,
 			use: [
 				ExtractCssChunks.loader,
-				'css-loader?modules'
+				{
+					loader: 'css-loader',
+					options: {
+						modules: true,
+						localIdentName: '[local]__[hash:base64]'
+					}
+				}
 			]
 		}, {
 			// static assets

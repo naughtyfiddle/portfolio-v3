@@ -20,7 +20,7 @@ export default function Visualization() {
 // constrain value to "pixel" bounds
 Visualization.prototype.pixelize = function(value) {
 	return value - (value % PIXEL_SIZE);
-}
+};
 
 // this should be the only public method
 Visualization.prototype.draw = function(canvas, frequencyData) {
@@ -70,5 +70,5 @@ Visualization.prototype.draw = function(canvas, frequencyData) {
 
 		x += PIXEL_SIZE;
 		i++;
-	};
+	}
 };
