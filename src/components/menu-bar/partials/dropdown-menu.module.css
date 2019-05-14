@@ -1,0 +1,42 @@
+@value grayPrimary, grayInset, bluePrimary, white, black from 'src/theme.module.css';
+
+.menuBarItem {
+	position: relative;
+	padding: 3px 7px;
+	font-size: 0.6rem;
+}
+
+.menuBarItem:not(.open) .dropdownMenu {
+	display: none;
+}
+
+.dropdownMenu {
+	composes: outset from 'src/theme.module.css';
+	position: absolute;
+	top: 100%;
+	left: 0;
+	min-width: 150px;
+	padding: 0;
+	background-color: grayPrimary;
+	list-style: none;
+}
+
+.dropdownMenuItem {
+	padding: 5px 5px 5px 10px;
+	font-size: 0.6rem;
+	text-align: left;
+	color: black;
+}
+
+.dropdownMenuItem.disabled {
+	color: grayInset;
+	cursor: default;
+}
+
+.menuBarItem:hover,
+.dropdownMenuItem:not(.disabled):hover,
+.menuBarItem.open {
+	background-color: bluePrimary;
+	color: white;
+	cursor: pointer;
+}

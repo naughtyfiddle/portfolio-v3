@@ -32,7 +32,7 @@ module.exports = (env, options) => ({
 			]
 		}, {
 			// static assets
-			test: /\.(gif|jpg|png|svg|ttf|mp3)$/,
+			test: /\.(gif|jpg|png|svg|ttf|mp3|pdf)$/,
 			use: [{
 				loader: 'file-loader',
 				options: {

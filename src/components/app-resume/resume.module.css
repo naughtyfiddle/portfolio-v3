@@ -1,15 +1,21 @@
-@value grayPrimary, mobileCutoff from 'src/theme.module.css';
+@value grayInset, mobileCutoff from 'src/theme.module.css';
 
 .resume {
-	composes: inset from 'src/theme.module.css';
 	width: 100%;
-	text-align: center;
-	overflow: auto;
-	background-color: grayPrimary;
+	display: flex;
+	flex-direction: column;
 }
 
-.resume img {
-	width: 550px;
+.frame {
+	composes: inset from 'src/theme.module.css';
+	flex: 1;
+	margin-top: 2px;
+	text-align: center;
+	overflow: auto;
+	background-color: grayInset;
+}
+
+.frame img {
 	height: auto;
 	margin: 10px 0;
 	pointer-events: none;

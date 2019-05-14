@@ -1,0 +1,11 @@
+@value grayPrimary from 'src/theme.module.css';
+
+.menuBar {
+	display: flex;
+	align-items: center;
+	align-self: flex-start;
+	margin: 0;
+	padding: 0;
+	background-color: grayPrimary;
+	list-style: none;
+}
