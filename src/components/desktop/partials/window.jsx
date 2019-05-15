@@ -3,9 +3,12 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 import {clamp} from 'src/util';
-import TitleButtons from './window-title-buttons';
-import styles from './window.module.css';
 import Directory from '../../app-directory';
+import TitleButtons from './window-title-buttons';
+import DragHandle from './window-drag-handle';
+import ResizeHandle from './window-resize-handle';
+
+import styles from './window.module.css';
 
 export default class Window extends React.Component {
 
@@ -29,35 +32,19 @@ export default class Window extends React.Component {
 	state = {
 		top: 0,
 		left: 0,
-		right: this.props.app.width ? (this.props.containerWidth - this.props.app.width) : null,
-		bottom: this.props.app.width ? (this.props.containerHeight - this.props.app.height) : null,
+		width: this.props.app.width || 'auto',
+		height: this.props.app.width || 'auto',
 		isDragging: false,
-		isResizing: false
+		isResizing: false,
+		dragOffsetTop: 0,
+		dragOffsetLeft: 0
 	};
 
 	componentDidMount() {
-		document.addEventListener('mousemove', this.handleMouseMove);
-		document.addEventListener('mouseup', this.handleMouseUp);
 		this.titleButtons.focus();
 	}
 
-	componentWillUnmount() {
-		document.removeEventListener('mousemove', this.handleMouseMove);
-		document.removeEventListener('mouseup', this.handleMouseUp);
-	}
-
 	componentDidUpdate(prevProps) {
-		// prevents a bug in which resizing the browser window would let you resize the
-		// app below its minWidth and minHeight boundaries
-		if (this.props.containerWidth !== prevProps.containerWidth || this.props.containerHeight !== prevProps.containerHeight) {
-			const maxRight = this.props.containerWidth - this.state.left - this.props.app.minWidth;
-			const maxBottom = this.props.containerHeight - this.state.top - this.props.app.minHeight;
-
-			this.setState({
-				right: Math.min(this.state.right, maxRight),
-				bottom: Math.min(this.state.bottom, maxBottom)
-			});
-		}
 		// shift focus if window was just unminimized
 		if (prevProps.app.isMinimized && !this.props.app.isMinimized) {
 			this.titleButtons.focus();
@@ -68,68 +55,54 @@ export default class Window extends React.Component {
 		this.props.kill();
 	}
 
-	get width() {
-		return this.props.containerWidth - this.state.left - this.state.right;
-	}
-
-	get height() {
-		return this.props.containerHeight - this.state.top - this.state.bottom;
-	}
-
-	handleMouseUp = () => {
-		this.setState({
-			isDragging: false,
-			isResizing: false
-		});
-	}
-
-	handleMouseMove = (e) => {
-		if (this.state.isDragging) {
-			if (this.props.app.isMaximized) {
-				this.unmaximizeWithDrag(e.clientX);
-			}
-
-			const left = this.state.left + e.movementX;
-			const top = Math.max(this.state.top + e.movementY, 0);
-
+	unmaximizeWithDrag = (x, y) => {
+		if (x < this.state.left) {
 			this.setState({
-				top,
-				left,
-				right: this.props.containerWidth - left - this.width,
-				bottom: this.props.containerHeight - top - this.height
+				dragOffsetLeft: Math.min(x, Math.ceil(this.state.width / 2))
 			});
-		} else if (this.state.isResizing) {
-			const maxRight = this.props.containerWidth - this.state.left - this.props.app.minWidth;
-			const maxBottom = this.props.containerHeight - this.state.top - this.props.app.minHeight;
-
+		} else if (x > this.state.left + this.state.width) {
 			this.setState({
-				right: clamp(this.state.right - e.movementX, 0, maxRight),
-				bottom: clamp(this.state.bottom - e.movementY, 0, maxBottom)
+				dragOffsetLeft: Math.max(
+					this.state.width - (this.props.containerWidth - x),
+					Math.ceil(this.state.width / 2)
+				)
 			});
 		}
-	}
-
-	unmaximizeWithDrag = (cursorX) => {
-		if (cursorX < this.state.left) {
-			const left = Math.max(cursorX - Math.ceil(this.width / 2), 0);
-			this.setState({
-				left,
-				right: this.props.containerWidth - left - this.width
-			});
-		} else if (cursorX > this.state.left + this.width) {
-			const right = Math.max(this.props.containerWidth - cursorX - Math.ceil(this.width / 2), 0);
-			this.setState({
-				right,
-				left: this.props.containerWidth - right - this.width
-			});
-		}
-
 		this.setState({
+			left: x,
 			top: 0,
-			bottom: this.props.containerHeight - this.height
+			dragOffsetTop: y
 		});
-
 		this.props.unmaximize();
+	}
+
+	handleWindowDrag = (e) => {
+		if (this.props.app.isMaximized) {
+			this.unmaximizeWithDrag(e.clientX, e.clientY);
+		} else {
+			this.setState((state) => ({
+				top: clamp(
+					e.clientY - state.dragOffsetTop,
+					0,
+					this.props.containerHeight - this.header.clientHeight - 6 // 6 = margin + border
+				),
+				left: clamp(
+					e.clientX - state.dragOffsetLeft,
+					-state.dragOffsetLeft,
+					this.props.containerWidth - state.dragOffsetLeft
+				)
+			}));
+		}
+	}
+
+	handleWindowResize = (e) => {
+		const maxHeight = this.props.containerHeight - this.state.top;
+		const maxWidth = this.props.containerWidth - this.state.left;
+
+		this.setState((state) => ({
+			width: clamp(e.clientX - state.left, this.props.app.minWidth, maxWidth),
+			height: clamp(e.clientY - state.top, this.props.app.minHeight, maxHeight)
+		}));
 	}
 
 	render() {
@@ -145,26 +118,28 @@ export default class Window extends React.Component {
 				style={{
 					top: this.state.top,
 					left: this.state.left,
-					right: this.props.app.resizeDisabled ? null : this.state.right,
-					bottom: this.props.app.resizeDisabled ? null : this.state.bottom
+					width: this.state.width,
+					height: this.state.height
 				}}
 				onMouseDown={this.props.focus}
 			>
 				<div
-					className={styles.title}
-					onMouseDown={(e) => {
-						e.preventDefault();
-						this.setState({isDragging: true});
-					}}
+					className={styles.header}
+					ref={(e) => { this.header = e; }}
 				>
-					<img
-						src={app.iconSrc}
-						className={styles.titleIcon}
-						alt=""
+					<DragHandle
+						title={app.name}
+						iconSrc={app.iconSrc}
+						onDrag={this.handleWindowDrag}
+						onDragStart={(e) => {
+							this.setState((state) => ({
+								isDragging: true,
+								dragOffsetLeft: e.clientX - state.left,
+								dragOffsetTop: e.clientY - state.top
+							}));
+						}}
+						onDragEnd={() => this.setState({ isDragging: false })}
 					/>
-					<h2>
-						{app.name}
-					</h2>
 					<TitleButtons
 						ref={(e) => { this.titleButtons = e; }}
 						appName={app.name}
@@ -177,25 +152,22 @@ export default class Window extends React.Component {
 				</div>
 				<div className={styles.content}>
 					{ app.content ? (
-						<app.content isFocused={app.isFocused} />
+						<app.content
+							isFocused={app.isFocused}
+							isDragging={this.state.isDragging}
+							isResizing={this.state.isResizing}
+						/>
 					) : null }
 					{ app.children ? (
 						<Directory contents={app.children} />
 					) : null }
-					{/*
-						this mask is a bit of a hack to prevent window content from
-						interfering with click + drag actions (eg if the window content
-						is an iframe it would otherwise swallow mouseup and mousemove events)
-					*/}
-					{ this.state.isDragging || this.state.isResizing || !app.isFocused ? (
-						<div className={styles.contentMask} />
-					) : null }
 				</div>
 				{ !app.resizeDisabled && !app.isMaximized ? (
 					<div className={styles.footer}>
-						<div
-							className={styles.resize}
-							onMouseDown={() => this.setState({isResizing: true})}
+						<ResizeHandle
+							onResize={this.handleWindowResize}
+							onResizeStart={() => this.setState({ isResizing: true })}
+							onResizeEnd={() => this.setState({ isResizing: false })}
 						/>
 					</div>
 				) : null }

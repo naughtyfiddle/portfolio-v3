@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
 import {
@@ -14,6 +15,12 @@ import styles from './web-browser.module.css';
 const ENTER = 13;
 
 class WebBrowser extends React.Component {
+
+	static propTypes = {
+		isFocused: PropTypes.bool,
+		isDragging: PropTypes.bool,
+		isResizing: PropTypes.bool
+	};
 
 	componentWillUnmount() {
 		this.props.reset();
@@ -42,10 +49,19 @@ class WebBrowser extends React.Component {
 						}}
 					/>
 				</div>
-				<iframe
-					className={styles.frame}
-					src={this.props.location}
-				/>
+				<div className={styles.content}>
+					<iframe
+						className={styles.frame}
+						src={this.props.location}
+					/>
+					{/*
+						this mask is a bit of a hack to prevent the iframe from interfering with window
+						drag + resize actions (it would otherwise swallow mouseup and mousemove events)
+					*/}
+					{ !this.props.isFocused || this.props.isDragging || this.props.isResizing ? (
+						<div className={styles.contentMask} />
+					) : null }
+				</div>
 			</div>
 		);
 	}

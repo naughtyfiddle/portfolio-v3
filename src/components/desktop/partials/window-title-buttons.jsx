@@ -18,7 +18,7 @@ function TitleButtons(props, ref) {
 	}));
 
 	return (
-		<div>
+		<div className={styles.titleButtons}>
 			<button
 				className={styles.minimize}
 				onClick={props.onMinimize}

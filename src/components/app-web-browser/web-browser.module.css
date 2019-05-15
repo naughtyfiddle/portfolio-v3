@@ -12,9 +12,22 @@
 	flex: 1;
 }
 
+.content {
+	flex: 1;
+	display: flex;
+	position: relative;
+	margin-top: 2px;
+}
+
+.contentMask {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+
 .frame {
 	composes: inset from 'src/theme.module.css';
 	flex: 1;
-	box-sizing: border-box;
-	margin-top: 2px;
 }

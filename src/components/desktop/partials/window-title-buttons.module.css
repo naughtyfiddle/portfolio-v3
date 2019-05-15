@@ -1,5 +1,10 @@
 @value grayPrimary, mobileCutoff from 'src/theme.module.css';
 
+.titleButtons {
+	display: flex;
+	padding: 3px;
+}
+
 .minimize, .maximize, .close {
 	width: 1rem;
 	height: 1rem;
