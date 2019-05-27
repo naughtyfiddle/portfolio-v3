@@ -8,4 +8,5 @@
 	padding: 0;
 	background-color: grayPrimary;
 	list-style: none;
+	z-index: 100;
 }
