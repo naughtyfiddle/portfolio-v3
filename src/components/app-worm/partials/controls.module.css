@@ -18,6 +18,10 @@
 	padding: 0 5px;
 }
 
+.controlsTable td:last-child {
+	text-align: right;
+}
+
 .mobileControls {
 	position: relative;
 }

@@ -71,22 +71,31 @@ export const PizzaDashPizzaDotPizza = {
 	iconSrc: LinkIcon
 };
 
+export const ACNHChecklists = {
+	name: 'Animal Crossing Checklists',
+	url: 'https://bass-dandy.github.io/acnh-checklists',
+	iconSrc: LinkIcon
+};
+
+export const Projects = {
+	name: 'My Projects',
+	iconSrc: FolderIcon,
+	width: 500,
+	height: 300,
+	minWidth: 300,
+	minHeight: 200,
+	children: [
+		Worm,
+		Planechase,
+		ACNHChecklists,
+		PizzaDashPizzaDotPizza
+	]
+};
+
 export default [
 	AboutMe,
 	Resume,
-	{
-		name: 'My Projects',
-		iconSrc: FolderIcon,
-		width: 500,
-		height: 300,
-		minWidth: 300,
-		minHeight: 200,
-		children: [
-			Worm,
-			Planechase,
-			PizzaDashPizzaDotPizza
-		]
-	},
+	Projects,
 	MediaPlayer,
 	WebBrowser
 ];

@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import styles from './visualizer.module.css';
 
@@ -24,7 +24,7 @@ export default function Visualizer(props) {
 				function getFrequencies() {
 					frame = requestAnimationFrame(getFrequencies);
 					if (canvas.current) {
-						analyser.getByteFrequencyData(frequencyData)
+						analyser.getByteFrequencyData(frequencyData);
 						vis.draw(canvas.current, frequencyData);
 					}
 				}

@@ -23,7 +23,7 @@ const TABS = [
 	}
 ];
 
-export default function AboutMe(props) {
+export default function AboutMe() {
 	const [activeTab, setActiveTab] = useState(0);
 	const {TabComponent} = TABS[activeTab];
 

@@ -1,9 +1,8 @@
 import React, {useEffect, useRef} from 'react';
-import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import classnames from 'classnames';
 
-import {focusApp, launchApp} from 'src/redux/windows';
+import {focusApp} from 'src/redux/windows';
 import Clock from './partials/clock';
 import StartButton from './partials/start-button';
 
@@ -56,8 +55,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-	focusApp,
-	launchApp
+	focusApp
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Taskbar);

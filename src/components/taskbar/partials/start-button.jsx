@@ -1,14 +1,17 @@
-import React, {useState, useRef, useEffect} from 'react';
-import PropTypes from 'prop-types';
+import React, {useState, useRef} from 'react';
+import {useDispatch} from 'react-redux';
 import classnames from 'classnames';
 import StartMenu from './start-menu';
+
+import {launchApp} from 'src/redux/windows';
 
 import StartIcon from 'static/img/start.png';
 import styles from './start-button.module.css';
 
 const ESC = 27;
 
-export default function StartButton(props) {
+export default function StartButton() {
+	const dispatch = useDispatch();
 	const [isOpen, setIsOpen] = useState(false);
 	const startButton = useRef(null);
 
@@ -37,7 +40,7 @@ export default function StartButton(props) {
 				<StartMenu
 					launchApp={(app) => {
 						// timeout prevents the window from closing as soon as it opens when using keyboard controls
-						window.setTimeout(props.launchApp, 10, app);
+						window.setTimeout(() => dispatch(launchApp(app)), 10);
 						setIsOpen(false);
 					}}
 					close={() => setIsOpen(false)}
@@ -46,7 +49,3 @@ export default function StartButton(props) {
 		</div>
 	);
 }
-
-StartButton.propTypes = {
-	launchApp: PropTypes.func.isRequired
-};

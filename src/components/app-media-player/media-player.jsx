@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useState} from 'react';
 
 import songs from './songs';
 import Visualizer from './partials/visualizer';
@@ -8,7 +8,7 @@ import Scrubber from './partials/scrubber';
 
 import styles from './media-player.module.css';
 
-export default function MediaPlayer(props) {
+export default function MediaPlayer() {
 	const [audio, setAudio] = useState(null);
 	const [nowPlaying, setNowPlaying] = useState(null);
 	const [paused, setPaused] = useState(true);
@@ -33,7 +33,7 @@ export default function MediaPlayer(props) {
 	const playNext = () => {
 		const nowPlayingIndex = songs.findIndex((song) => song === nowPlaying);
 		if (nowPlayingIndex + 1 < songs.length) {
-			setNowPlaying(songs[nowPlayingIndex + 1])
+			setNowPlaying(songs[nowPlayingIndex + 1]);
 		} else {
 			setNowPlaying(null);
 			audio.load();

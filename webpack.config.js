@@ -1,7 +1,6 @@
 const webpack = require('webpack');
 const ExtractCssChunks = require('extract-css-chunks-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const path = require('path');
 
 module.exports = (env, options) => ({
@@ -25,8 +24,7 @@ module.exports = (env, options) => ({
 				{
 					loader: 'css-loader',
 					options: {
-						modules: true,
-						localIdentName: '[local]__[hash:base64]'
+						esModule: true
 					}
 				}
 			]
@@ -51,14 +49,6 @@ module.exports = (env, options) => ({
 		new ExtractCssChunks({
 			filename: '[name].css'
 		}),
-		...(options.mode === 'production' ? [
-			// output bundle analysis for prod builds
-			new BundleAnalyzerPlugin({
-				reportFilename: path.resolve(__dirname, 'bundle-report.html'),
-				analyzerMode: 'static',
-				openAnalyzer: false
-			})
-		] : []),
 		...(options.mode === 'development' ? [
 			// enable hot module reloading for dev builds
 			new webpack.HotModuleReplacementPlugin(),

@@ -1,15 +1,14 @@
 import React, {useRef, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import {connect} from 'react-redux';
+import {useDispatch} from 'react-redux';
 
-import {WebBrowser} from 'src/apps';
 import {launchApp} from 'src/redux/windows';
-import {setUrl, navigate} from 'src/redux/web-browser';
 
 import styles from './desktop-icon.module.css';
 
-function DesktopIcon(props) {
+export default function DesktopIcon(props) {
+	const dispatch = useDispatch();
 	const icon = useRef(null);
 
 	useEffect(() => {
@@ -17,7 +16,7 @@ function DesktopIcon(props) {
 			if (e.detail === props.app.name) {
 				icon.current.focus();
 			}
-		}
+		};
 		window.addEventListener('appkilled', focusKilled);
 		return () => window.removeEventListener('appkilled', focusKilled);
 	}, []);
@@ -28,7 +27,7 @@ function DesktopIcon(props) {
 			className={classnames(styles.desktopIcon, props.className, {
 				[styles.darkText]: props.darkText
 			})}
-			onClick={() => props.launchApp(props.app)}
+			onClick={() => dispatch(launchApp(props.app))}
 		>
 			<img
 				src={props.app.iconSrc}
@@ -47,9 +46,3 @@ DesktopIcon.propTypes = {
 	darkText: PropTypes.bool,
 	className: PropTypes.string
 };
-
-const mapDispatchToProps = {
-	launchApp
-};
-
-export default connect(null, mapDispatchToProps)(DesktopIcon);

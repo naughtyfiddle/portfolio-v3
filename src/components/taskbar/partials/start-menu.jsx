@@ -9,7 +9,6 @@ import styles from './start-menu.module.css';
 
 export default function StartMenu(props) {
 	const menu = useRef(null);
-
 	useClickOutside(menu, props.close);
 
 	return (

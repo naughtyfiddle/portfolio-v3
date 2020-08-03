@@ -10,7 +10,7 @@
 	margin-top: 0;
 }
 
-.openResume, .openResume:active, .openResume:focus {
+.appLink, .appLink:active, .appLink:focus {
 	padding: 0;
 	margin: 0;
 	border: 0;

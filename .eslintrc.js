@@ -8,10 +8,6 @@ module.exports = {
 			jsx: true
 		}
 	},
-	ecmaFeatures: {
-		jsx: true,
-		modules: true
-	},
 	env: {
 		browser: true,
 		node: true,
@@ -153,7 +149,7 @@ module.exports = {
 		'react/jsx-no-duplicate-props': 'error',
 		// don't mark `React` as unused
 		'react/jsx-uses-react': 'warn',
-		// don't marke vars only used in jsx as unused
+		// don't mark vars only used in jsx as unused
 		'react/jsx-uses-vars': 'warn',
 		// checks for illegal state mutations:
 		'react/no-did-update-set-state': 'warn',

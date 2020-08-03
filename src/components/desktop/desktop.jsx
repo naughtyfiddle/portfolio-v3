@@ -26,7 +26,7 @@ function Desktop(props) {
 		const captureDesktopDimensions = () => {
 			setContainerHeight(container.current.clientHeight);
 			setContainerWidth(container.current.clientWidth);
-		}
+		};
 		captureDesktopDimensions();
 		window.addEventListener('resize', captureDesktopDimensions);
 		return () => window.removeEventListener('resize', captureDesktopDimensions);
@@ -37,7 +37,7 @@ function Desktop(props) {
 			className={styles.desktop}
 			ref={container}
 		>
-			<Wallpaper 
+			<Wallpaper
 				onClick={props.blurApps}
 			/>
 			<div className={styles.desktopIcons}>

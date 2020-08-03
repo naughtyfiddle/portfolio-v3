@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function Site(props) {
+export default function Site() {
 	return (
 		<div>
 			I use a lot of different technologies in my day-to-day life, but this website is built with:

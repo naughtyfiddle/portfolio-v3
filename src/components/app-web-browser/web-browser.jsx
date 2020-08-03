@@ -74,24 +74,12 @@ function mapStateToProps(state) {
 	};
 }
 
-function mapDispatchToProps(dispatch) {
-	return {
-		setUrl(url) {
-			return dispatch(setUrl(url));
-		},
-		reset() {
-			return dispatch(reset());
-		},
-		navigate() {
-			return dispatch(navigate());
-		},
-		goForward() {
-			return dispatch(goForward());
-		},
-		goBackward() {
-			return dispatch(goBackward());
-		}
-	};
-}
+const mapDispatchToProps = {
+	setUrl,
+	reset,
+	navigate,
+	goForward,
+	goBackward
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(WebBrowser);

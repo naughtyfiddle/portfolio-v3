@@ -16,7 +16,7 @@ export default class Worm extends React.Component {
 			(score) => this.setState({score})
 		);
 		game.enableKeyboardControls();
-		this.setState({game}) ;
+		this.setState({game});
 	}
 
 	componentDidUpdate(prevProps) {

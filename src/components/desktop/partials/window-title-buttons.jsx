@@ -8,7 +8,7 @@ import CloseIcon from 'static/img/window/close.png';
 
 import styles from './window-title-buttons.module.css';
 
-function TitleButtons(props, ref) {
+const TitleButtons = forwardRef((props, ref) => {
 	const closeButton = useRef(null);
 
 	useImperativeHandle(ref, () => ({
@@ -48,9 +48,7 @@ function TitleButtons(props, ref) {
 			</button>
 		</div>
 	);
-}
-
-TitleButtons = forwardRef(TitleButtons);
+});
 
 TitleButtons.propTypes = {
 	appName: PropTypes.string.isRequired,
