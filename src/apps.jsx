@@ -77,6 +77,12 @@ export const ACNHChecklists = {
 	iconSrc: LinkIcon
 };
 
+export const UnifiedSandwichFramework = {
+	name: 'Unified Sandwich Framework',
+	url: 'https://sandwich.one',
+	iconSrc: LinkIcon
+};
+
 export const Projects = {
 	name: 'My Projects',
 	iconSrc: FolderIcon,
@@ -88,6 +94,7 @@ export const Projects = {
 		Worm,
 		Planechase,
 		ACNHChecklists,
+		UnifiedSandwichFramework,
 		PizzaDashPizzaDotPizza
 	]
 };
