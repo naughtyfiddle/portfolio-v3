@@ -37,7 +37,7 @@ export default [
 		artist: 'Bass Dandy',
 		album: 's/t',
 		length: '5:02',
-		track: '3',
+		track: '4',
 		src: track4,
 		cover
 	}
